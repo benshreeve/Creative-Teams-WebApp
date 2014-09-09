@@ -1,0 +1,13 @@
+{
+  "name": "supertestlite",
+  "version": "0.0.1",
+  "description": "collaborative drawing app test",
+  "dependencies": {
+    "body-parser": "^1.5.2",
+    "connect": "*",
+    "express": "^4.7.2",
+    "express-session": "^1.7.6",
+    "socket.io": "^1.0.6",
+	"session.socket.io": "http://github.com/eiriklv/session.socket.io/tarball/master"
+  }
+}

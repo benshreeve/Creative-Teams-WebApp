@@ -1,0 +1,192 @@
+* { margin:0; padding:0; }
+
+html, body { width:100%; height:100%; }
+
+body {
+	text-align: center;
+	font-family: 'Lato', sans-serif;
+}
+
+a, .button { 
+    touch-action: manipulation;     /* IE11+ */
+	-webkit-user-select: none;
+}
+
+/* Used for overriding mobile zoom/pan */
+#canvasSimple, #canvasDiv {
+	 -ms-touch-action: none;
+	-webkit-user-select: none;	 
+	 -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body:hover {
+
+}
+
+#deadzone-top, #deadzone-bottom  {
+	background-color: rgba(0,0,0,0.3);
+	color: white;
+}
+
+#deadzone-top {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	text-align: left;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;   	/* Opera/IE 8+ */
+	padding: 5px 10px;
+	top: 0;
+	/* border-top: black 40px solid;
+	border-bottom: black 10px solid; */
+}
+
+#deadzone-bottom {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	text-align: right;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;   	/* Opera/IE 8+ */
+	bottom: 0;
+	/* border-top: rgba(0,0,0,0.3) 10px solid;
+	border-bottom: rgba(0,0,0,0.3) 30px solid; */
+}
+
+.tab {
+	height: 100%;
+	font-size: 30px;
+	font-family: 'Lato', sans-serif;
+	background-color: rgba(255, 255, 255, 0.9);
+	border: none;
+	/* margin-left: 10px; */
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;  
+	padding: 10px 130px;
+	border-radius: 100px 0 0 0;
+	background-position: 50px center;	
+	background-size: 50px;
+	background-repeat: no-repeat;
+	position: absolute;
+	right: 0px;
+	box-shadow: black 10px 30px 40px 10px;
+}
+
+#paintbutton {
+	background-color: #ffc907;
+	background-image: url('../images/Pen.png');
+	width: 1500px;
+	z-index: 1;
+}
+
+#erasebutton {
+	background-color: #01b3ef;
+	background-image: url('../images/Rubber.png');
+	z-index: 2;
+	width: 1000px;
+}
+
+#undobutton {
+	background-color: #d6e30f;
+	background-image: url('../images/Undo.png');
+	z-index: 3;
+	width: 500px;
+}
+
+#redobutton {
+	background-color: #6edc45;
+	background-image: url('../images/Redo.png');
+	z-index: 4;
+}
+
+#circle {
+	border-radius: 50%;
+	display: none;
+	position: absolute;
+	width: 100px; /* Radius = 50 */
+    height: 100px;
+	border: 3px solid red;
+	top: 100px; /* use +50 correction for centre */
+	left: 100px;
+	pointer-events: none;
+}
+
+
+ /* Buttons */
+
+.tabButton {
+	height: 100%;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box; 
+ 	width: 60px;
+	float: left;
+	margin-right: 5px;
+}
+
+.buttonSize1 { padding: 35px 0; }
+
+.buttonSize2 { padding: 32px 0; }
+
+.buttonSize3 { padding: 30px 0; }
+
+.buttonSize4 { padding: 28px 0; }
+
+.buttonSize5 { padding: 25px 0; }
+
+
+.strokeSize {
+	background-color: black;
+	margin: 0 auto;
+}
+
+.dot1 { height: 10px; width: 10px; border-radius: 10px; }
+
+.dot2 { height: 15px; width: 15px; border-radius: 15px; }
+
+.dot3 { height: 20px; width: 20px; border-radius: 20px; }
+
+.dot4 { height: 25px; width: 25px; border-radius: 25px; }
+
+.dot5 { height: 30px; width: 30px; border-radius: 30px; }
+
+
+.handwritingButton {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box; 
+	float: left;
+	background-color: black;
+	margin-left: 160px;
+	color: white;
+	padding: 10px 20px;
+	margin-top: 14px;
+}
+
+.highlightCircle {
+	border-radius: 50%;
+	position: absolute;
+	width: 60px;
+    height: 60px;
+	border: 4px solid white;
+	top: 16px;
+	left: 256px;
+	pointer-events: none;
+}
+
+#innerEraseButtons {
+
+}
+
+#eraserCircle {
+	display: none;
+}
