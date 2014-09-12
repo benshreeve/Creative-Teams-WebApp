@@ -1,50 +1,50 @@
-var app = require('express')()
-  , express = require('express')
-  , connect = require('connect')
-  , http = require('http').Server(app)
-  , path = require('path')
-  , request = require("request")
-  , io = require('socket.io')(http);
- 
-// Cookie and Session Requirements:
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
-var sessionStore = new RedisStore();
 
- // Connection to the Database:
-var db = require('mysql');
+/* ------------------------------------------------------------------------- */
+/*								Server Configuration						 */
+/* ------------------------------------------------------------------------- */
+
+// Requirements:
+var app = require('express')(),
+express = require('express'),
+connect = require('connect'),
+http = require('http').Server(app),
+path = require('path'),
+request = require("request"),
+io = require('socket.io')(http),
+bodyParser = require('body-parser'),
+cookieParser = require('cookie-parser'),
+session = require('express-session'),
+RedisStore = require('connect-redis')(session),
+sessionStore = new RedisStore(),
+SessionSockets = require('session.socket.io'),
+db = require('mysql');
+
+ // Connect to the database:
 var connection =  db.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
 connection.query('use DrawingApp');
-var strQuery = 'select * from users';	
-  
-connection.query( strQuery, function(err, rows){
-	if(err)	{
-		throw err;
-	}else{
-		//console.log( rows );
-	}
-});  
 
-// Session Information:
+// Reset all users active flags to inactive, in case of crash:
+var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
+
+// Set up sessions (and their cookies):
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser("your secret sauce"));
-app.use(session({
-    secret: "your secret sauce",
-	store: sessionStore,	
-    //key: 'connect.sid',
-    //cookie: {secure: true, maxAge: 600000, },
-	resave: true,
-	saveUninitialized: true,
-}));
-
+app.use(cookieParser("gZB8fSdS"));
+app.use(session({ secret: "gZB8fSdS", store: sessionStore, resave: true, saveUninitialized: true, }));
 
 // Initialise Socket Sessions:
-var SessionSockets = require('session.socket.io');
-var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("your secret sauce"));
+var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
 
-/* Routing Functions:*/
+
+
+/* ------------------------------------------------------------------------- */
+/*								Routing Functions							 */
+/* ------------------------------------------------------------------------- */
+
+
+app.use(function(req, res, next){
+  console.log('%s %s', req.method, req.url);
+  next();
+});
 
 // Checks if user is logged in.  If not, redirect to Login.
 function protectPage(req, res, redirectUrl) {
@@ -52,91 +52,86 @@ function protectPage(req, res, redirectUrl) {
 	else res.redirect("/public/");
 }
 
-// Show an error message if we call this function.
-function serveError(res, info) {
-	res.send("Oops! There's been a gremlin in the system somewhere.  Please inform your supervisor that- " + info);
-}
+// Send an error message to a client:
+function serveError(res, info) { 	res.send("Oops! Please inform your supervisor that- " + info); 	}
 
-// Redirect user to /public directory:
-app.get('/', function(req, res) {
-	res.redirect("./public/");
+// Direct to login, or skip if session exists:
+app.get('/', function(req, res) { 	
+	if(req.session.sessionAccessCode) res.redirect("/test1/index.html");
+	else res.redirect("./public/"); 	
 });
+
+// Route to clear a session (for testing purposes):
+app.get('/clearsession/', function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
 
 // Serve the Login Page:
-app.get('/public/', function(req, res) {
-	res.redirect("index.html");
-});
+app.get('/public/', function(req, res) {	res.redirect("index.html"); 	});
 
 // Serve the Practice Canvas:
-app.get('/test1/', function(req, res) {	
-	protectPage(req, res, "/test1/index.html");
-});
+app.get('/test1/', function(req, res) {		protectPage(req, res, "/test1/index.html");		});
 
 // Static File Serving:
 app.use(express.static(__dirname, '/public'));
 
+
+
+/* ------------------------------------------------------------------------- */
+/*							Login Form Submit (POST)						 */
+/* ------------------------------------------------------------------------- */
+
 app.post("/public/*", function(req, res) {
-    var accesscode = req.body.accesscode;
-	var nicknamechosen = req.body.nickname;
-	
-    var loginQuery = 'select * from users where users.accessid = "'+ accesscode +'";';
+    connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
+        if(err) throw err;
 
-    connection.query( loginQuery, function(err, rows){
-        if(err)	{
-            throw err;
-        }else{
-			// If it is a valid access code:
-			if(rows.length > 0) {
-			
-				if(rows[0].active == "0") {
-					
-					// Update the database about the nickname:
-					var post  = {nickname: nicknamechosen};
-					var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+accesscode+'"', post, function(err, result) {});
-					//console.log(query.sql);
-					
-					// Write this info to the session:
-					req.session.sessionAccessCode = accesscode;	
-					req.session.sessionNickName = nicknamechosen;
-					req.session.sessionColour = rows[0].colour;
-					req.session.sessionGroup = rows[0].group;
-					
-					req.session.save();
-					
-					// Finally, Redirect:
-					res.redirect("/test1/");
-					res.end();
-					
-				}
-				else {
-					// Then this user is already logged in:
-					//res.send("This user is already logged in.  Can't be having doppelgangers, can we?");
-					serveError(res, "This user has already logged in.  Duplicates aren't allowed...");
-					res.end();
-				}
-			}
-			else {
-				// If login details are incorrect, redirect back to root:
-				res.redirect("/");
-				res.end();
-			}
+		// If it is a valid access code:
+		if(rows.length > 0) {
+		
+			// If the user has not already logged in somewhere:
+			if(rows[0].active == "0") {
 				
-        }
+				// Update the database about the nickname:
+				var post  = {nickname: req.body.nickname};
+				var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+ req.body.accesscode+ '"', post, function(err, row) {});
+				
+				// Write this info to the session:
+				req.session.sessionAccessCode = req.body.accesscode;	
+				req.session.sessionNickName = req.body.nickname;
+				req.session.sessionColour = rows[0].colour;
+				req.session.sessionGroup = rows[0].group;
+				req.session.sessionScreen = rows[0].screen;
+				
+				connection.query('select bgimage from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
+					if(err) throw err;
+					req.session.sessionBackground = result[0].bgimage;
+					req.session.save();
+				});			
+				
+				// Finally, Redirect:
+				res.redirect("/test1/");
+			}
+			else serveError(res, "This user has already logged in.  Duplicates aren't allowed...");
+		}
+		else res.redirect("/");		
     });
-
-
 });
 
-// Socket Procedures:
+
+
+
+/* ------------------------------------------------------------------------- */
+/*								Socket Procedures							 */
+/* ------------------------------------------------------------------------- */
+
+
 sessionSockets.on('connection', function(err, socket, session){
 
-	// Send the client its information:
+	// Firstly send the client its session:
 	socket.emit('session', session);	
 	session.foo = 'test';
 	session.save();
 	
 	// For now, assume the screen number will be 2:
-	sendState(2);
+	sendState(session.sessionScreen);
 	
 	// When a client requests its session:
 	socket.on('requestSession', function() {
@@ -172,6 +167,9 @@ sessionSockets.on('connection', function(err, socket, session){
 				connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
 					socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative });
 					sendState(data.screenNumber - 1);
+					
+					// Update user's current screen in DB:
+					connection.query('UPDATE users SET screen = "'+ (data.screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});					
 				});
 			
 				
@@ -190,8 +188,11 @@ sessionSockets.on('connection', function(err, socket, session){
 					// connect to the database AGAIN here:
 					
 					connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
-						socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative });
+						socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
 						sendState(data.screenNumber + 1);
+						
+						// Update user's current screen in DB:
+						connection.query('UPDATE users SET screen = "'+ (data.screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
 					});
 				
 				
@@ -248,6 +249,11 @@ sessionSockets.on('connection', function(err, socket, session){
 	});
 });
 
-http.listen(4000, function(){
-	console.log('listening on *:4000');
-});
+
+
+/* ------------------------------------------------------------------------- */
+/*								Listening Port								 */
+/* ------------------------------------------------------------------------- */
+
+http.listen(4000, function(){ console.log('listening on *:4000'); });
+

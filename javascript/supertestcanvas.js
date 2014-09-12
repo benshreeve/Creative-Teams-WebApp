@@ -29,8 +29,9 @@ socket.on('session', function (session) {
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
+	screenNumber = session.sessionScreen;
+	switchBackground(session.sessionBackground);
     document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
-	document.getElementById('eggmodetext').innerHTML = "Drawing in " + myColour + " in group " + groupNumber + " and using screen " + screenNumber;
 });
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
@@ -53,8 +54,8 @@ socket.on('switchResponse', function(data) {
         pointsArray.length = 0;
         clearcanvas();
 		switchBackground(data.bgimage);
-		if(data.reason=="back") screenNumber--;
-		else if(data.reason=="next") screenNumber++;
+		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
+		else if(data.reason=="back") screenNumber--;
 		collaborative = data.collaborative;
 	}
 });

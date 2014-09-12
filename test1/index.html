@@ -21,12 +21,12 @@
 	
 		<div id="deadzone-top">	
 			<h1 id="supertitle" style="margin-top: 36px;">Project SuperTest Beta <i>Restored</i></h1>
-			<a id="eggmodetext" onclick="switchBackground();">Activate Egg Mode</a>
 			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
 			<button onclick="stateSession();">Session Testing</button>
 			
 			<button onclick="switchIntention('back');">Back</button>
 			<button onclick="switchIntention('next');">Next</button>
+			<button onclick="location.href = '/clearsession'">Click here to log out</button>
 		</div>	
 		
 		
@@ -65,8 +65,8 @@
 					<div class="tabButton buttonSize5" onclick="switchStroke('100','eraserCircle')"><div class="strokeSize dot5"></div></div>			
 				</div>
 			</div>
-			<button onclick="pushToSocket('undo', myColour);" class="tab" id="undobutton"></button>
-			<button onclick="redo();" class="tab" id="redobutton"></button>
+			<button onclick="switchIntention('back');" class="tab" id="undobutton"></button>
+			<button onclick="switchIntention('next');" class="tab" id="redobutton"></button>
 			<div class="myslider"></div>
 		</div>	
 			

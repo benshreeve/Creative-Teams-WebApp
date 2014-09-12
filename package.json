@@ -1,13 +1,26 @@
 {
-  "name": "supertestlite",
-  "version": "0.0.1",
-  "description": "collaborative drawing app test",
+  "name": "creative-teams",
+  "version": "0.1.0",
+  "description": "A Collaborative Drawing app written in HTML5.",
   "dependencies": {
     "body-parser": "^1.5.2",
     "connect": "*",
     "express": "^4.7.2",
     "express-session": "^1.7.6",
     "socket.io": "^1.0.6",
-	"session.socket.io": "http://github.com/eiriklv/session.socket.io/tarball/master"
-  }
+	"session.socket.io": "http://github.com/eiriklv/session.socket.io/tarball/master",
+	"mysql": "*",
+	"connect-redis": "*",
+	"cookie-parser": "*",
+	"request": "*",
+	"path": "*",
+	"http": "*",
+	"connect-flash": "0.1.1",
+	"bignumber": "1.1.0",
+	"passport":"0.2.0",
+	"ejs": "~1.0.0"
+  },
+  "scripts": {
+	"start": "node index.js"
+	}
 }
