@@ -255,5 +255,5 @@ sessionSockets.on('connection', function(err, socket, session){
 /*								Listening Port								 */
 /* ------------------------------------------------------------------------- */
 
-http.listen(4000, function(){ console.log('listening on *:4000'); });
+http.listen(process.env.PORT || 4000, function(){ console.log('listening on *:4000'); });
 
