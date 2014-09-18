@@ -22,7 +22,8 @@
 	"bignumber": "1.1.0",
 	"passport":"0.2.0",
 	"ejs": "~1.0.0",
-	"heroku-redis-client": "^0.3.3"
+	"heroku-redis-client": "^0.3.3",
+	"url": "^0.10.1"
   },
   "scripts": {
 	"start": "node index.js"
