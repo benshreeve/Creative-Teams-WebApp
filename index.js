@@ -27,7 +27,7 @@ if (process.env.REDISTOGO_URL) {
 
 
 //var RedisStore = require("connect-redis")(session),
-var sessionStore = new RedisStore(),
+var sessionStore = new RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
