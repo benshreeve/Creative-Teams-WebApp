@@ -37,8 +37,6 @@ socket.on('session', function (session) {
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
 	if(dot.group == groupNumber && dot.screen == screenNumber && ( dot.owner == accessID || collaborative ) ) {
-		console.log("owner: " + dot.owner + " and drag is: " + dot.drag);
-		//alert("drag is: " + dot.drag);
 		addClickSimple(dot.x, dot.y, dot.drag, dot.rad, dot.colour, dot.owner);
 		redraw();
 	}
@@ -238,11 +236,8 @@ function redraw() {
 					}
 				}
 				else {
-					if( (pointsArray[i].drag === true || pointsArray[i].drag === "true") && i) { context.moveTo(pointsArray[i-1].x, pointsArray[i-1].y); console.log("mode 1"); }
-					else {
-					context.moveTo(pointsArray[i].x-1, pointsArray[i].y);
-					console.log("mode 2");
-					}
+					if( (pointsArray[i].drag === true || pointsArray[i].drag === "true") && i) context.moveTo(pointsArray[i-1].x, pointsArray[i-1].y);
+					else context.moveTo(pointsArray[i].x-1, pointsArray[i].y);
 					context.lineTo(pointsArray[i].x, pointsArray[i].y);
 				}
 			context.stroke();
