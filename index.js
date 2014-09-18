@@ -18,7 +18,7 @@ session = require('express-session');
 if (process.env.REDISTOGO_URL) {
 
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
-	var RedisStore = require("redis").createClient(rtg.port, rtg.hostname);
+	var RedisStore = require("redis").createClient(rtg.port, rtg.hostname)(session);
 	RedisStore.auth(rtg.auth.split(":")[1]);
 	
 } else {
