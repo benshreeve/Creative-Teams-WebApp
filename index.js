@@ -13,9 +13,20 @@ request = require("request"),
 io = require('socket.io')(http),
 bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
-session = require('express-session'),
-RedisStore = require('connect-redis')(session),
-sessionStore = new RedisStore(),
+session = require('express-session');
+
+if (process.env.REDISTOGO_URL) {
+
+	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	var redis = require("redis").createClient(rtg.port, rtg.hostname);
+	redis.auth(rtg.auth.split(":")[1]);
+	
+} else {
+	var RedisStore = require("connect-redis")(session);
+}
+
+//RedisStore = require('connect-redis')(session),
+var sessionStore = new RedisStore(),
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
