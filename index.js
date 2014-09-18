@@ -18,11 +18,11 @@ session = require('express-session');
 if (process.env.REDISTOGO_URL) {
 
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
-	var RedisStore = require("node-redis").createClient(rtg.port, rtg.hostname);
+	var RedisStore = require("connect-redis").createClient(rtg.port, rtg.hostname);
 	RedisStore.auth(rtg.auth.split(":")[1]);
 	
 } else {
-    var RedisStore = require("node-redis")(session);
+    var RedisStore = require("connect-redis")(session);
 }
 
 
