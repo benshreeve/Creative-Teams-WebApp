@@ -16,6 +16,7 @@ cookieParser = require('cookie-parser'),
 session = require('express-session');
 
 
+/*
 if (process.env.REDISTOGO_URL) {
 
 	
@@ -49,17 +50,19 @@ if (process.env.REDISTOGO_URL) {
 	
 	
 } else {
-    var RedisStore = require("connect-redis")(session);
+    
 }
-
+*/
 
 console.log("-------------- Passed initialisation step ");
 
+var RedisStore = require("connect-redis")(session);
 
-
+var redisUrl = url.parse(process.env.REDISTOGO_URL);
+var redisAuth = redisUrl.auth.split(‘:’);
 
 //var RedisStore = require("connect-redis")(session),
-var sessionStore = RedisStore,
+var sessionStore = new RedisStore(host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]),
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
@@ -93,13 +96,10 @@ console.log("-------------------- After Session Sockets ");
 
 
 app.use(function(req, res, next){
-console.log("-------------------------- start of app.use");
   console.log('%s %s', req.method, req.url);
   next();
-  console.log("---------------------------------- end of app use");
 });
 
-console.log("---------------------------- App.use ");
 
 // Checks if user is logged in.  If not, redirect to Login.
 function protectPage(req, res, redirectUrl) {
@@ -113,7 +113,6 @@ function serveError(res, info) { 	res.send("Oops! Please inform your supervisor 
 // Direct to login, or skip if session exists:
 app.get('/', function(req, res) { 	
 
-	console.log("------------------------- Called router ");
 	
 	if(req.session.sessionAccessCode) res.redirect("/test1/index.html");
 	else {res.redirect("./public/"); console.log("------------------------- Redirected to Public");}
