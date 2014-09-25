@@ -57,7 +57,7 @@ if (process.env.REDISTOGO_URL) {
 
 console.log("-------------- Passed initialisation step ");
 
-var RedisStore = require("connect-redis")(session);
+var RedisStore = require("node-redis")(session);
 
 var redisUrl = url.parse(process.env.REDISTOGO_URL);
 var redisAuth = redisUrl.auth.split(":");
