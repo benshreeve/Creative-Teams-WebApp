@@ -13,7 +13,8 @@ request = require("request"),
 io = require('socket.io')(http),
 bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
-session = require('express-session');
+session = require('express-session'),
+url = require('url');
 
 
 /*
