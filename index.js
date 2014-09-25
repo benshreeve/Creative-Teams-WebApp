@@ -74,9 +74,13 @@ database = require('mysql');
 
 console.log("----------------- After session declaration ");
 
- // Connect to the database:
-var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
-connection.query('use DrawingApp');
+ // Connect to the database (LOCAL SETTINGS):
+//var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
+//connection.query('use DrawingApp');
+
+// Connect to heroku ClearDB database:
+var connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493' });
+connection.query('use 8ca30c1ed121d0a');
 
 console.log("-------------------- After DB declaration ");
 
