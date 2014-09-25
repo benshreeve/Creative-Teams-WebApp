@@ -79,6 +79,7 @@ console.log("-------------------- After Session Sockets ");
 app.use(function(req, res, next){
   console.log('%s %s', req.method, req.url);
   next();
+  console.log("---------------------------------- end of app use");
 });
 
 console.log("---------------------------- App.use ");
