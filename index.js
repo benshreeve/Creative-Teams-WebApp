@@ -47,9 +47,13 @@ var sessionStore = RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
+console.log("----------------- After session declaration ");
+
  // Connect to the database:
 var connection =  db.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
 connection.query('use DrawingApp');
+
+console.log("-------------------- After DB declaration ");
 
 // Reset all users active flags to inactive, in case of crash:
 var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
