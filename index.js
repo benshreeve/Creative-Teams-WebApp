@@ -120,9 +120,10 @@ function serveError(res, info) { 	res.send("Oops! Please inform your supervisor 
 // Direct to login, or skip if session exists:
 app.get('/', function(req, res) { 	
 
+	res.redirect("./public/");
 	
-	if(req.session.sessionAccessCode) res.redirect("/test1/index.html");
-	else {res.redirect("./public/"); console.log("------------------------- Redirected to Public");}
+	//if(req.session.sessionAccessCode) res.redirect("/test1/index.html");
+	//else {res.redirect("./public/"); console.log("------------------------- Redirected to Public");}
 });
 
 // Route to clear a session (for testing purposes):
