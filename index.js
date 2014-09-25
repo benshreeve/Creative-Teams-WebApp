@@ -15,23 +15,33 @@ bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
 session = require('express-session');
 
-/*
+
 if (process.env.REDISTOGO_URL) {
 
+	console.log("Env variable: " + process.env.REDISTOGO_URL);
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
+	console.log("-----------After require");
 	var RedisStore = require("redis").createClient(rtg.port, rtg.hostname);
+	console.log("-------------After RedisStore initialisation");
 	RedisStore.auth(rtg.auth.split(":")[1]);
+	console.log("--------------After Auth");
+	
+	
+	RedisStore.on("error", function(err) {
+		console.log("Error " + err);
+	});
+	
 	
 } else {
     var RedisStore = require("connect-redis")(session);
 }
-*/
 
 
 
 
-var RedisStore = require("connect-redis")(session),
-sessionStore = RedisStore,
+
+//var RedisStore = require("connect-redis")(session),
+var sessionStore = RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
