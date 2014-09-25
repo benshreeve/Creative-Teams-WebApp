@@ -15,6 +15,7 @@ bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
 session = require('express-session');
 
+/*
 if (process.env.REDISTOGO_URL) {
 
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
@@ -24,10 +25,13 @@ if (process.env.REDISTOGO_URL) {
 } else {
     var RedisStore = require("connect-redis")(session);
 }
+*/
 
 
-//var RedisStore = require("connect-redis")(session),
-var sessionStore = RedisStore,
+
+
+var RedisStore = require("connect-redis")(session),
+sessionStore = RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
