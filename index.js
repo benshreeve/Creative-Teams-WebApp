@@ -62,10 +62,10 @@ var RedisStore = require("connect-redis")(session);
 var redisUrl = url.parse(process.env.REDISTOGO_URL);
 var redisAuth = redisUrl.auth.split(":");
 
-console.log(redisUrl.hostname);
-console.log(redisUrl.port);
-console.log(redisAuth[0]);
-console.log(redisAuth[1]);
+console.log("HOSTNAME: " + redisUrl.hostname);
+console.log("PORT: " + redisUrl.port);
+console.log("DB: " + redisAuth[0]);
+console.log("PASS: " + redisAuth[1]);
 
 //var RedisStore = require("connect-redis")(session),
 var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
