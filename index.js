@@ -42,7 +42,7 @@ if (process.env.REDISTOGO_URL) {
         replies.forEach(function (reply, i) {
             console.log("    " + i + ": " + reply);
         });
-        RedisStore.quit();
+        //RedisStore.quit();
     });
 	
 	
