@@ -62,7 +62,7 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL);
 var redisAuth = redisUrl.auth.split(":");
 
 //var RedisStore = require("connect-redis")(session),
-var sessionStore = new RedisStore(host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]),
+var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
