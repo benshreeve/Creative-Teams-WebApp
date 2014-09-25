@@ -18,6 +18,7 @@ session = require('express-session');
 
 if (process.env.REDISTOGO_URL) {
 
+	
 	console.log("Env variable: " + process.env.REDISTOGO_URL);
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
 	console.log("-----------After require");
@@ -25,11 +26,25 @@ if (process.env.REDISTOGO_URL) {
 	console.log("-------------After RedisStore initialisation");
 	RedisStore.auth(rtg.auth.split(":")[1]);
 	console.log("--------------After Auth");
-	
+
 	
 	RedisStore.on("error", function(err) {
 		console.log("Error " + err);
 	});
+
+
+    RedisStore.set("string key", "string val", redis.print);
+    RedisStore.hset("hash key", "hashtest 1", "some value", redis.print);
+    RedisStore.hset(["hash key", "hashtest 2", "some other value"], redis.print);
+    RedisStore.hkeys("hash key", function (err, replies) {
+        console.log(replies.length + " replies:");
+        replies.forEach(function (reply, i) {
+            console.log("    " + i + ": " + reply);
+        });
+        RedisStore.quit();
+    });
+	
+	
 	
 	
 } else {
@@ -77,6 +92,7 @@ console.log("-------------------- After Session Sockets ");
 
 
 app.use(function(req, res, next){
+console.log("-------------------------- start of app.use");
   console.log('%s %s', req.method, req.url);
   next();
   console.log("---------------------------------- end of app use");
