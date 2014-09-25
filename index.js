@@ -19,13 +19,14 @@ session = require('express-session');
 if (process.env.REDISTOGO_URL) {
 
 	
-	console.log("Env variable: " + process.env.REDISTOGO_URL);
+	//console.log("Env variable: " + process.env.REDISTOGO_URL);
 	var rtg = require("url").parse(process.env.REDISTOGO_URL);
-	console.log("-----------After require");
-	var RedisStore = require("redis").createClient(rtg.port, rtg.hostname);
-	console.log("-------------After RedisStore initialisation");
+	//console.log("-----------After require");
+	var redis = require("redis"),
+	RedisStore = redis.createClient(rtg.port, rtg.hostname);
+	//console.log("-------------After RedisStore initialisation");
 	RedisStore.auth(rtg.auth.split(":")[1]);
-	console.log("--------------After Auth");
+	//console.log("--------------After Auth");
 
 	
 	RedisStore.on("error", function(err) {
@@ -48,7 +49,7 @@ if (process.env.REDISTOGO_URL) {
 	
 	
 } else {
-    var RedisStore = require("connect-redis")(session);
+    var redis = require("connect-redis")(session);
 }
 
 
@@ -58,7 +59,7 @@ console.log("-------------- Passed initialisation step ");
 
 
 //var RedisStore = require("connect-redis")(session),
-var sessionStore = RedisStore,
+var sessionStore = redis,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
