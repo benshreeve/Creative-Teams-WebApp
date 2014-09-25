@@ -15,7 +15,7 @@ bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
 session = require('express-session');
 
-
+/*
 if (process.env.REDISTOGO_URL) {
 
 	console.log("Env variable: " + process.env.REDISTOGO_URL);
@@ -35,15 +35,15 @@ if (process.env.REDISTOGO_URL) {
 } else {
     var RedisStore = require("connect-redis")(session);
 }
-
+*/
 
 console.log("-------------- Passed initialisation step ");
 
 
 
 
-//var RedisStore = require("connect-redis")(session),
-var sessionStore = RedisStore,
+var RedisStore = require("connect-redis")(session),
+sessionStore = RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
