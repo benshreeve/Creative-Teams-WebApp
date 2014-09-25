@@ -37,6 +37,8 @@ if (process.env.REDISTOGO_URL) {
 }
 
 
+console.log("-------------- Passed initialisation step ");
+
 
 
 
