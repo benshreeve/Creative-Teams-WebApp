@@ -70,12 +70,12 @@ console.log("PASS: " + redisAuth[1]);
 //var RedisStore = require("connect-redis")(session),
 var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
 SessionSockets = require('session.socket.io'),
-db = require('mysql');
+database = require('mysql');
 
 console.log("----------------- After session declaration ");
 
  // Connect to the database:
-var connection =  db.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
+var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
 connection.query('use DrawingApp');
 
 console.log("-------------------- After DB declaration ");
@@ -87,7 +87,7 @@ var query = connection.query('UPDATE users SET active = 0', function(err, result
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser("gZB8fSdS"));
 var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
-app.use(session({ secret: "gZB8fSdS", store: sessionStore, resave: true, saveUninitialized: true, }));
+app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
 console.log("-------------------- Session Setup ");
 
