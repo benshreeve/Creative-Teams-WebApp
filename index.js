@@ -92,6 +92,9 @@ function serveError(res, info) { 	res.send("Oops! Please inform your supervisor 
 
 // Direct to login, or skip if session exists:
 app.get('/', function(req, res) { 	
+
+	console.log("------------------------- Called router ");
+	
 	if(req.session.sessionAccessCode) res.redirect("/test1/index.html");
 	else {res.redirect("./public/"); console.log("------------------------- Redirected to Public");}
 });
