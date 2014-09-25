@@ -81,6 +81,8 @@ app.use(function(req, res, next){
   next();
 });
 
+console.log("---------------------------- App.use ");
+
 // Checks if user is logged in.  If not, redirect to Login.
 function protectPage(req, res, redirectUrl) {
 	if(req.session.sessionAccessCode) res.redirect(redirectUrl);
