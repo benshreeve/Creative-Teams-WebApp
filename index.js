@@ -86,12 +86,13 @@ var query = connection.query('UPDATE users SET active = 0', function(err, result
 // Set up sessions (and their cookies):
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser("gZB8fSdS"));
+var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
 app.use(session({ secret: "gZB8fSdS", store: sessionStore, resave: true, saveUninitialized: true, }));
 
 console.log("-------------------- Session Setup ");
 
 // Initialise Socket Sessions:
-var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
+
 
 console.log("-------------------- After Session Sockets ");
 
