@@ -49,7 +49,7 @@ if (process.env.REDISTOGO_URL) {
 	
 	
 } else {
-    var redis = require("connect-redis")(session);
+    var RedisStore = require("connect-redis")(session);
 }
 
 
@@ -59,7 +59,7 @@ console.log("-------------- Passed initialisation step ");
 
 
 //var RedisStore = require("connect-redis")(session),
-var sessionStore = redis,
+var sessionStore = RedisStore,
 SessionSockets = require('session.socket.io'),
 db = require('mysql');
 
