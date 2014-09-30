@@ -129,8 +129,12 @@ app.get('/', function(req, res) {
 
 	//res.redirect("./public/");
 	
+	/*
 	if(req.session) res.redirect("/test1/index.html");
 	else {res.redirect("./public/"); console.log("------------------------- Redirected to Public");}
+	*/
+	
+	res.redirect("./public/");
 });
 
 // Route to clear a session (for testing purposes):
