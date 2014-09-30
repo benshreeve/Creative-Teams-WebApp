@@ -117,8 +117,8 @@ app.use(function(req, res, next){
 
 // Checks if user is logged in.  If not, redirect to Login.
 function protectPage(req, res, redirectUrl) {
-	/* if(req.session.sessionAccessCode) res.redirect(redirectUrl);
-	else */ res.redirect("/public/");
+	 if(req.session.sessionAccessCode) res.redirect(redirectUrl);
+	else res.redirect("/public/");
 }
 
 // Send an error message to a client:
@@ -157,8 +157,6 @@ app.use(express.static(__dirname, '/public'));
 
 app.post("/public/*", function(req, res) {
 
-	if(req.session) console.log("----------------------- SESSION EXISTS!!!!!!!!!!!!!! ------------------------------");
-	else console.log(":( :( :( Session doesn't exist..................");
 
 	try {
     connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
