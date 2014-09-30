@@ -150,6 +150,9 @@ app.use(express.static(__dirname, '/public'));
 
 app.post("/public/*", function(req, res) {
 
+	if(req.session) console.log("----------------------- SESSION EXISTS!!!!!!!!!!!!!! ------------------------------");
+	else console.log(":( :( :( Session doesn't exist..................");
+
 	try {
     connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
         if(err) throw err;
@@ -186,7 +189,7 @@ app.post("/public/*", function(req, res) {
     });
 	}
 	catch(e) {
-	
+		console.log(e);
 	
 	}
 });
