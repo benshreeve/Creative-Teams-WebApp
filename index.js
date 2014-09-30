@@ -122,14 +122,11 @@ function protectPage(req, res, redirectUrl) {
 }
 
 // Send an error message to a client:
-function serveError(res, info) { 	res.send("Oops! Please inform your supervisor that- " + info); 	}
+function serveError(res, info) { res.send("Oops! Please inform your supervisor that- " + info); 	}
 
 // Direct to login, or skip if session exists:
 app.get('/', function(req, res) { 	
 
-	//res.redirect("./public/");
-	
-	
 	if(req.session.accesscode) res.redirect("/test1/index.html");
 	else res.redirect("./public/"); 
 	
