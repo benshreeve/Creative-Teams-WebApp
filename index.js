@@ -82,14 +82,16 @@ console.log("----------------- After session declaration ");
 //connection.query('use DrawingApp');
 
 // Connect to heroku ClearDB database:
+
+var connection;
+
 function connectToDB() {
-	var connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+	connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
 }
 
 //connection.query('use 8ca30c1ed121d0a');
 
 connectToDB();
-
 
 connection.on('error', function(err) {
     console.log('db error', err);
