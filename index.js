@@ -143,6 +143,7 @@ app.get('/test1/', function(req, res) {		protectPage(req, res, "/test1/index.htm
 
 // Static File Serving:
 app.use(express.static(__dirname, '/public'));
+app.use(express.static(__dirname, '/images'));
 
 
 
