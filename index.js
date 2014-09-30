@@ -136,7 +136,7 @@ app.get('/', function(req, res) {
 });
 
 // Route to clear a session (for testing purposes):
-app.get('/clearsession/', function(req, res) { req.session = ''; if(!req.session) res.send("Session cleared."); });
+app.get('/clearsession/', function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
 
 // Serve the Login Page:
 app.get('/public/', function(req, res) {	res.redirect("index.html"); 	});
