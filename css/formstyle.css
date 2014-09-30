@@ -43,6 +43,7 @@ body{
 	top: calc(50% - 35px);
 	left: calc(50% - 255px);
 	z-index: 2;
+	margin-top: -27px;
 }
 
 .header div{
