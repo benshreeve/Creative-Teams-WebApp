@@ -88,6 +88,9 @@ function connectToDB() {
 
 //connection.query('use 8ca30c1ed121d0a');
 
+connectToDB();
+
+
 connection.on('error', function(err) {
     console.log('db error', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
@@ -97,7 +100,7 @@ connection.on('error', function(err) {
     }
   });
 
-connectToDB();
+
   
 console.log("-------------------- After DB declaration ");
 
