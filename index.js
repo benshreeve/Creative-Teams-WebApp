@@ -130,7 +130,7 @@ app.get('/', function(req, res) {
 	//res.redirect("./public/");
 	
 	
-	if(req.session) res.redirect("/test1/index.html");
+	if(req.session.accesscode) res.redirect("/test1/index.html");
 	else res.redirect("./public/"); 
 	
 });
