@@ -149,6 +149,8 @@ app.use(express.static(__dirname, '/public'));
 /* ------------------------------------------------------------------------- */
 
 app.post("/public/*", function(req, res) {
+
+	try {
     connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
         if(err) throw err;
 
@@ -182,6 +184,11 @@ app.post("/public/*", function(req, res) {
 		}
 		else res.redirect("/");		
     });
+	}
+	catch(e) {
+	
+	
+	}
 });
 
 
