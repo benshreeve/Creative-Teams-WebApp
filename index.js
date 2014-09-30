@@ -59,6 +59,7 @@ console.log("-------------- Passed initialisation step ");
 
 var RedisStore = require("connect-redis")(session);
 
+/*
 var redisUrl = url.parse(process.env.REDISTOGO_URL);
 var redisAuth = redisUrl.auth.split(":");
 
@@ -66,15 +67,17 @@ console.log("HOSTNAME: " + redisUrl.hostname);
 console.log("PORT: " + redisUrl.port);
 console.log("DB: " + redisAuth[0]);
 console.log("PASS: " + redisAuth[1]);
+*/
+//var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
 
-//var RedisStore = require("connect-redis")(session),
-var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
+
+var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"}),
 SessionSockets = require('session.socket.io'),
 database = require('mysql');
-
+console.log(sessionStore)
 console.log("----------------- After session declaration ");
 
- // Connect to the database (LOCAL SETTINGS):
+// Connect to the database (LOCAL SETTINGS):
 //var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
 //connection.query('use DrawingApp');
 
