@@ -22,7 +22,8 @@ cookieParser = require('cookie-parser'),
 session = require('express-session'),
 url = require('url'),
 async = require('async'),
-database = require('mysql');
+database = require('mysql'),
+SessionSockets = require('session.socket.io');
 
 
 
@@ -33,8 +34,7 @@ connectToDB();
 function connectToRedis() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
-    var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"}),
-        SessionSockets = require('session.socket.io');
+    var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"});
 
     // Set up sessions (and their cookies):
     app.use(bodyParser.urlencoded({ extended: false }));
