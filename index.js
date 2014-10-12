@@ -20,7 +20,9 @@ io = require('socket.io')(http),
 bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
 session = require('express-session'),
-url = require('url');
+url = require('url'),
+async = require('async');
+
 
 
 /*
