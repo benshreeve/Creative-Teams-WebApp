@@ -26,6 +26,8 @@ database = require('mysql'),
 SessionSockets = require('session.socket.io');
 
 
+var connection;
+
 async.parallel([
     connectToRedis(),
     connectToDB()
@@ -186,7 +188,7 @@ function connectToRedis() {
 //connection.query('use DrawingApp');
 
 function connectToDB() {
-    var connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+    connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
 
     // Reset all users active flags to inactive, in case of crash:
     var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
