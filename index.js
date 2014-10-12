@@ -278,7 +278,7 @@ app.get('/clearsession/', checkLogin, function(req, res) { if(req.session.destro
 app.get('/public/', function(req, res) {	res.redirect("index.html"); 	});
 
 // Serve the Practice Canvas:
-app.get('/test1/', checkLogin, function(req, res) {		protectPage(req, res, "/test1/index.html");		});
+app.get('/test1/', checkLogin, function(req, res) {		res.redirect("index.html")/*protectPage(req, res, "/test1/index.html");*/		});
 
 // Static File Serving:
 app.use(express.static(__dirname, '/public'));
