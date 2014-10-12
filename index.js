@@ -41,6 +41,138 @@ function connectToRedis() {
     app.use(cookieParser("gZB8fSdS"));
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
+
+
+    sessionSockets.on('connection', function(err, socket, session){
+
+        // Firstly send the client its session:
+        socket.emit('session', session);
+        session.foo = 'test';
+        session.save();
+
+        // For now, assume the screen number will be 2:
+        sendState(session.sessionScreen);
+
+        // When a client requests its session:
+        socket.on('requestSession', function() {
+            socket.emit('sessionRequest', session);
+        });
+
+        function sendState(screenNumber) {
+            // connect to the database.
+            // emit each row element as a draw to specific socket - use socket.id.
+
+            var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'"', function(err, rows){
+                if(err) throw err;
+                for(var i = 0; i<rows.length; i++) {
+                    socket.emit('mousedot', {x:rows[i].xpoint, y:rows[i].ypoint, drag:rows[i].drag, rad:rows[i].radius, colour:rows[i].colour, owner:rows[i].owner, group:session.sessionGroup, screen:rows[i].screen});
+                }
+            });
+        }
+
+
+        // When a client intends to move forward/back:
+        socket.on('switchRequest', function(data) {
+
+            console.log("Intention received: " + data.intention + " and scrNum is: " + data.screenNumber);
+
+            if(data.intention=="back") {
+
+                // User can't go back any further:
+                if(data.screenNumber <3)
+                    socket.emit('switchResponse', {response:false, reason:"This is the start of the test, you can't go back any further."});
+                else {
+
+
+                    connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
+                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative });
+                        sendState(data.screenNumber - 1);
+
+                        // Update user's current screen in DB:
+                        connection.query('UPDATE users SET screen = "'+ (data.screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
+                    });
+
+
+                }
+
+            }
+            else if(data.intention=="next") {
+                // Find out if this is the final screen.  Allow client to proceed if not:
+                connection.query('select max(ID) as "maxval" from screens', function(err, rows){
+                    if(err) throw err;
+
+                    if (rows[0].maxval == data.screenNumber)
+                        socket.emit('switchResponse', {response: false, reason: "This is the final page, you can't go forward any further."});
+                    else {
+
+                        // connect to the database AGAIN here:
+
+                        connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
+                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
+                            sendState(data.screenNumber + 1);
+
+                            // Update user's current screen in DB:
+                            connection.query('UPDATE users SET screen = "'+ (data.screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
+                        });
+
+
+
+
+                    }
+
+                });
+            }
+
+
+        });
+
+        // Store identification:
+        console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
+        var post  = {active: 1};
+        var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
+
+        // Now print out the total number of users:
+        connection.query('select * from users where users.active = "1"', function(err, rows){
+            if(err) throw err;
+            else console.log("Total number of users is: " + rows.length);
+        });
+
+        // When we receive drawing information:
+        socket.on('mousedot', function(dot){
+            //console.log('point: ' + dot.x + ", " + dot.y + " drag is: " + dot.drag + " radius is " + dot.rad + " colour is " + dot.colour + " and owner is: " + dot.owner);
+            socket.broadcast.emit('mousedot', dot);
+
+            // Post to the database here:
+
+            var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
+                if(err) throw err;
+                console.log("Dot written to database.  Drag is: " + dot.drag);
+                console.log("SQL: " + query.sql);
+            });
+
+        });
+
+        // When we receive undo info:
+        socket.on('undo', function(dot){
+            socket.broadcast.emit('undo', dot);
+        });
+
+        // On client disconnection, update the database:
+        socket.on('disconnect', function(){
+            var post  = {active: 0};
+            var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
+
+            connection.query('select * from users where users.active = "1"', function(err, rows){
+                if(err) throw err;
+                console.log("Total number of users is: " + rows.length);
+            });
+        });
+    });
+
+
+
+
+
 }
 
 
@@ -182,131 +314,6 @@ app.post("/public/*", function(req, res) {
 /* ------------------------------------------------------------------------- */
 
 
-sessionSockets.on('connection', function(err, socket, session){
-
-	// Firstly send the client its session:
-	socket.emit('session', session);	
-	session.foo = 'test';
-	session.save();
-	
-	// For now, assume the screen number will be 2:
-	sendState(session.sessionScreen);
-	
-	// When a client requests its session:
-	socket.on('requestSession', function() {
-		socket.emit('sessionRequest', session);
-	});
-
-    function sendState(screenNumber) {
-        // connect to the database.
-        // emit each row element as a draw to specific socket - use socket.id.
-
-        var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'"', function(err, rows){
-            if(err) throw err;
-            for(var i = 0; i<rows.length; i++) {
-				socket.emit('mousedot', {x:rows[i].xpoint, y:rows[i].ypoint, drag:rows[i].drag, rad:rows[i].radius, colour:rows[i].colour, owner:rows[i].owner, group:session.sessionGroup, screen:rows[i].screen});
-            }
-        });
-    }
-
-	
-	// When a client intends to move forward/back:
-	socket.on('switchRequest', function(data) {
-	
-		console.log("Intention received: " + data.intention + " and scrNum is: " + data.screenNumber);
-		
-		if(data.intention=="back") {
-		
-			// User can't go back any further:
-			if(data.screenNumber <3)
-				socket.emit('switchResponse', {response:false, reason:"This is the start of the test, you can't go back any further."});
-			else {
-			
-			
-				connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
-					socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative });
-					sendState(data.screenNumber - 1);
-					
-					// Update user's current screen in DB:
-					connection.query('UPDATE users SET screen = "'+ (data.screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});					
-				});
-			
-				
-            }
-		
-		}
-		else if(data.intention=="next") {
-			// Find out if this is the final screen.  Allow client to proceed if not:
-			connection.query('select max(ID) as "maxval" from screens', function(err, rows){
-				if(err) throw err;
-
-                if (rows[0].maxval == data.screenNumber)
-                    socket.emit('switchResponse', {response: false, reason: "This is the final page, you can't go forward any further."});
-                else {
-				
-					// connect to the database AGAIN here:
-					
-					connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
-						socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
-						sendState(data.screenNumber + 1);
-						
-						// Update user's current screen in DB:
-						connection.query('UPDATE users SET screen = "'+ (data.screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
-					});
-				
-				
-                    
-                    
-                }
-
-			});		
-		}
-		
-	
-	});
-	
-	// Store identification:
-	console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
-	var post  = {active: 1};
-	var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
-		
-	// Now print out the total number of users:
-	connection.query('select * from users where users.active = "1"', function(err, rows){
-		if(err) throw err;
-		else console.log("Total number of users is: " + rows.length); 
-	});
-	
-	// When we receive drawing information:
-	socket.on('mousedot', function(dot){
-		//console.log('point: ' + dot.x + ", " + dot.y + " drag is: " + dot.drag + " radius is " + dot.rad + " colour is " + dot.colour + " and owner is: " + dot.owner);
-		socket.broadcast.emit('mousedot', dot);
-		
-		// Post to the database here:
-		
-		var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
-			if(err) throw err;
-			console.log("Dot written to database.  Drag is: " + dot.drag);
-			console.log("SQL: " + query.sql);
-		});		
-		
-	});
-	
-	// When we receive undo info:
-	socket.on('undo', function(dot){
-		socket.broadcast.emit('undo', dot);
-	});
-	
-	// On client disconnection, update the database:
-	socket.on('disconnect', function(){
-		var post  = {active: 0};
-		var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
-		
-		connection.query('select * from users where users.active = "1"', function(err, rows){
-			if(err) throw err;
-			console.log("Total number of users is: " + rows.length); 
-		});			
-	});
-});
 
 
 
