@@ -26,9 +26,13 @@ database = require('mysql'),
 SessionSockets = require('session.socket.io');
 
 
+async.parallel([
+    connectToRedis(),
+    connectToDB()
+]);
 
-connectToRedis();
-connectToDB();
+
+//connectToDB();
 
 
 function connectToRedis() {
@@ -177,40 +181,41 @@ function connectToRedis() {
 
 
 
-var connection;
-
-function connectToDB() {
-    connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
-
-    // Reset all users active flags to inactive, in case of crash:
-    var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
-}
-
-
-
-connection.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-        connectToDB();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-        throw err;                                  // server variable configures this)
-    }
-});
-
-
-
-
-
-
-
-
-
-
 // Connect to the database (LOCAL SETTINGS):
 //var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
 //connection.query('use DrawingApp');
 
-// Connect to heroku ClearDB database:
+function connectToDB() {
+    var connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+
+    // Reset all users active flags to inactive, in case of crash:
+    var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
+
+    connection.on('error', function(err) {
+        console.log('db error', err);
+        if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+            connectToDB();                         // lost due to either server restart, or a
+        } else {                                      // connnection idle timeout (the wait_timeout
+            throw err;                                  // server variable configures this)
+        }
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
