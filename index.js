@@ -21,61 +21,57 @@ bodyParser = require('body-parser'),
 cookieParser = require('cookie-parser'),
 session = require('express-session'),
 url = require('url'),
-async = require('async');
-
-
-
-/*
-if (process.env.REDISTOGO_URL) {
-
-	
-	//console.log("Env variable: " + process.env.REDISTOGO_URL);
-	var rtg = require("url").parse(process.env.REDISTOGO_URL);
-	//console.log("-----------After require");
-	var redis = require("redis"),
-	RedisStore = redis.createClient(rtg.port, rtg.hostname);
-	//console.log("-------------After RedisStore initialisation");
-	RedisStore.auth(rtg.auth.split(":")[1]);
-	//console.log("--------------After Auth");
-
-	
-	RedisStore.on("error", function(err) {
-		console.log("Error " + err);
-	});
-
-
-    RedisStore.set("string key", "string val", redis.print);
-    RedisStore.hset("hash key", "hashtest 1", "some value", redis.print);
-    RedisStore.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-    RedisStore.hkeys("hash key", function (err, replies) {
-        console.log(replies.length + " replies:");
-        replies.forEach(function (reply, i) {
-            console.log("    " + i + ": " + reply);
-        });
-        //RedisStore.quit();
-    });
-	
-	
-	
-	
-} else {
-    
-}
-*/
-
-var RedisStore = require("connect-redis")(session);
-
-/*
-var redisUrl = url.parse(process.env.REDISTOGO_URL);
-var redisAuth = redisUrl.auth.split(":");
-
-*/
-//var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
-
-
-var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"}),
-SessionSockets = require('session.socket.io'),
+async = require('async'),
 database = require('mysql');
+
+
+
+connectToRedis();
+connectToDB();
+
+
+function connectToRedis() {
+    // Connect to Redis:
+    var RedisStore = require("connect-redis")(session);
+    var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"}),
+        SessionSockets = require('session.socket.io');
+
+    // Set up sessions (and their cookies):
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(cookieParser("gZB8fSdS"));
+    var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
+    app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
+}
+
+
+
+var connection;
+
+function connectToDB() {
+    connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+
+    // Reset all users active flags to inactive, in case of crash:
+    var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
+}
+
+
+
+connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+        connectToDB();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+        throw err;                                  // server variable configures this)
+    }
+});
+
+
+
+
+
+
+
+
 
 
 // Connect to the database (LOCAL SETTINGS):
@@ -84,32 +80,6 @@ database = require('mysql');
 
 // Connect to heroku ClearDB database:
 
-var connection;
-
-function connectToDB() {
-	connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
-}
-
-connectToDB();
-
-connection.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-      connectToDB();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
-    }
-  });
-
-
-// Reset all users active flags to inactive, in case of crash:
-var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
-
-// Set up sessions (and their cookies):
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser("gZB8fSdS"));
-var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
-app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
 
 
