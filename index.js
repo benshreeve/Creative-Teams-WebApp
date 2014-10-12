@@ -63,18 +63,12 @@ if (process.env.REDISTOGO_URL) {
 }
 */
 
-console.log("-------------- Passed initialisation step ");
-
 var RedisStore = require("connect-redis")(session);
 
 /*
 var redisUrl = url.parse(process.env.REDISTOGO_URL);
 var redisAuth = redisUrl.auth.split(":");
 
-console.log("HOSTNAME: " + redisUrl.hostname);
-console.log("PORT: " + redisUrl.port);
-console.log("DB: " + redisAuth[0]);
-console.log("PASS: " + redisAuth[1]);
 */
 //var sessionStore = new RedisStore({host: redisUrl.hostname, port: redisUrl.port, db: redisAuth[0], pass: redisAuth[1]}),
 
@@ -82,8 +76,7 @@ console.log("PASS: " + redisAuth[1]);
 var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"}),
 SessionSockets = require('session.socket.io'),
 database = require('mysql');
-console.log(sessionStore)
-console.log("----------------- After session declaration ");
+
 
 // Connect to the database (LOCAL SETTINGS):
 //var connection =  database.createConnection({ host : '127.0.0.1', user : 'root', password: 'R00t' });
@@ -97,8 +90,6 @@ function connectToDB() {
 	connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
 }
 
-//connection.query('use 8ca30c1ed121d0a');
-
 connectToDB();
 
 connection.on('error', function(err) {
@@ -111,9 +102,6 @@ connection.on('error', function(err) {
   });
 
 
-  
-console.log("-------------------- After DB declaration ");
-
 // Reset all users active flags to inactive, in case of crash:
 var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
 
@@ -123,12 +111,6 @@ app.use(cookieParser("gZB8fSdS"));
 var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
 app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
-console.log("-------------------- Session Setup ");
-
-// Initialise Socket Sessions:
-
-
-console.log("-------------------- After Session Sockets ");
 
 
 /* ------------------------------------------------------------------------- */
