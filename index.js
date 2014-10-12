@@ -22,8 +22,11 @@ cookieParser = require('cookie-parser'),
 session = require('express-session'),
 url = require('url'),
 async = require('async'),
+passport = require('passport'),
+LocalStrategy = require('passport-local').Strategy,
 database = require('mysql'),
 SessionSockets = require('session.socket.io');
+
 
 
 var connection;
@@ -33,8 +36,22 @@ async.parallel([
     connectToDB()
 ]);
 
-
-//connectToDB();
+/*
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        User.findOne({ username: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
+            }
+            if (!user.validPassword(password)) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+*/
 
 
 function connectToRedis() {
@@ -48,6 +65,10 @@ function connectToRedis() {
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
+    /*
+    app.use(passport.initialize());
+    app.use(passport.session());
+    */
 
     sessionSockets.on('connection', function(err, socket, session){
 
@@ -251,18 +272,29 @@ app.get('/', function(req, res) {
 });
 
 // Route to clear a session (for testing purposes):
-app.get('/clearsession/', function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
+app.get('/clearsession/', checkLogin, function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
 
 // Serve the Login Page:
 app.get('/public/', function(req, res) {	res.redirect("index.html"); 	});
 
 // Serve the Practice Canvas:
-app.get('/test1/', function(req, res) {		protectPage(req, res, "/test1/index.html");		});
+app.get('/test1/', checkLogin, function(req, res) {		protectPage(req, res, "/test1/index.html");		});
 
 // Static File Serving:
 app.use(express.static(__dirname, '/public'));
 app.use(express.static(__dirname, '/images'));
 
+
+// route middleware to make sure a user is logged in
+function checkLogin(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.session)
+        return next();
+
+    // if they aren't redirect them to the login page
+    res.redirect('/');
+}
 
 
 /* ------------------------------------------------------------------------- */
