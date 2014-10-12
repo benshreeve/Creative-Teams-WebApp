@@ -3,6 +3,12 @@
 /*								Server Configuration						 */
 /* ------------------------------------------------------------------------- */
 
+require('nodetime').profile({
+    accountKey: '822b11ec5708d7b08f78be3950807340f092eb1e', 
+    appName: 'Creative Teams'
+  });
+
+
 // Requirements:
 var app = require('express')(),
 express = require('express'),
