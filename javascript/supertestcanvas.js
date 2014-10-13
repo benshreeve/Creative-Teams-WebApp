@@ -31,7 +31,7 @@ socket.on('session', function (session) {
 	accessID = session.sessionAccessCode;
 	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
-    document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
+    //document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
 });
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
@@ -80,7 +80,7 @@ socket.on('sessionRequest', function(session) {
 
 
 setTimeout(function() {
-   if(!accessID) location.reload(); 
+   if(myColour == "black") location.reload(); 
 }, 3000);
 
 	
