@@ -68,6 +68,11 @@ function stateSession() {
 }
 
 socket.on('sessionRequest', function(session) {
+	myColour = session.sessionColour;
+	groupNumber = session.sessionGroup;
+	accessID = session.sessionAccessCode;
+	screenNumber = session.sessionScreen;
+	switchBackground(session.sessionBackground);
 	alert("Session variables are; NickName: " + session.sessionNickName + ", and colour is: " + session.sessionColour);
 });
 
