@@ -14,6 +14,7 @@ var body = $('body');
 var canvasWidth = (body.innerWidth() * 1);
 var canvasHeight = (body.innerHeight() * 1);
 var circleDiv = document.getElementById('circle');
+var canvasDiv = document.getElementById('canvasDiv');
 
 // Default Instance Information:
 var screenNumber = 2;
@@ -33,7 +34,7 @@ socket.on('session', function (session) {
 	screenNumber = session.sessionScreen;
 	alert("breakpoint 1");	
 	alert(session.sessionBackground);
-	canvas.style.background = 'url(' + session.sessionBackground + ') no-repeat center ';
+	canvasDiv.style.background = 'url(' + session.sessionBackground + ') no-repeat center ';
 	alert("breakpoint 2");	
     //document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
 });
@@ -101,7 +102,6 @@ function pushToSocket(type, data) {
 }
 
 function prepareCanvas() {
-	var canvasDiv = document.getElementById('canvasDiv');
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth / 2);
 	canvas.setAttribute('height', (canvasHeight - 400) / 2);
