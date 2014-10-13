@@ -32,10 +32,7 @@ socket.on('session', function (session) {
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
 	screenNumber = session.sessionScreen;
-	alert("breakpoint 1");	
-	alert(session.sessionBackground);
 	switchBackground(session.sessionBackground);
-	alert("breakpoint 2");	
     document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
 
@@ -231,8 +228,6 @@ function redraw() {
 
 	if(pointsArray.length > lastLength){
 	    for(var i=(pointsArray.length-1); i>=lastLength; i--) {	
-		
-			//console.log(typeof(pointsArray[i].drag));
 			
 			if(pointsArray[i].active == "1") {
 				context.beginPath();	
@@ -267,7 +262,6 @@ function switchBackground(url) {
 	console.log("background is: " + url);
 	if(url) canvasDiv.style.background = 'url(' + url + ') no-repeat center ';
 	else canvas.style.background = "white"; 
-
 }
 
 function resetCache() {
