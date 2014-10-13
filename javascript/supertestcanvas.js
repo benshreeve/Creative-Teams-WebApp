@@ -77,7 +77,11 @@ socket.on('sessionRequest', function(session) {
 });
 
 
-if(accessID !="") location.reload();
+
+
+setTimeout(function() {
+   if(accessID !="") location.reload(); 
+}, 3000);
 
 	
 function pushToSocket(type, data) {
