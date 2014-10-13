@@ -107,7 +107,7 @@ function prepareCanvas() {
 	// Fix for HD Displays:
 	if(window.devicePixelRatio == 2) {
 		canvas.setAttribute('width', canvasWidth);
-		canvas.setAttribute('height', canvasHeight);
+		canvas.setAttribute('height', canvasHeight - 200);
 		document.getElementById('deadzone-top').style.width = "100%";
 		document.getElementById('deadzone-bottom').style.width = "100%";
 	}
