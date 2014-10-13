@@ -33,7 +33,7 @@ socket.on('session', function (session) {
 	screenNumber = session.sessionScreen;
 	alert("breakpoint 1");	
 	alert(session.sessionBackground);
-	switchBackground(session.sessionBackground);
+	canvas.style.background = 'url(' + session.sessionBackground + ') no-repeat center ';
 	alert("breakpoint 2");	
     //document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
 });
@@ -55,7 +55,8 @@ socket.on('switchResponse', function(data) {
 	else {
         pointsArray.length = 0;
         clearcanvas();
-		switchBackground(data.bgimage);
+		/* switchBackground(data.bgimage); */
+		canvas.style.background = 'url(' + data.bgimage + ') no-repeat center ';		
 		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
 		else if(data.reason=="back") screenNumber--;
 		collaborative = data.collaborative;
