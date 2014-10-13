@@ -34,9 +34,9 @@ socket.on('session', function (session) {
 	screenNumber = session.sessionScreen;
 	alert("breakpoint 1");	
 	alert(session.sessionBackground);
-	canvasDiv.style.background = 'url(' + session.sessionBackground + ') no-repeat center ';
+	switchBackground(session.sessionBackground);
 	alert("breakpoint 2");	
-    //document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
+    document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
@@ -56,8 +56,7 @@ socket.on('switchResponse', function(data) {
 	else {
         pointsArray.length = 0;
         clearcanvas();
-		/* switchBackground(data.bgimage); */
-		canvas.style.background = 'url(' + data.bgimage + ') no-repeat center ';		
+		switchBackground(data.bgimage);
 		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
 		else if(data.reason=="back") screenNumber--;
 		collaborative = data.collaborative;
@@ -266,10 +265,9 @@ function redraw() {
 
 function switchBackground(url) {
 	console.log("background is: " + url);
-	/* if(url) canvas.style.background = 'url(' + url + ') no-repeat center ';
-	else canvas.style.background = "white"; */
-	
-	canvas.style.background = 'url(' + url + ') no-repeat center ';
+	if(url) canvasDiv.style.background = 'url(' + url + ') no-repeat center ';
+	else canvas.style.background = "white"; 
+
 }
 
 function resetCache() {
