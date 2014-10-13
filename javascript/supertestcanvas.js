@@ -11,8 +11,8 @@ var radius = 6;
 var tabState = 'paint';
 
 var body = $('body');
-var canvasWidth = (body.innerWidth() * 2);
-var canvasHeight = (body.innerHeight() * 2);
+var canvasWidth = (body.innerWidth() * 1);
+var canvasHeight = (body.innerHeight() * 1);
 var circleDiv = document.getElementById('circle');
 
 // Default Instance Information:
