@@ -107,9 +107,9 @@ function prepareCanvas() {
 	// Fix for HD Displays:
 	if(window.devicePixelRatio == 2) {
 		canvas.setAttribute('width', canvasWidth);
-		canvas.setAttribute('height', canvasHeight -400);
-		document.getElementById('deadzone-top').style.width = "200%";
-		document.getElementById('deadzone-bottom').style.width = "200%";
+		canvas.setAttribute('height', canvasHeight);
+		document.getElementById('deadzone-top').style.width = "100%";
+		document.getElementById('deadzone-bottom').style.width = "100%";
 	}
 	
 	function doTouchStart(e) {
