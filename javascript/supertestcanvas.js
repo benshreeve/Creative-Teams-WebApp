@@ -26,6 +26,7 @@ var bgimage;
 
 // Get info from the session:
 socket.on('session', function (session) {
+	alert("session stuff received");
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
