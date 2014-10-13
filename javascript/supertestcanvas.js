@@ -18,7 +18,7 @@ var circleDiv = document.getElementById('circle');
 // Default Instance Information:
 var screenNumber = 2;
 var myColour = "black";
-var accessID = "";
+var accessID;
 var groupNumber;
 var collaborative = true;
 var bgimage;
@@ -80,7 +80,7 @@ socket.on('sessionRequest', function(session) {
 
 
 setTimeout(function() {
-   if(accessID == "") location.reload(); 
+   if(!accessID) location.reload(); 
 }, 3000);
 
 	
