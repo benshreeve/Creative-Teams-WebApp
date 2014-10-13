@@ -76,6 +76,9 @@ socket.on('sessionRequest', function(session) {
 	alert("Session variables are; NickName: " + session.sessionNickName + ", and colour is: " + session.sessionColour);
 });
 
+
+if(accessID !="") location.reload();
+
 	
 function pushToSocket(type, data) {
 	if(type== "draw" || type=="erase") {
