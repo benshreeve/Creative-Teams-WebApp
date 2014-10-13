@@ -262,8 +262,10 @@ function redraw() {
 
 function switchBackground(url) {
 	console.log("background is: " + url);
-	if(url) canvas.style.background = 'url(' + url + ') no-repeat center ';
-	else canvas.style.background = "white";
+	/* if(url) canvas.style.background = 'url(' + url + ') no-repeat center ';
+	else canvas.style.background = "white"; */
+	
+	canvas.style.background = 'url(' + url + ') no-repeat center ';
 }
 
 function resetCache() {
