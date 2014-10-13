@@ -32,6 +32,7 @@ socket.on('session', function (session) {
 	accessID = session.sessionAccessCode;
 	screenNumber = session.sessionScreen;
 	alert("breakpoint 1");	
+	alert(session.sessionBackground);
 	switchBackground(session.sessionBackground);
 	alert("breakpoint 2");	
     //document.getElementById('supertitle').innerHTML = "Hi "+ session.sessionNickName  + " (" + accessID + ")";
