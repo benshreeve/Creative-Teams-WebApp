@@ -11,8 +11,8 @@ var radius = 6;
 var tabState = 'paint';
 
 var body = $('body');
-var canvasWidth = (body.innerWidth() * 1);
-var canvasHeight = (body.innerHeight() * 1);
+var canvasWidth = (body.innerWidth() * 2);
+var canvasHeight = (body.innerHeight() * 2);
 var circleDiv = document.getElementById('circle');
 
 // Default Instance Information:
@@ -107,7 +107,7 @@ function prepareCanvas() {
 	// Fix for HD Displays:
 	if(window.devicePixelRatio == 2) {
 		canvas.setAttribute('width', canvasWidth);
-		canvas.setAttribute('height', canvasHeight -200);
+		canvas.setAttribute('height', canvasHeight -400);
 		document.getElementById('deadzone-top').style.width = "200%";
 		document.getElementById('deadzone-bottom').style.width = "200%";
 	}
