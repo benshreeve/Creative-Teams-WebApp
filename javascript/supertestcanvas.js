@@ -95,7 +95,6 @@ socket.on('sessionRequest', function(session) {
 	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
 	collaborative = session.sessionCollaborative;
-	alert("Session variables are; NickName: " + session.sessionNickName + ", and colour is: " + session.sessionColour);
 });
 
 
