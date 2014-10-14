@@ -94,6 +94,7 @@ socket.on('sessionRequest', function(session) {
 	accessID = session.sessionAccessCode;
 	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
+	collaborative = session.sessionCollaborative;
 	alert("Session variables are; NickName: " + session.sessionNickName + ", and colour is: " + session.sessionColour);
 });
 
@@ -143,6 +144,9 @@ function prepareCanvas() {
 		document.getElementById('deadzone-top').style.width = "100%";
 		document.getElementById('deadzone-bottom').style.width = "100%";
 	}
+	
+	// Ask for Session Details:
+	stateSession();
 	
 	function doTouchStart(e) {
 		var touchX = e.targetTouches[0].pageX - this.offsetLeft;
