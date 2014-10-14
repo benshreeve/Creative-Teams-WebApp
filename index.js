@@ -82,9 +82,22 @@ function connectToRedis() {
 		
 		
 		socket.on('adminRequest', function(data) {
-		
-			socket.emit('adminResponse', 'true');
-		
+			
+			if(data == "wipedb") {
+				// Wipe the database:
+				connection.query('TRUNCATE transactions', function(err, result) { 
+					if(err) throw err;
+					socket.emit('adminResponse', 'true');
+				});
+			}
+			else if(data == "resetusers") {
+				// Reset users:
+				connection.query('UPDATE users SET screen = 2', function(err, result) { 
+					if(err) throw err;
+					socket.emit('adminResponse', 'true');
+				});				
+				
+			}
 		
 		});
 		
