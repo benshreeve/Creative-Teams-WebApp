@@ -122,15 +122,19 @@ body:hover {
 
 
  /* Buttons */
+ 
+ .adminButton {
+	padding: 20px;	
+	font: bold 30px 'Lato', sans-serif; 
+	background-color: rgba(0,0,0,0.5); 
+ }
 
 .tabButton {
 	height: 100%;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box; 
-	padding: 20px;
-	font: bold 30px 'Lato', sans-serif;
-	background-color: rgba(0,0,0,0.5);
+	width: 60px;
 	float: left;
 	margin-right: 5px;
 }
