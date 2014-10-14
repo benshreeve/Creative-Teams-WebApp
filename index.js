@@ -79,6 +79,15 @@ function connectToRedis() {
 
         // For now, assume the screen number will be 2:
         //sendState(session.sessionScreen);
+		
+		
+		socket.on('adminRequest', function(data) {
+		
+			socket.emit('adminResponse', 'true');
+		
+		
+		});
+		
 
         // When a client requests its session:
         socket.on('requestSession', function() {
