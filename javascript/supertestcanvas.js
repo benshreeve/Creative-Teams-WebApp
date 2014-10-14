@@ -95,6 +95,7 @@ socket.on('sessionRequest', function(session) {
 	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
 	collaborative = session.sessionCollaborative;
+	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
 
 
