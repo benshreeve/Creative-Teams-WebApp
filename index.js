@@ -150,6 +150,12 @@ function connectToRedis() {
 
                 });
             }
+            else {
+            	// Must be a number:
+            	
+            	console.log("new switch request");            
+            
+            }
 
 
         });

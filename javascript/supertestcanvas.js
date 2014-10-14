@@ -24,10 +24,13 @@ var groupNumber;
 var collaborative = true;
 var bgimage;
 
+var minScreen = 2;
+var maxScreen = 2;
 
-// Get info from the session:
+
+// Get info from the session: 
+/*
 socket.on('session', function (session) {
-
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
@@ -36,6 +39,7 @@ socket.on('session', function (session) {
 	collaborative = session.sessionCollaborative;
     document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
+*/
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
@@ -88,14 +92,38 @@ function stateSession() {
 	socket.emit('requestSession');
 }
 
+function checkMinMaxScreen(min, max) {
+
+	// If outside the range...
+	if( screenNumber > max ) {
+	
+		// Bring it down!
+		
+		//screenNumber = max;
+	
+	}
+	else if ( screenNumber < min )	{
+		
+		// Bring it up!
+	
+	}
+	
+}
+
+
 socket.on('sessionRequest', function(session) {
+
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
-	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
-	collaborative = session.sessionCollaborative;
+	collaborative = session.sessionCollaborative;	
+	screenNumber = session.sessionScreen;
+	
 	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
+	
+	// Update min & max variables:
+	//checkMinMaxScreen(session.sessionMinScreen, session.sessionMaxScreen);
 });
 
 
