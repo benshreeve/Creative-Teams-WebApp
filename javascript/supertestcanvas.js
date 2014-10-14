@@ -33,6 +33,7 @@ socket.on('session', function (session) {
 	accessID = session.sessionAccessCode;
 	screenNumber = session.sessionScreen;
 	switchBackground(session.sessionBackground);
+	collaborative = session.sessionCollaborative;
     document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
 

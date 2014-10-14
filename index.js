@@ -325,9 +325,10 @@ app.post("/public/*", function(req, res) {
 				req.session.sessionGroup = rows[0].group;
 				req.session.sessionScreen = rows[0].screen;
 				
-				connection.query('select bgimage from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
+				connection.query('select bgimage, collaborative from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
 					if(err) throw err;
 					req.session.sessionBackground = result[0].bgimage;
+					req.session.sessionCollaborative = result[0].collaborative;
 					req.session.save();
 				});			
 				
