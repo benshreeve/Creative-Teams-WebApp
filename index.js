@@ -278,6 +278,8 @@ app.get('/', function(req, res) {
 	
 });
 
+app.get('/admin/', checkLogin, function(req, res) { res.redirect("/admin/index.html"); });
+
 // Route to clear a session (for testing purposes):
 app.get('/clearsession/', checkLogin, function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
 
