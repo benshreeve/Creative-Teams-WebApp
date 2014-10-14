@@ -41,7 +41,14 @@ socket.on('session', function (session) {
 socket.on('mousedot', function(dot){
 	if(dot.group == groupNumber && dot.screen == screenNumber && ( (dot.owner === accessID) || collaborative ) ) {
 	
-		console.log("collaborative is: " + collaborative + " and dot.owner is: " + dot.owner + " and access id is: " + accessID);
+		var testUser;
+		var testCollaborative;
+		
+		if(dot.owner === accessID) testUser = true; else testUser = false;
+		
+		if(collaborative) testCollaborative = true; else testCollaborative = false;
+	
+		console.log("collaborative is: " + collaborative + "(" + testCollaborative + ") and dot.owner is: " + dot.owner + " and access id is: " + accessID + " (" + testUser + ")");
 		addClickSimple(dot.x, dot.y, dot.drag, dot.rad, dot.colour, dot.owner);
 		redraw();
 	}
