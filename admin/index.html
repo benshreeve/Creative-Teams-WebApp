@@ -20,21 +20,15 @@
 	</head>
 	
 	<body>
-
-		
-		
 		<div id="deadzone-top">	
-			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Admin Screen</h1>
-			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->			
+			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Admin Screen</h1>	
 		</div>	
 		
 		<p>Slider here</p>
 		
-		
 		<div id="deadzone-bottom" style="position: absolute; bottom: 0;">
-			<a class="tabButton adminButton" onclick="alert('Test');">Wipe Database</a>
-			<a class="tabButton adminButton">Reset User Start Screens</a>
-			
+			<a class="tabButton adminButton" onclick="socket.emit('adminRequest', 'wipedb');">Wipe Database</a>
+			<a class="tabButton adminButton" onclick="socket.emit('adminRequest', 'resetusers');">Reset User Start Screens</a>
 		</div>
 		
 		<script src="/javascript/admin.js?v=1"></script>
