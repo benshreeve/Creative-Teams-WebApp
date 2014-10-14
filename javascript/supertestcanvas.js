@@ -57,9 +57,16 @@ socket.on('switchResponse', function(data) {
 		switchBackground(data.bgimage);
 		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
 		else if(data.reason=="back") screenNumber--;
-		collaborative = data.collaborative;
+		collaborative = JSON.parse(data.collaborative);
 		
 		alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
+		
+		var testCollaborative;
+		
+		if(collaborative) testCollaborative = true;
+		else testCollaborative = false;
+		
+		alert("And collaborative evaluated to " + testCollaborative); 
 	}
 });
 
