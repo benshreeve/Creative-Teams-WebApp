@@ -73,7 +73,7 @@ function connectToRedis() {
     sessionSockets.on('connection', function(err, socket, session){
 
         // Firstly send the client its session:
-        socket.emit('session', session);
+        //socket.emit('session', session);
         session.foo = 'test';
         session.save();
 
