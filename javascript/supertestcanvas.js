@@ -68,14 +68,14 @@ socket.on('switchResponse', function(data) {
 		else if(data.reason=="back") screenNumber--;
 		collaborative = JSON.parse(data.collaborative);
 		
-		alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
+		//alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
 		
 		var testCollaborative;
 		
 		if(collaborative) testCollaborative = true;
 		else testCollaborative = false;
 		
-		alert("And collaborative evaluated to " + testCollaborative); 
+		//alert("And collaborative evaluated to " + testCollaborative); 
 	}
 });
 
