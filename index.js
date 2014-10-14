@@ -312,6 +312,7 @@ function checkLogin(req, res, next) {
 
 app.post("/public/*", function(req, res) {
 
+	console.log("The name is! ---------------------------- " + req.body.name);
 
 	try {
     connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
