@@ -78,11 +78,12 @@ function connectToRedis() {
         session.save();
 
         // For now, assume the screen number will be 2:
-        sendState(session.sessionScreen);
+        //sendState(session.sessionScreen);
 
         // When a client requests its session:
         socket.on('requestSession', function() {
             socket.emit('sessionRequest', session);
+			sendState(session.sessionScreen);
         });
 
         function sendState(screenNumber) {
