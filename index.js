@@ -172,7 +172,7 @@ function connectToRedis() {
                 connection.query('select max(ID) as "maxval" from screens', function(err, rows){
                     if(err) throw err;
 
-                    if (rows[0].maxval == data.screenNumber)
+                    if (rows[0].maxval == data.screenNumber || data.screenNumber == maxScreen)
                         socket.emit('switchResponse', {response: false, reason: "This is the final page, you can't go forward any further."});
                     else {
 
