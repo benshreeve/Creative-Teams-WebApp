@@ -97,6 +97,14 @@ function stateSession() {
 	socket.emit('requestSession');
 }
 
+socket.on('screenUpdate', function(data) {
+
+	if(screenNumber < session.sessionMinScreen)
+		switchIntention(session.sessionMinScreen);
+	else if(screenNumber > session.sessionMaxScreen)
+		switchIntention(session.sessionMaxScreen);
+
+});
 
 
 socket.on('sessionRequest', function(session) {
@@ -105,31 +113,18 @@ socket.on('sessionRequest', function(session) {
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
 
-	if(sessionUpdateType) {
-		// If Subsequent...
+	// If variables are sent for the first time...
 	
-		// Check against CURRENT screenNumber.
-		
-		if(screenNumber < session.sessionMinScreen)
-			switchIntention(session.sessionMinScreen);
-		else if(screenNumber > session.sessionMaxScreen)
-			switchIntention(session.sessionMaxScreen);
+	if(session.sessionScreen < session.sessionMinScreen)
+		switchIntention(session.sessionMinScreen);
+	else if(session.sessionScreen > session.sessionMaxScreen)
+		switchIntention(session.sessionMaxScreen);
+
+	switchBackground(session.sessionBackground);
+	collaborative = session.sessionCollaborative;	
+	screenNumber = session.sessionScreen;
+	drawable = session.sessionDrawable;		
 	
-	}
-	else {
-		// If variables are sent for the first time...
-		
-		if(session.sessionScreen < session.sessionMinScreen)
-			switchIntention(session.sessionMinScreen);
-		else if(session.sessionScreen > session.sessionMaxScreen)
-			switchIntention(session.sessionMaxScreen);
-	
-		switchBackground(session.sessionBackground);
-		collaborative = session.sessionCollaborative;	
-		screenNumber = session.sessionScreen;
-		drawable = session.sessionDrawable;		
-	
-	}
 	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
 	
 });

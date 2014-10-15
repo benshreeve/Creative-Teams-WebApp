@@ -118,8 +118,7 @@ function connectToRedis() {
 			// Now update the values for the clients and disperse:
 			session.sessionMinScreen = minScreen;
 			session.sessionMaxScreen = maxScreen;
-			session.sessionUpdateType = "forced";
-			io.sockets.emit('sessionRequest', session);
+			io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});
 		});
 		
 
