@@ -269,8 +269,11 @@ function checkLogin(req, res, next) {
 /* ------------------------------------------------------------------------- */
 
 app.post("/public/*", function(req, res) {
-
+	
+	if(!req.body.accesscode) res.redirect("/");
+	
 	try {
+
     connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
         if(err) throw err;
 
@@ -282,7 +285,8 @@ app.post("/public/*", function(req, res) {
 				
 				// Update the database about the nickname:
 				var post  = {nickname: req.body.nickname};
-				var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+ req.body.accesscode+ '"', post, function(err, row) {});
+				var accesscode = req.body.accesscode;
+				var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+ accesscode + '"', post, function(err, row) {});
 				
 				// Write this info to the session:
 				req.session.sessionAccessCode = req.body.accesscode;	
