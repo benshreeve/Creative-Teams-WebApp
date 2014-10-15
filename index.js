@@ -27,7 +27,8 @@ LocalStrategy = require('passport-local').Strategy,
 database = require('mysql'),
 SessionSockets = require('session.socket.io');
 
-
+var minScreen = 2;
+var maxScreen = 2;
 
 var connection;
 
@@ -98,6 +99,23 @@ function connectToRedis() {
 				});				
 				
 			}
+		
+		});
+		
+		
+		socket.on('minMaxRequestValues', function() {
+		
+			socket.emit('minMaxResponseValues', {min: minScreen, max: maxScreen});
+		
+		});
+		
+		socket.on('minMaxRequestUpdate', function(data) {
+		
+			minScreen = data.min;
+			maxScreen = data.max;
+			
+			socket.emit('minMaxResponseUpdate', 'true');
+		
 		
 		});
 		

@@ -25,7 +25,7 @@
 			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Admin Screen</h1>	
 		</div>	
 		
-		<div class="header">
+		<div class="header" stlyle="margin-left: 80px; margin-top: 10px;">
 			<a class="tabButton adminButton" onclick="alert('test')">Update</a>			
 		</div>  
 		
@@ -41,5 +41,10 @@
 		</div>
 		
 		<script src="/javascript/admin.js?v=1"></script>
+		
+		<script>
+			socket.emit('minMaxRequestValues');
+		
+		</script>
 	</body>
 </html>
