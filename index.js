@@ -156,7 +156,7 @@ function connectToRedis() {
 
 
                     connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
-                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative });
+                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable });
                         sendState(data.screenNumber - 1);
 
                         // Update user's current screen in DB:
@@ -179,7 +179,7 @@ function connectToRedis() {
                         // connect to the database AGAIN here:
 
                         connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
-                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
+                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable });
                             sendState(data.screenNumber + 1);
 
                             // Update user's current screen in DB:
@@ -197,7 +197,7 @@ function connectToRedis() {
             	// Must be a number: intention will be the nunber....
             	
 				 connection.query('select * from screens where id = "' + (data.intention) + '"', function(errr, result) {
-					socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
+					socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable });
 					sendState(data.intention);
 
 					// Update user's current screen in DB:
@@ -384,10 +384,11 @@ app.post("/public/*", function(req, res) {
 				req.session.sessionMinScreen = minScreen;
 				req.session.sessionMaxScreen = maxScreen;
 				
-				connection.query('select bgimage, collaborative from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
+				connection.query('select bgimage, collaborative, drawable from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
 					if(err) throw err;
 					req.session.sessionBackground = result[0].bgimage;
 					req.session.sessionCollaborative = result[0].collaborative;
+					req.session.sessionDrawable = result[0].drawable;
 					req.session.save();
 				});			
 				
