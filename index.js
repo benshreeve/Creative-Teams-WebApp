@@ -2,13 +2,6 @@
 /* ------------------------------------------------------------------------- */
 /*								Server Configuration						 */
 /* ------------------------------------------------------------------------- */
-
-require('nodetime').profile({
-    accountKey: '822b11ec5708d7b08f78be3950807340f092eb1e', 
-    appName: 'Creative Teams'
-  });
-
-
 // Requirements:
 var app = require('express')(),
 express = require('express'),
@@ -29,31 +22,9 @@ SessionSockets = require('session.socket.io');
 
 var minScreen = 2;
 var maxScreen = 2;
-
 var connection;
 
-async.parallel([
-    connectToRedis(),
-    connectToDB()
-]);
-
-/*
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        User.findOne({ username: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
-            }
-            return done(null, user);
-        });
-    }
-));
-*/
-
+async.parallel([ connectToRedis(), connectToDB() ]);
 
 function connectToRedis() {
     // Connect to Redis:
@@ -66,24 +37,9 @@ function connectToRedis() {
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
-    /*
-    app.use(passport.initialize());
-    app.use(passport.session());
-    */
-
     sessionSockets.on('connection', function(err, socket, session){
 
-        // Firstly send the client its session:
-        //socket.emit('session', session);
-        session.foo = 'test';
-        session.save();
-
-        // For now, assume the screen number will be 2:
-        //sendState(session.sessionScreen);
-		
-		
 		socket.on('adminRequest', function(data) {
-			
 			if(data == "wipedb") {
 				// Wipe the database:
 				connection.query('TRUNCATE transactions', function(err, result) { 
@@ -96,20 +52,16 @@ function connectToRedis() {
 				connection.query('UPDATE users SET screen = 2', function(err, result) { 
 					if(err) throw err;
 					socket.emit('adminResponse', 'true');
-				});				
-				
+				});	
 			}
-		
 		});
 		
-		
+		// If Admin Screen requests current min/max values:
 		socket.on('minMaxRequestValues', function() {
-		
 			socket.emit('minMaxResponseValues', {min: minScreen, max: maxScreen});
-		
 		});
 		
-		// If the admin changes the min/max screens.
+		// If the admin changes the min/max screens:
 		socket.on('minMaxRequestUpdate', function(data) {
 			minScreen = data.min;
 			maxScreen = data.max;
@@ -152,8 +104,6 @@ function connectToRedis() {
                 if(data.screenNumber <3 || data.screenNumber == minScreen)
                     socket.emit('switchResponse', {response:false, reason:"This is the start of the test, you can't go back any further."});
                 else {
-
-
                     connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
                         socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable, newScreenNumber: data.screenNumber-1 });
                         sendState(data.screenNumber - 1);
@@ -161,10 +111,7 @@ function connectToRedis() {
                         // Update user's current screen in DB:
                         connection.query('UPDATE users SET screen = "'+ (data.screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
                     });
-
-
                 }
-
             }
             else if(data.intention=="next") {
                 // Find out if this is the final screen.  Allow client to proceed if not:
@@ -174,9 +121,7 @@ function connectToRedis() {
                     if (rows[0].maxval == data.screenNumber || data.screenNumber == maxScreen)
                         socket.emit('switchResponse', {response: false, reason: "You can't go to the next part of the test yet."});
                     else {
-
                         // connect to the database AGAIN here:
-
                         connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
 							if(errr) throw err;
                             socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
@@ -185,12 +130,7 @@ function connectToRedis() {
                             // Update user's current screen in DB:
                             connection.query('UPDATE users SET screen = "'+ (data.screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
                         });
-
-
-
-
                     }
-
                 });
             }
             else {
@@ -203,10 +143,7 @@ function connectToRedis() {
 					// Update user's current screen in DB:
 					connection.query('UPDATE users SET screen = "'+ (data.intention) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
 				});           	
-
             }
-
-
         });
 
         // Store identification:
@@ -222,11 +159,9 @@ function connectToRedis() {
 
         // When we receive drawing information:
         socket.on('mousedot', function(dot){
-            //console.log('point: ' + dot.x + ", " + dot.y + " drag is: " + dot.drag + " radius is " + dot.rad + " colour is " + dot.colour + " and owner is: " + dot.owner);
             socket.broadcast.emit('mousedot', dot);
 
             // Post to the database here:
-
             var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
                 if(err) throw err;
                 console.log("Dot written to database.  Drag is: " + dot.drag);
@@ -251,13 +186,7 @@ function connectToRedis() {
             });
         });
     });
-
-
-
-
-
 }
-
 
 
 // Connect to the database (LOCAL SETTINGS):
@@ -282,23 +211,6 @@ function connectToDB() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ------------------------------------------------------------------------- */
 /*								Routing Functions							 */
 /* ------------------------------------------------------------------------- */
@@ -308,7 +220,6 @@ app.use(function(req, res, next){
   console.log('%s %s', req.method, req.url);
   next();
 });
-
 
 // Checks if user is logged in.  If not, redirect to Login.
 function protectPage(req, res, redirectUrl) {
@@ -342,7 +253,6 @@ app.get('/test1/', checkLogin, function(req, res) {		res.redirect("index.html")/
 app.use(express.static(__dirname, '/public'));
 app.use(express.static(__dirname, '/images'));
 
-
 // route middleware to make sure a user is logged in
 function checkLogin(req, res, next) {
 
@@ -353,7 +263,6 @@ function checkLogin(req, res, next) {
     // if they aren't redirect them to the login page
     res.redirect('/');
 }
-
 
 /* ------------------------------------------------------------------------- */
 /*							Login Form Submit (POST)						 */
@@ -398,34 +307,16 @@ app.post("/public/*", function(req, res) {
 			else serveError(res, "This user has already logged in.  Duplicates aren't allowed...");
 		}
 		else { 
-		
-			// Try to read from admin database:
-			
+			// Instead, try to derive if this is an admin login:
 			connection.query('select login from admin where login = "' + req.body.accesscode + '"', function(errr, result) {
-			
 				if(result.length > 0) res.redirect("/admin/");
 				else res.redirect("/");
-			
 			});	
-		
 		}		
     });
 	}
-	catch(e) {
-		console.log(e);
-	
-	}
+	catch(e) { console.log(e); }
 });
-
-
-
-
-/* ------------------------------------------------------------------------- */
-/*								Socket Procedures							 */
-/* ------------------------------------------------------------------------- */
-
-
-
 
 
 /* ------------------------------------------------------------------------- */
@@ -433,4 +324,3 @@ app.post("/public/*", function(req, res) {
 /* ------------------------------------------------------------------------- */
 
 http.listen(process.env.PORT || 4000, function(){ console.log('listening on *:4000'); });
-
