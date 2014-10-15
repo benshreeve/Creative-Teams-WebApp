@@ -150,7 +150,7 @@ function connectToRedis() {
             if(data.intention=="back") {
 
                 // User can't go back any further:
-                if(data.screenNumber <3)
+                if(data.screenNumber <3 || data.screenNumber == minScreen)
                     socket.emit('switchResponse', {response:false, reason:"This is the start of the test, you can't go back any further."});
                 else {
 
