@@ -105,16 +105,33 @@ socket.on('sessionRequest', function(session) {
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
 
-	if(session.sessionScreen > session.sessionMaxScreen) switchIntention(session.sessionMaxScreen);
-	else if(session.sessionScreen < session.sessionMinScreen) switchIntention(session.sessionMinScreen);
+	if(sessionUpdateType) {
+		// If Subsequent...
+	
+		// Check against CURRENT screenNumber.
+		
+		if(screenNumber < session.sessionMinScreen)
+			switchIntention(session.sessionMinScreen);
+		else if(screenNumber > session.sessionMaxScreen)
+			switchIntention(session.sessionMaxScreen);
+	
+	}
 	else {
+		// If variables are sent for the first time...
+		
+		if(session.sessionScreen < session.sessionMinScreen)
+			switchIntention(session.sessionMinScreen);
+		else if(session.sessionScreen > session.sessionMaxScreen)
+			switchIntention(session.sessionMaxScreen);
+	
 		switchBackground(session.sessionBackground);
 		collaborative = session.sessionCollaborative;	
 		screenNumber = session.sessionScreen;
-		drawable = session.sessionDrawable;
-	}	
+		drawable = session.sessionDrawable;		
 	
-	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;		
+	}
+	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
+	
 });
 
 	
