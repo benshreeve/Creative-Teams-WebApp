@@ -269,12 +269,9 @@ function checkLogin(req, res, next) {
 /* ------------------------------------------------------------------------- */
 
 app.post("/public/*", function(req, res) {
-	
-	if(!req.body.accesscode) res.redirect("/");
-	
 	try {
 
-    connection.query('select * from users where users.accessid = "'+ req.body.accesscode +'";', function(err, rows){
+    connection.query('select * from users where users.accessid = "'+ connection.escape(req.body.accesscode) +'";', function(err, rows){
         if(err) throw err;
 
 		// If it is a valid access code:
@@ -285,8 +282,7 @@ app.post("/public/*", function(req, res) {
 				
 				// Update the database about the nickname:
 				var post  = {nickname: req.body.nickname};
-				var accesscode = req.body.accesscode;
-				var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+ accesscode + '"', post, function(err, row) {});
+				var query = connection.query('UPDATE users SET ? WHERE users.accessid = "'+ connection.escape(req.body.accesscode) + '"', post, function(err, row) {});
 				
 				// Write this info to the session:
 				req.session.sessionAccessCode = req.body.accesscode;	
@@ -297,7 +293,7 @@ app.post("/public/*", function(req, res) {
 				req.session.sessionMinScreen = minScreen;
 				req.session.sessionMaxScreen = maxScreen;
 				
-				connection.query('select bgimage, collaborative, drawable from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
+				connection.query('select bgimage, collaborative, drawable from screens, users where users.accessid = "'+ connection.escape(req.body.accesscode) +'" and screens.ID = '+ connection.escape(req.session.sessionScreen) +';', function(err, result){
 					if(err) throw err;
 					req.session.sessionBackground = result[0].bgimage;
 					req.session.sessionCollaborative = result[0].collaborative;
@@ -312,7 +308,7 @@ app.post("/public/*", function(req, res) {
 		}
 		else { 
 			// Instead, try to derive if this is an admin login:
-			connection.query('select login from admin where login = "' + req.body.accesscode + '"', function(errr, result) {
+			connection.query('select login from admin where login = "' + connection.escape(req.body.accesscode) + '"', function(errr, result) {
 				if(result.length > 0) res.redirect("/admin/");
 				else res.redirect("/");
 			});	
