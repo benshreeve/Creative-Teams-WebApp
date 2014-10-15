@@ -69,8 +69,10 @@ socket.on('switchResponse', function(data) {
         pointsArray.length = 0;
         clearcanvas();
 		switchBackground(data.bgimage);
-		screenNumber = data.reason;
-		alert("Now on Screen Number: " + data.reason);
+
+		screenNumber = data.newScreenNumber;		
+		
+		alert("Now on Screen Number: " + screenNumber);
 		collaborative = JSON.parse(data.collaborative);
 		drawable = data.drawable;
 		
