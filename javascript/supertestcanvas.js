@@ -95,14 +95,10 @@ function stateSession() {
 }
 
 socket.on('screenUpdate', function(data) {
-
-	alert("received update");
-	
-	if(screenNumber < session.sessionMinScreen)
-		switchIntention(session.sessionMinScreen);
-	else if(screenNumber > session.sessionMaxScreen)
-		switchIntention(session.sessionMaxScreen);
-
+	if(screenNumber < data.min)
+		switchIntention(data.min);
+	else if(screenNumber > data.max)
+		switchIntention(data.max);
 });
 
 
