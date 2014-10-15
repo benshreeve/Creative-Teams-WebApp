@@ -70,6 +70,7 @@ socket.on('switchResponse', function(data) {
 		switchBackground(data.bgimage);
 		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
 		else if(data.reason=="back") screenNumber--;
+		else screenNumber = data.reason;
 		collaborative = JSON.parse(data.collaborative);
 		
 		//alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
@@ -92,38 +93,37 @@ function stateSession() {
 	socket.emit('requestSession');
 }
 
-function checkMinMaxScreen(min, max) {
-
-	// If outside the range...
-	if( screenNumber > max ) {
-	
-		// Bring it down!
-		
-		//screenNumber = max;
-	
-	}
-	else if ( screenNumber < min )	{
-		
-		// Bring it up!
-	
-	}
-	
-}
 
 
 socket.on('sessionRequest', function(session) {
 
-	myColour = session.sessionColour;
-	groupNumber = session.sessionGroup;
-	accessID = session.sessionAccessCode;
-	switchBackground(session.sessionBackground);
-	collaborative = session.sessionCollaborative;	
-	screenNumber = session.sessionScreen;
+	if(session.sessionUpdateType) {
+
+		if(screenNumber < session.sessionMinScreen) {
+			// scale up to min screen
+			
+			switchIntention(session.sessionMinScreen);
+		
+		}
+		else if(screenNumber > session.sessionMaxScreen) {
+			// scale down to max screen
+			switchIntention(session.sessionMaxScreen);
+		
+		}
 	
-	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
+	}
+	else {
+
+		myColour = session.sessionColour;
+		groupNumber = session.sessionGroup;
+		accessID = session.sessionAccessCode;
+		switchBackground(session.sessionBackground);
+		collaborative = session.sessionCollaborative;	
+		screenNumber = session.sessionScreen;
+		
+		document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 	
-	// Update min & max variables:
-	//checkMinMaxScreen(session.sessionMinScreen, session.sessionMaxScreen);
+	}
 });
 
 

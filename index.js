@@ -109,14 +109,17 @@ function connectToRedis() {
 		
 		});
 		
+		// If the admin changes the min/max screens.
 		socket.on('minMaxRequestUpdate', function(data) {
-		
 			minScreen = data.min;
 			maxScreen = data.max;
-			
 			socket.emit('minMaxResponseUpdate', 'true');
-		
-		
+			
+			// Now update the values for the clients and disperse:
+			session.sessionMinScreen = minScreen;
+			session.sessionMaxScreen = maxScreen;
+			session.sessionUpdateType = "forced";
+			socket.emit('sessionRequest', session);
 		});
 		
 
@@ -191,10 +194,16 @@ function connectToRedis() {
                 });
             }
             else {
-            	// Must be a number:
+            	// Must be a number: intention will be the nunber....
             	
-            	console.log("new switch request");            
-            
+				 connection.query('select * from screens where id = "' + (data.intention) + '"', function(errr, result) {
+					socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval });
+					sendState(data.intention);
+
+					// Update user's current screen in DB:
+					connection.query('UPDATE users SET screen = "'+ (data.intention) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
+				});           	
+
             }
 
 
@@ -372,6 +381,8 @@ app.post("/public/*", function(req, res) {
 				req.session.sessionColour = rows[0].colour;
 				req.session.sessionGroup = rows[0].group;
 				req.session.sessionScreen = rows[0].screen;
+				req.session.sessionMinScreen = minScreen;
+				req.session.sessionMaxScreen = maxScreen;
 				
 				connection.query('select bgimage, collaborative from screens, users where users.accessid = "'+ req.body.accesscode +'" and screens.ID = '+ req.session.sessionScreen +';', function(err, result){
 					if(err) throw err;
