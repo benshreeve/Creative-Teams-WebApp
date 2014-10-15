@@ -99,8 +99,6 @@ function stateSession() {
 
 socket.on('sessionRequest', function(session) {
 
-	alert("Session stuff received");
-
 	if(session.sessionUpdateType) {
 
 		if(screenNumber < session.sessionMinScreen) {
