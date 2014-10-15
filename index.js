@@ -119,7 +119,7 @@ function connectToRedis() {
 			session.sessionMinScreen = minScreen;
 			session.sessionMaxScreen = maxScreen;
 			session.sessionUpdateType = "forced";
-			socket.emit('sessionRequest', session);
+			io.sockets.emit('sessionRequest', session);
 		});
 		
 
