@@ -173,7 +173,7 @@ function connectToRedis() {
                     if(err) throw err;
 
                     if (rows[0].maxval == data.screenNumber || data.screenNumber == maxScreen)
-                        socket.emit('switchResponse', {response: false, reason: "This is the final page, you can't go forward any further."});
+                        socket.emit('switchResponse', {response: false, reason: "You can't go to the next part of the test yet."});
                     else {
 
                         // connect to the database AGAIN here:
