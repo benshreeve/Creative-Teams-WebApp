@@ -88,6 +88,7 @@ socket.on('switchResponse', function(data) {
 
 // Ask the server if we can move forward or backward:
 function switchIntention(intention) {
+	console.log("screen number sent was: " + screenNumber);
 	socket.emit('switchRequest', { intention:intention, screenNumber:screenNumber });
 }
 
