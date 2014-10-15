@@ -100,41 +100,21 @@ function stateSession() {
 
 socket.on('sessionRequest', function(session) {
 
-	if(session.sessionUpdateType) {
-
-		if(screenNumber < session.sessionMinScreen) {
-			// scale up to min screen
-			
-			switchIntention(session.sessionMinScreen);
-		
-		}
-		else if(screenNumber > session.sessionMaxScreen) {
-			// scale down to max screen
-			switchIntention(session.sessionMaxScreen);
-		
-		}
-	
-	}
+	if(session.sessionScreen > session.sessionMaxScreen) switchIntention(session.sessionMaxScreen);
+	else if(session.sessionScreen < session.sessionMinScreen) switchIntention(session.sessionMinScreen);
 	else {
-	
-		if(session.sessionScreen > session.sessionMaxScreen) switchIntention(session.sessionMaxScreen);
-		else if(session.sessionScreen < session.sessionMinScreen) switchIntention(session.sessionMinScreen);
-		else {
 
-			myColour = session.sessionColour;
-			groupNumber = session.sessionGroup;
-			accessID = session.sessionAccessCode;
-			switchBackground(session.sessionBackground);
-			collaborative = session.sessionCollaborative;	
-			screenNumber = session.sessionScreen;
-			drawable = session.sessionDrawable;
-		}	
-		
-		document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
-		
-		
+		myColour = session.sessionColour;
+		groupNumber = session.sessionGroup;
+		accessID = session.sessionAccessCode;
+		switchBackground(session.sessionBackground);
+		collaborative = session.sessionCollaborative;	
+		screenNumber = session.sessionScreen;
+		drawable = session.sessionDrawable;
+	}	
 	
-	}
+	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
+	
 });
 
 
