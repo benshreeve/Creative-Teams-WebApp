@@ -397,7 +397,18 @@ app.post("/public/*", function(req, res) {
 			}
 			else serveError(res, "This user has already logged in.  Duplicates aren't allowed...");
 		}
-		else res.redirect("/");		
+		else { 
+		
+			// Try to read from admin database:
+			
+			connection.query('select login from admin where login = "' + req.body.accesscode + '"', function(errr, result) {
+			
+				if(result.length > 0) res.redirect("/admin/");
+				else res.redirect("/");
+			
+			});	
+		
+		}		
     });
 	}
 	catch(e) {
