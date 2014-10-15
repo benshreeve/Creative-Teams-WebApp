@@ -69,9 +69,7 @@ socket.on('switchResponse', function(data) {
         pointsArray.length = 0;
         clearcanvas();
 		switchBackground(data.bgimage);
-		if(data.reason=="next" && (screenNumber+1 <= data.max)) screenNumber++;
-		else if(data.reason=="back") screenNumber--;
-		else screenNumber = data.reason;
+		screenNumber = data.reason;
 		collaborative = JSON.parse(data.collaborative);
 		drawable = data.drawable;
 		

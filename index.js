@@ -156,7 +156,7 @@ function connectToRedis() {
 
 
                     connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
-                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable });
+                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable, newScreenNumber: data.screenNumber-1 });
                         sendState(data.screenNumber - 1);
 
                         // Update user's current screen in DB:
@@ -180,7 +180,7 @@ function connectToRedis() {
 
                         connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
 							if(errr) throw err;
-                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable });
+                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
                             sendState(data.screenNumber + 1);
 
                             // Update user's current screen in DB:
@@ -198,7 +198,7 @@ function connectToRedis() {
             	// Must be a number: intention will be the nunber....
             	
 				 connection.query('select * from screens where id = "' + (data.intention) + '"', function(errr, result) {
-					socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable });
+					socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable, newScreenNumber: data.intention });
 					sendState(data.intention);
 
 					// Update user's current screen in DB:
