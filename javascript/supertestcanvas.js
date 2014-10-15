@@ -70,6 +70,7 @@ socket.on('switchResponse', function(data) {
         clearcanvas();
 		switchBackground(data.bgimage);
 		screenNumber = data.reason;
+		alert("Now on Screen Number: " + data.reason);
 		collaborative = JSON.parse(data.collaborative);
 		drawable = data.drawable;
 		
