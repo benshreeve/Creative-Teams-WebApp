@@ -99,29 +99,21 @@ function stateSession() {
 
 socket.on('sessionRequest', function(session) {
 
+	myColour = session.sessionColour;
+	groupNumber = session.sessionGroup;
+	accessID = session.sessionAccessCode;
+
 	if(session.sessionScreen > session.sessionMaxScreen) switchIntention(session.sessionMaxScreen);
 	else if(session.sessionScreen < session.sessionMinScreen) switchIntention(session.sessionMinScreen);
 	else {
-
-		myColour = session.sessionColour;
-		groupNumber = session.sessionGroup;
-		accessID = session.sessionAccessCode;
 		switchBackground(session.sessionBackground);
 		collaborative = session.sessionCollaborative;	
 		screenNumber = session.sessionScreen;
 		drawable = session.sessionDrawable;
 	}	
 	
-	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
-	
+	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;		
 });
-
-
-
-
-setTimeout(function() {
-   if(myColour == "black") location.reload(); 
-}, 3000);
 
 	
 function pushToSocket(type, data) {
