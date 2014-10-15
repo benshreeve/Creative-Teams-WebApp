@@ -23,6 +23,7 @@ var accessID;
 var groupNumber;
 var collaborative = true;
 var bgimage;
+var drawable = "true";
 
 var minScreen = 2;
 var maxScreen = 2;
@@ -72,6 +73,7 @@ socket.on('switchResponse', function(data) {
 		else if(data.reason=="back") screenNumber--;
 		else screenNumber = data.reason;
 		collaborative = JSON.parse(data.collaborative);
+		drawable = data.drawable;
 		
 		//alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
 		
@@ -122,6 +124,7 @@ socket.on('sessionRequest', function(session) {
 		switchBackground(session.sessionBackground);
 		collaborative = session.sessionCollaborative;	
 		screenNumber = session.sessionScreen;
+		drawable = session.sessionDrawable;
 		
 		document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 	
@@ -137,7 +140,7 @@ setTimeout(function() {
 
 	
 function pushToSocket(type, data) {
-	if(type== "draw" || type=="erase") {
+	if((type== "draw" || type=="erase") && drawable=="true") {
 		addClickSimple(data.x, data.y, data.drag, data.rad, data.colour, data.owner);
 		socket.emit('mousedot', data); 
 		redraw(); }
