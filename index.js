@@ -95,21 +95,23 @@ function connectToRedis() {
 
         // When a client intends to move forward/back:
         socket.on('switchRequest', function(data) {
+		
+			screenNumber = parseInt(data.screenNumber);
 
-            console.log("Intention received: " + data.intention + " and scrNum is: " + data.screenNumber);
+            console.log("Intention received: " + data.intention + " and scrNum is: " + screenNumber);
 
             if(data.intention=="back") {
 
                 // User can't go back any further:
-                if(data.screenNumber <3 || data.screenNumber == minScreen)
+                if(screenNumber <3 || screenNumber == minScreen)
                     socket.emit('switchResponse', {response:false, reason:"This is the start of the test, you can't go back any further."});
                 else {
-                    connection.query('select * from screens where id = "' + (data.screenNumber-1) + '"', function(errr, result) {
-                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable, newScreenNumber: data.screenNumber-1 });
-                        sendState(data.screenNumber - 1);
+                    connection.query('select * from screens where id = "' + (screenNumber-1) + '"', function(errr, result) {
+                        socket.emit('switchResponse', {response: true, reason:data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, drawable:result[0].drawable, newScreenNumber: screenNumber-1 });
+                        sendState(screenNumber - 1);
 
                         // Update user's current screen in DB:
-                        connection.query('UPDATE users SET screen = "'+ (data.screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
+                        connection.query('UPDATE users SET screen = "'+ (screenNumber - 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
                     });
                 }
             }
@@ -120,21 +122,21 @@ function connectToRedis() {
                 connection.query('select max(ID) as "maxval" from screens', function(err, rows){
                     if(err) throw err;
 
-                    if (rows[0].maxval == data.screenNumber || data.screenNumber == maxScreen)
+                    if (rows[0].maxval == screenNumber || screenNumber == maxScreen)
                         socket.emit('switchResponse', {response: false, reason: "You can't go to the next part of the test yet."});
                     else {
                         // connect to the database AGAIN here:
-                        connection.query('select * from screens where id = "' + ( parseInt(data.screenNumber) +1 ) + '"', function(errr, result) {
+                        connection.query('select * from screens where id = "' + ( screenNumber +1 ) + '"', function(errr, result) {
 							if(errr) throw err;
 							
-							console.log("-------------- data.screenNumber+1 was: " + ( parseInt(data.screenNumber) +1 ) );
-							console.log("-------------- data.screenNumber was: " + parseInt(data.screenNumber) );
+							console.log("-------------- data.screenNumber+1 was: " + ( screenNumber +1 ) );
+							console.log("-------------- data.screenNumber was: " + screenNumber );
 							
-                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
-                            sendState(data.screenNumber + 1);
+                            socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: screenNumber+1 });
+                            sendState(screenNumber + 1);
 
                             // Update user's current screen in DB:
-                            connection.query('UPDATE users SET screen = "'+ (data.screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
+                            connection.query('UPDATE users SET screen = "'+ (screenNumber + 1) +'" WHERE users.accessid = "'+ session.sessionAccessCode + '"', post, function(err, row) {});
                         });
                     }
                 });
