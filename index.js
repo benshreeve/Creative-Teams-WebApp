@@ -128,6 +128,7 @@ function connectToRedis() {
 							if(errr) throw err;
 							
 							console.log("-------------- data.screenNumber+1 was: " + (data.screenNumber+1));
+							console.log("-------------- data.screenNumber was: " + data.screenNumber);
 							
                             socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
                             sendState(data.screenNumber + 1);
