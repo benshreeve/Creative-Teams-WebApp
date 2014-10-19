@@ -126,6 +126,9 @@ function connectToRedis() {
                         // connect to the database AGAIN here:
                         connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
 							if(errr) throw err;
+							
+							console.log("-------------- data.screenNumber+1 was: " + (data.screenNumber+1));
+							
                             socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
                             sendState(data.screenNumber + 1);
 
