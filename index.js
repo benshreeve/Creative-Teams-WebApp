@@ -115,6 +115,8 @@ function connectToRedis() {
             }
             else if(data.intention=="next") {
                 // Find out if this is the final screen.  Allow client to proceed if not:
+				console.log("-next- block activated");
+				
                 connection.query('select max(ID) as "maxval" from screens', function(err, rows){
                     if(err) throw err;
 
