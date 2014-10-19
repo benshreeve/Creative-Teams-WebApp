@@ -25,7 +25,8 @@
 	"heroku-redis-client": "^0.3.3",
 	"url": "^0.10.1",
 	"redis": "^0.12.1",
-    "passport-local": "*"
+    "passport-local": "*",
+	"compression":"^1.2.0"
   },
   "scripts": {
 	"start": "node index.js"
