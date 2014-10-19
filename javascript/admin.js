@@ -2,9 +2,17 @@
 // --> socket.emit('adminRequest')...
 // <-- socket.on('adminResponse')...
 
+var totalUsers;
+
 socket.on("adminResponse", function(data) {
 
 	alert("Done");
+
+});
+
+socket.on('totalUsersUpdate', function(data) {
+
+	totalUsers = data;
 
 });
 

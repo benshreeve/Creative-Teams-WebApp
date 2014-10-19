@@ -24,6 +24,8 @@ var minScreen = 2;
 var maxScreen = 2;
 var connection;
 
+var totalUsers = 0;
+
 async.parallel([ connectToRedis(), connectToDB() ]);
 
 function connectToRedis() {
@@ -38,6 +40,10 @@ function connectToRedis() {
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
 
     sessionSockets.on('connection', function(err, socket, session){
+	
+		totalUsers++;
+		
+		io.sockets.emit('totalUsersUpdate', totalUsers);
 
 		socket.on('adminRequest', function(data) {
 			if(data == "wipedb") {
@@ -185,6 +191,8 @@ function connectToRedis() {
 
         // On client disconnection, update the database:
         socket.on('disconnect', function(){
+			totalUsers--;
+			io.sockets.emit('totalUsersUpdate', totalUsers);
             var post  = {active: 0};
             var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
 
