@@ -18,7 +18,8 @@ async = require('async'),
 passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy,
 database = require('mysql'),
-SessionSockets = require('session.socket.io');
+SessionSockets = require('session.socket.io'),
+compression = require('compression');
 
 var minScreen = 2;
 var maxScreen = 2;
@@ -33,6 +34,8 @@ function connectToRedis() {
     var RedisStore = require("connect-redis")(session);
     var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"});
 
+	app.use(compression());
+	
     // Set up sessions (and their cookies):
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser("gZB8fSdS"));
