@@ -38,7 +38,7 @@
 		<div id="deadzone-bottom" style="position: absolute; bottom: 0;">
 			<a class="tabButton adminButton" onclick="socket.emit('adminRequest', 'wipedb');">Wipe Database</a>
 			<a class="tabButton adminButton" onclick="socket.emit('adminRequest', 'resetusers');">Reset User Start Screens</a>
-			<a class="tabButton adminButton" onclick="">Total Users: <script>totalUsers</script></a>			
+			<a class="tabButton adminButton" id="totalUsersButton">Total Users: 0</a>			
 		</div>
 		
 		<script src="/javascript/admin.js?v=1"></script>
