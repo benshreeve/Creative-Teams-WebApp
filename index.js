@@ -72,14 +72,26 @@ function connectToRedis() {
 		
 		// If the admin changes the min/max screens:
 		socket.on('minMaxRequestUpdate', function(data) {
-			minScreen = data.min;
-			maxScreen = data.max;
-			socket.emit('minMaxResponseUpdate', 'true');
+		
+			// Perform basic validation:
+			if(data.min <= data.max)  {  
+				minScreen = data.min;
+				maxScreen = data.max;
+				socket.emit('minMaxResponseUpdate', 'true'); 
+				
+				// Now update the values for the clients and disperse:
+				session.sessionMinScreen = minScreen;
+				session.sessionMaxScreen = maxScreen;
+				io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});				
+			}
+			else socket.emit('minMaxResponseUpdate', 'false');		
+		
+
 			
-			// Now update the values for the clients and disperse:
-			session.sessionMinScreen = minScreen;
-			session.sessionMaxScreen = maxScreen;
-			io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});
+
+
+			
+
 		});
 		
 

@@ -33,7 +33,8 @@ socket.on("minMaxResponseValues", function(response) {
 
 socket.on("minMaxResponseUpdate", function(response) {
 
-	alert("Updated - " + response);
-
+	if(response == "false") alert("Those min/max values aren't valid. Try again");
+	else alert("Min/Max updated to all clients in the system");
+	
 });
 
