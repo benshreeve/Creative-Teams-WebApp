@@ -11,7 +11,7 @@ socket.on("adminResponse", function(data) {
 socket.on('totalUsersUpdate', function(data) {
 
 	totalUsers = data;
-	document.getElementById('totalUsersButton').innerHTML = ('Total Users: ' + totalUsers);
+	document.getElementById('totalUsersButton').innerHTML = ('All Clients: ' + (totalUsers - 1) );
 
 });
 
