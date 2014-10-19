@@ -2,8 +2,6 @@
 // --> socket.emit('adminRequest')...
 // <-- socket.on('adminResponse')...
 
-var totalUsers;
-
 socket.on("adminResponse", function(data) {
 
 	alert("Done");
