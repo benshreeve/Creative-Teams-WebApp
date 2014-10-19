@@ -124,11 +124,11 @@ function connectToRedis() {
                         socket.emit('switchResponse', {response: false, reason: "You can't go to the next part of the test yet."});
                     else {
                         // connect to the database AGAIN here:
-                        connection.query('select * from screens where id = "' + (data.screenNumber+1) + '"', function(errr, result) {
+                        connection.query('select * from screens where id = "' + ( parseInt(data.screenNumber) +1 ) + '"', function(errr, result) {
 							if(errr) throw err;
 							
-							console.log("-------------- data.screenNumber+1 was: " + (data.screenNumber+1));
-							console.log("-------------- data.screenNumber was: " + data.screenNumber);
+							console.log("-------------- data.screenNumber+1 was: " + ( parseInt(data.screenNumber) +1 ) );
+							console.log("-------------- data.screenNumber was: " + parseInt(data.screenNumber) );
 							
                             socket.emit('switchResponse', {response: true, reason: data.intention, bgimage: result[0].bgimage, collaborative:result[0].collaborative, max:rows[0].maxval, drawable:result[0].drawable, newScreenNumber: data.screenNumber+1 });
                             sendState(data.screenNumber + 1);
