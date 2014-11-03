@@ -18,7 +18,7 @@
 <g id="Fig_4">
 </g>
 <g>
-	<line fill="none" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" x1="321.388" y1="251.142" x2="321.388" y2="758.5"/>
-	<line fill="none" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" x1="678.613" y1="251.142" x2="678.613" y2="758.5"/>
+	<line fill="none" stroke="#231F20" stroke-width="5" stroke-miterlimit="10" x1="321.388" y1="251.142" x2="321.388" y2="758.5"/>
+	<line fill="none" stroke="#231F20" stroke-width="5" stroke-miterlimit="10" x1="678.613" y1="251.142" x2="678.613" y2="758.5"/>
 </g>
 </svg>
