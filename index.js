@@ -74,23 +74,31 @@ function connectToRedis() {
 		socket.on('minMaxRequestUpdate', function(data) {
 		
 			// Perform basic validation:
-			if(data.min <= data.max)  {  
-				minScreen = data.min;
-				maxScreen = data.max;
-				socket.emit('minMaxResponseUpdate', 'true'); 
-				
-				// Now update the values for the clients and disperse:
-				session.sessionMinScreen = minScreen;
-				session.sessionMaxScreen = maxScreen;
-				io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});				
+			if(parseInt(data.min) <= parseInt(data.max))  {  
+			
+				// Find out what the last screen is:
+				connection.query('SELECT MAX(ID) as "maxscreen" FROM screens', function(err, result) { 
+					if(err) throw err;
+					
+					// If correct then continue:
+					if(parseInt(data.max) <= result[0].maxscreen) {
+					
+						minScreen = parseInt(data.min);
+						maxScreen = parseInt(data.max);
+						socket.emit('minMaxResponseUpdate', 'true'); 
+						
+						// Now update the values for the clients and disperse:
+						session.sessionMinScreen = minScreen;
+						session.sessionMaxScreen = maxScreen;
+						io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});					
+					
+					}
+					else socket.emit('minMaxResponseUpdate', 'false');
+					
+				});	
+			
 			}
 			else socket.emit('minMaxResponseUpdate', 'false');		
-		
-
-			
-
-
-			
 
 		});
 		
