@@ -17,12 +17,10 @@
 	<g id="Fig_5">
 	</g>
 	<g id="Fig_4">
-	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
+		<path fill="none" stroke="#010101" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M679.5,763.573
+			c0,0,67.515,85.635,261.885-9.354c46.048-22.503,142.631-166.015,142.631-166.015c109.898-107.56,222.135-60.074,247.854-18.707
+			c0,0,70.291,58.004,14.029,130.943c-60.793,78.811-119.25,95.847-119.25,95.847c-23.713,13.222-70.867,16.332-100.547,9.372
+			c-42.381-9.94-53.777-67.809-39.748-102.882"/>
 	</g>
 </g>
 </svg>

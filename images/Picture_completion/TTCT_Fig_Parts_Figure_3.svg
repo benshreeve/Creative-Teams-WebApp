@@ -18,11 +18,11 @@
 	</g>
 	<g id="Fig_4">
 	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
+	<g id="Fig_3">
+		<path fill="none" stroke="#010101" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M945.52,778.914
+			c0,0-78.97-43.808-74.865-151.485c1.259-32.988,57.517-109.955,118.352-163.929"/>
+		<path fill="none" stroke="#010101" stroke-width="11" stroke-linecap="round" stroke-miterlimit="10" d="M1178.286,869.121
+			c0,0-87.568-31.882-107.802-138.4c-6.196-32.638,31.803-116.354,79.49-178.1"/>
 	</g>
 </g>
 </svg>

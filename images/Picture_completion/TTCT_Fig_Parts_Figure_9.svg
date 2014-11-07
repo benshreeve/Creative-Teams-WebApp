@@ -7,6 +7,8 @@
 	<g id="Fig_10">
 	</g>
 	<g id="Fig_9">
+		<path fill="none" stroke="#010101" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+			M720.5,761.221c0,0,48.035-56.212,110.377-206.447l83.805,126.729L1039.367,528.5c0,0,60.301,132.562,288.209,277.688"/>
 	</g>
 	<g id="Fig_8">
 	</g>
@@ -17,12 +19,6 @@
 	<g id="Fig_5">
 	</g>
 	<g id="Fig_4">
-	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
 	</g>
 </g>
 </svg>

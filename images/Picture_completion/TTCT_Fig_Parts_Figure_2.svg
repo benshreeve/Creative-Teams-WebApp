@@ -18,11 +18,8 @@
 	</g>
 	<g id="Fig_4">
 	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
-	</g>
+	
+		<polyline id="Fig_2" fill="none" stroke="#010101" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		1086.545,1016.807 1105.887,610.49 931.5,358.147 1105.887,610.49 1117.35,315.5 	"/>
 </g>
 </svg>

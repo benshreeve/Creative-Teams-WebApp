@@ -13,16 +13,12 @@
 	<g id="Fig_7">
 	</g>
 	<g id="Fig_6">
+		<path fill="none" stroke="#010101" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+			M886.5,422.5c0,0,70.609,118.479,178.316,174.727c0,0-52.66,167.546-89.757,201.05c-8.383,7.567,40.687-14.359,184.296,112.496"/>
 	</g>
 	<g id="Fig_5">
 	</g>
 	<g id="Fig_4">
-	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
 	</g>
 </g>
 </svg>

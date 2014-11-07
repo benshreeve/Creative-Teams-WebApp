@@ -5,6 +5,8 @@
 	 width="2048px" height="1336px" viewBox="0 0 2048 1336" enable-background="new 0 0 2048 1336" xml:space="preserve">
 <g>
 	<g id="Fig_10">
+		<path fill="none" stroke="#010101" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M1109.277,856.334
+			c0,0,32.894-177.604,35.084-214.881c2.19-37.276-107.44,94.283-216.781,6.575c-97.576-82.418,74.256,81.13,221.194-171.028"/>
 	</g>
 	<g id="Fig_9">
 	</g>
@@ -17,12 +19,6 @@
 	<g id="Fig_5">
 	</g>
 	<g id="Fig_4">
-	</g>
-	<g>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="845.5" y1="412.5" x2="845.5" y2="919.858"/>
-		
-			<line fill="none" stroke="#231F20" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" x1="1202.725" y1="412.5" x2="1202.725" y2="919.858"/>
 	</g>
 </g>
 </svg>
