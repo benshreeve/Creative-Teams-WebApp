@@ -5,4 +5,14 @@
 	 width="2048px" height="1336px" viewBox="0 0 2048 1336" enable-background="new 0 0 2048 1336" xml:space="preserve">
 <text transform="matrix(1 0 0 1 52.3223 94.7095)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Welcome to our study of creativity in team</tspan><tspan x="928.125" y="0" font-family="'Helvetica'" font-size="50" letter-spacing="-3">s</tspan></text>
 <text transform="matrix(1 0 0 1 55.5488 178.5811)"><tspan x="0" y="0" font-family="'Jura-Regular'" font-size="41">This series of tasks are designed for you to complete with your team members. You are asked to follow the </tspan><tspan x="0" y="49.2" font-family="'Jura-Regular'" font-size="41">instructions given and to collaborate together. It is important to remember that this is a team test, </tspan><tspan x="0" y="98.4" font-family="'Jura-Regular'" font-size="41">we are not interested in individual performance, it is all about working together. </tspan></text>
+<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 1912.3223 1198)" font-family="'Helvetica'" font-size="50">Next</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1896" y1="1207" x2="1896" y2="1299.789"/>
+		<g>
+			<path d="M1896,1336c-6.322-17.039-17.109-38.18-28.535-51.284l28.535,10.321l28.529-10.321
+				C1913.104,1297.82,1902.316,1318.961,1896,1336z"/>
+		</g>
+	</g>
+</g>
 </svg>
