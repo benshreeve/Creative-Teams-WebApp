@@ -101,9 +101,8 @@ socket.on('screenUpdate', function(data) {
 		switchIntention(data.max);
 });
 
-
-socket.on('sessionRequest', function(session) {
-
+socket.on('sessionRequest', function(session) {	
+	
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
@@ -124,6 +123,10 @@ socket.on('sessionRequest', function(session) {
 	
 });
 
+
+function showTitle(){	
+	socket.emit('sessionTitle');
+}
 	
 function pushToSocket(type, data) {
 	if((type== "draw" || type=="erase") && drawable=="true") {
@@ -156,14 +159,15 @@ function prepareCanvas() {
 	canvasSimple.addEventListener("mouseleave", doMouseLeave, false);	
 	canvasSimple.addEventListener("mouseover", doMouseOver, false);
 	
+	
+	
 	// Fix for HD Displays:
 	if(window.devicePixelRatio == 2) {
 		canvas.setAttribute('width', canvasWidth / 2);
 		canvas.setAttribute('height', (canvasHeight /2) - 200);
 		document.getElementById('deadzone-top').style.width = "100%";
 		document.getElementById('deadzone-bottom').style.width = "100%";
-	}
-	
+	}	
 	// Ask for Session Details:
 	stateSession();
 	
@@ -267,7 +271,7 @@ function resizeCanvas() {
 }
 
 function redraw() {
-
+	//console.log("redraw \n");
 	if(pointsArray.length > lastLength){
 	    for(var i=(pointsArray.length-1); i>=lastLength; i--) {	
 			
@@ -301,9 +305,11 @@ function redraw() {
 }
 
 function switchBackground(url) {
-	console.log("background is: " + url);
-	if(url != " " || url != "") canvasDiv.style.background = 'url(' + url + ') no-repeat center ';
-	else canvas.style.background = "white"; 
+	if (canvasDiv){
+		console.log("background is: " + url);
+		if(url != " " || url != "") canvasDiv.style.background = 'url(' + url + ') no-repeat center ';
+		else canvas.style.background = "white";
+	}	 
 }
 
 function resetCache() {
