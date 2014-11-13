@@ -1,0 +1,102 @@
+/* CSS Document */
+
+#ideaTable tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.button_idea{
+border:1px solid #393b3e;-webkit-box-shadow: #737373 0px 1px 5px ;-moz-box-shadow: #737373 0px 1px 5px ; box-shadow: #737373 0px 1px 5px ; -webkit-border-radius: 23px; -moz-border-radius: 23px;border-radius: 23px;font-size:14px;font-family:arial, helvetica, sans-serif; padding: 10px 20px 10px 20px; text-decoration:none; display:inline-block;text-shadow: 0px 1px 0 rgba(10,10,10,0.5);font-weight:bold; color: #8C8C8C;
+ background-color: #515459; background-image: -webkit-gradient(linear, left top, left bottom, from(#515459), to(#3B3C40));
+ background-image: -webkit-linear-gradient(top, #515459, #3B3C40);
+ background-image: -moz-linear-gradient(top, #515459, #3B3C40);
+ background-image: -ms-linear-gradient(top, #515459, #3B3C40);
+ background-image: -o-linear-gradient(top, #515459, #3B3C40);
+ background-image: linear-gradient(to bottom, #515459, #3B3C40);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#515459, endColorstr=#3B3C40);
+}
+
+.button_idea:hover{
+ border:1px solid #393b3e;
+ background-color: #3B3C40; background-image: -webkit-gradient(linear, left top, left bottom, from(#3B3C40), to(#202124));
+ background-image: -webkit-linear-gradient(top, #3B3C40, #202124);
+ background-image: -moz-linear-gradient(top, #3B3C40, #202124);
+ background-image: -ms-linear-gradient(top, #3B3C40, #202124);
+ background-image: -o-linear-gradient(top, #3B3C40, #202124);
+ background-image: linear-gradient(to bottom, #3B3C40, #202124);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#3B3C40, endColorstr=#202124);
+}
+
+#idea-top {
+	background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+	position: relative;
+	width: 100%;
+	height: 10%;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	text-align: left;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;   	/* Opera/IE 8+ */	
+	top: 0;	
+}
+
+#mainBox{	
+	width:100%; 
+	height:100%
+}
+#mainIdeaDiv{	
+	height:79%;
+	border: 4px solid rgba(0, 0, 0, 0.3);	
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	padding-left: 10px;		
+}
+
+#supertitle{
+	margin-top: 36px; 
+	text-align: center;
+}
+
+#mainIdeaDiv-Half{
+	height:100%; 
+	width:50%; 
+	float: left
+}
+
+#timeRemained{
+	margin-top: 36px; 
+	text-align: left;
+}
+
+#ideaBrief{
+	width:99%; 
+	height:99%; 
+	font-size:16px;
+}
+
+#mainIdeaDiv-topBox{
+	height:30%; 
+	width:100%; 
+	float:left; 
+	text-align:left;
+}
+
+#mainIdeaDiv-bottomBox{
+	height:70%; 
+	width:95%; 
+	float: left; 
+	vertical-align:top; 
+	text-align:left;
+	overflow: scroll;
+}
+
+#idea-title-textfield{
+	width:100%; 
+	font-size:16px;
+}
+
+#idea-description-textfield{
+	width:100%; 
+	min-height:200px;
+	font-size:16px;
+}
+
