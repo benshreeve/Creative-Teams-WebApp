@@ -32,7 +32,7 @@ async.parallel([ connectToRedis(), connectToDB() ]);
 function connectToRedis() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
-    var sessionStore = new RedisStore({host: "pub-redis-13163.eu-west-1-1.2.ec2.garantiadata.com", port:13163, pass: "apple"});
+    var sessionStore = new RedisStore({host: "130.216.38.232", port:13163, pass: "apple"});
 
 	app.use(compression());
 	
@@ -84,13 +84,7 @@ function connectToRedis() {
 				session.sessionMaxScreen = maxScreen;
 				io.sockets.emit('screenUpdate', {min:minScreen, max:maxScreen});				
 			}
-			else socket.emit('minMaxResponseUpdate', 'false');		
-		
-
-			
-
-
-			
+			else socket.emit('minMaxResponseUpdate', 'false');	
 
 		});
 		
@@ -100,17 +94,75 @@ function connectToRedis() {
             socket.emit('sessionRequest', session);
 			sendState(session.sessionScreen);
         });
-
-        function sendState(screenNumber) {
-            // connect to the database.
-            // emit each row element as a draw to specific socket - use socket.id.
-
-            var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'"', function(err, rows){
+		
+		// When a client requests its session ID only:
+        socket.on('sessionTitle', function() {
+            socket.emit('sessionRequest', session);
+			//sendState(session.sessionScreen);
+        });
+		
+		// When receive blockIdeaTitle/releaseIdeaTitle
+		socket.on('blockIdeaTitle', function() {			
+			socket.broadcast.emit('clientBlockIdeaTitle', session);     
+        });
+		socket.on('releaseIdeaTitle', function() {			
+			socket.broadcast.emit('clientReleaseIdeaTitle', session);     
+        });
+		socket.on('enterIdeaTitle', function(text) {
+			//console.log(text);			
+			socket.broadcast.emit('clientEnterIdeaTitle', text);     
+        });
+		
+		// When receive blockIdeaDescription/releaseIdeaDescription
+		socket.on('blockIdeaDescription', function() {
+			socket.broadcast.emit('clientBlockIdeaDescription', session);     
+			console.log("blockIdeaDescription");            
+        });
+		socket.on('releaseIdeaDescription', function() {
+			socket.broadcast.emit('clientReleaseIdeaDescription', session);     
+			console.log("releaseIdeaDescription"); 			
+			//socket.broadcast.emit('clientReleaseIdeaTitle', session);     
+        });
+		socket.on('enterIdeaDescription', function(text) {
+			socket.broadcast.emit('clientEnterIdeaDescription', text);  
+			console.log("enterIdeaDescription"); 
+			//console.log(text);			
+			//socket.broadcast.emit('clientEnterIdeaTitle', text);     
+        });
+		
+		socket.on('submitIdea', function(idea, description) {
+			socket.emit('clientSubmitIdea', idea, description);  
+			socket.broadcast.emit('clientSubmitIdea', idea, description); 
+			//console.log("Submit Idea and Description"); 
+			//console.log(text);			
+			//socket.broadcast.emit('clientEnterIdeaTitle', text);     
+        });
+		
+		function readState(screenNumber, limit1, limit2){
+			var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'" limit '+limit1+', '+limit2, function(err, rows){
                 if(err) throw err;
                 for(var i = 0; i<rows.length; i++) {
                     socket.emit('mousedot', {x:rows[i].xpoint, y:rows[i].ypoint, drag:rows[i].drag, rad:rows[i].radius, colour:rows[i].colour, owner:rows[i].owner, group:session.sessionGroup, screen:rows[i].screen});
                 }
+            });	
+		}
+
+        function sendState(screenNumber) {
+            // connect to the database.
+            // emit each row element as a draw to specific socket - use socket.id.
+			var rowNumber = 0;
+			//var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'"', function(err, rows)
+			var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'" limit 1000', function(err, rows)
+			{
+                rowNumber = rows.length;
+				console.log("row number = " + rowNumber);
+				for(var i = 0; i<rowNumber; i=i+10) {
+					setTimeout(readState(screenNumber, i, 10), 20*i);
+				}
             });
+			
+
+            
         }
 
 
@@ -191,11 +243,13 @@ function connectToRedis() {
             socket.broadcast.emit('mousedot', dot);
 
             // Post to the database here:
+			/*
             var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
                 if(err) throw err;
                 console.log("Dot written to database.  Drag is: " + dot.drag);
                 console.log("SQL: " + query.sql);
             });
+			*/
 
         });
 
@@ -225,7 +279,7 @@ function connectToRedis() {
 //connection.query('use DrawingApp');
 
 function connectToDB() {
-    connection =  database.createConnection({ host : 'eu-cdbr-west-01.cleardb.com', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
 
     // Reset all users active flags to inactive, in case of crash:
     var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
@@ -234,6 +288,7 @@ function connectToDB() {
         console.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
             connectToDB();                         // lost due to either server restart, or a
+			console.log("DB Connection ok ");
         } else {                                      // connnection idle timeout (the wait_timeout
             throw err;                                  // server variable configures this)
         }
