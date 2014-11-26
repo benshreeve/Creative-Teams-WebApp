@@ -4,8 +4,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="2048px" height="1336px" viewBox="0 0 2048 1336" enable-background="new 0 0 2048 1336" xml:space="preserve">
 <text transform="matrix(1 0 0 1 52.3223 94.7095)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Welcome to our study of creativity in team</tspan><tspan x="928.125" y="0" font-family="'Helvetica'" font-size="50" letter-spacing="-3">s</tspan></text>
-<text transform="matrix(1 0 0 1 55.5488 178.5811)"><tspan x="0" y="0" font-family="'Jura-Regular'" font-size="41">This series of tasks are designed for you to complete with your team members. You are asked to follow the </tspan><tspan x="0" y="49.2" font-family="'Jura-Regular'" font-size="41">instructions given and to collaborate together. It is important to remember that this is a team test, </tspan><tspan x="0" y="98.4" font-family="'Jura-Regular'" font-size="41">we are not interested in individual performance, it is all about working together. </tspan></text>
-<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 1912.3223 1198)" font-family="'Helvetica'" font-size="50">Next</text>
+<text transform="matrix(0 -1 1 0 1912.3223 1198)" font-family="'Helvetica'" font-size="50">Next</text>
 <g>
 	<g>
 		<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1896" y1="1207" x2="1896" y2="1299.789"/>
@@ -15,4 +14,6 @@
 		</g>
 	</g>
 </g>
+<rect x="52" y="152" fill="none" width="1904" height="1192"/>
+<text transform="matrix(1 0 0 1 52 184.3545)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="45">This series of tests sets out to explore how creativity changes between teams. Each test has its </tspan><tspan x="0" y="45" font-family="'Helvetica'" font-size="45">own set of instructions and aims. Please read each set of instructions carefully before you start </tspan><tspan x="0" y="90" font-family="'Helvetica'" font-size="45">each test.</tspan><tspan x="0" y="135" font-family="'Helvetica'" font-size="45"> </tspan><tspan x="0" y="180" font-family="'Helvetica'" font-size="45">The focus of this system is to explore how creative you are as a team. We aren&apos;t looking at </tspan><tspan x="0" y="225" font-family="'Helvetica'" font-size="45">individual creativity, so don&apos;t worry, you (and your team) will remain completely anonymous. </tspan><tspan x="0" y="270" font-family="'Helvetica'" font-size="45"> </tspan><tspan x="0" y="315" font-family="'Helvetica'" font-size="45">Go on, give everything a go - the broad aim here is explore your collective creativity, dream up </tspan><tspan x="0" y="360" font-family="'Helvetica'" font-size="45">things which no one else would think of, but which still make sense! </tspan><tspan x="0" y="405" font-family="'Helvetica'" font-size="45"> </tspan><tspan x="0" y="450" font-family="'Helvetica'" font-size="45">Please alert the facilitator if you have any questions during or after the test.</tspan><tspan x="0" y="495" font-family="'Helvetica'" font-size="45"> </tspan><tspan x="0" y="540" font-family="'Helvetica'" font-size="45">Good luck!</tspan></text>
 </svg>

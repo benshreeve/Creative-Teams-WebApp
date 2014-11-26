@@ -4,4 +4,6 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="2048px" height="1336px" viewBox="0 0 2048 1336" enable-background="new 0 0 2048 1336" xml:space="preserve">
 <text transform="matrix(1 0 0 1 52.3223 94.709)" font-family="'Helvetica'" font-size="50">Picture Completion Test Instructions</text>
+<rect x="48.923" y="135.077" fill="none" width="1904" height="1192"/>
+<text transform="matrix(1 0 0 1 48.9229 167.4316)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="45">This test is 20 minutes long.</tspan><tspan x="0" y="45" font-family="'Helvetica'" font-size="45"> </tspan><tspan x="0" y="90" font-family="'Helvetica'" font-size="45">This test consists of 10 incomplete shapes. Work together using the drawing tools and try to </tspan><tspan x="0" y="135" font-family="'Helvetica'" font-size="45">turn each shape into a drawing which nobody else would think of. Try to build up the picture to </tspan><tspan x="0" y="180" font-family="'Helvetica'" font-size="45">tell an interesting story and enter an interesting title for each.</tspan><tspan x="0" y="225" font-family="'Helvetica'" font-size="45"> </tspan></text>
 </svg>
