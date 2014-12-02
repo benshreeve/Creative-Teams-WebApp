@@ -20,12 +20,14 @@ LocalStrategy = require('passport-local').Strategy,
 database = require('mysql'),
 SessionSockets = require('session.socket.io'),
 compression = require('compression');
+redis = require('redis')
 
 
 var minScreen = 2;
 var maxScreen = 2;
 var connection;
-var db;
+var db, rdb;
+var teamStore;
 var totalUsers = 0;
 
 async.parallel([ connectToRedis(), connectToDB()]);
@@ -44,17 +46,16 @@ function connectToRedis() {
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
    
     
-    sessionSockets.on('connection', function(err, socket, session){	
+    sessionSockets.on('connection', function(err, socket, session){    	
 		io.sockets.emit('totalUsersUpdate', totalUsers);
 		
         // Store identification:
         console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
-        db.activate_user(session.sessionAccessCode);
-		db.get_active_users_count();
-		require('./javascript/backend/admin.js').install_handlers(err, connection, io, session, socket);
-		require('./javascript/backend/pic_comp.js').install_handlers(err, connection, io, session, socket);		
-
-			
+        db.activateUser(session.sessionAccessCode);
+		db.getActiveUsersCount();
+		rdb.addParticipant(session.sessionGroup, session.sessionAccessCode);
+		require('./javascript/backend/admin.js').installHandlers(err, session, socket, io, db, rdb);
+		require('./javascript/backend/pic_comp.js').installHandlers(err, session, socket, io, db, rdb, connection);	
     }); 
 }
 
@@ -77,6 +78,8 @@ function connectToDB() {
         }
     });
 
+    teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
+    rdb = require('./javascript/backend/redis_db.js')(teamStore); 
 }
 
 

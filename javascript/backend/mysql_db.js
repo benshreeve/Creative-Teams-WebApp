@@ -1,6 +1,6 @@
 module.exports = function (conn) {
 	return {
-		get_active_users_count: function(callback) {
+		getActiveUsersCount: function(callback) {
 			conn.query('select * from users where users.active = "1"', function(err, rows){
 	            if(err) throw err;
 	            if (callback)
@@ -10,35 +10,42 @@ module.exports = function (conn) {
 	        });
 		},
 		
-		activate_user: function(access_code) {
+		activateUser: function(access_code) {
 			post = {active: 1};
 			conn.query('UPDATE users SET ? WHERE users.accessid = "' + access_code +'";', 
 					post, function(err, result) {});
 		},
 		
-		deactivate_user: function(access_code) {
+		deactivateUser: function(access_code) {
 			post = {active: 0};
 			conn.query('UPDATE users SET ? WHERE users.accessid = "' + access_code +'";', 
 					post, function(err, result) {});
 		},
 		
-		enable_user: function(access_code) {
+		enableUser: function(access_code) {
 			post = {enabled: 1};
 			conn.query('UPDATE users SET ? WHERE users.accessid = "' + access_code +'";', 
 					post, function(err, result) {});
 		},
 
-		disable_user: function(access_code) {
+		disableUser: function(access_code) {
 			post = {enabled: 0};
 			conn.query('UPDATE users SET ? WHERE users.accessid = "' + access_code +'";', 
 					post, function(err, result) {});
 		},
 		
-		insert_draw: function(dot) {
-            conn.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
+		drawDot: function(dot) {
+            query = conn.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
                 if(err) throw err;
-                console.log("Dot written to database.  Drag is: " + dot.drag);
+                console.log("Drawing a dot:" + query.sql);
             });
+		},
+		
+		eraseDot: function(dot) {
+            query = conn.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
+                if(err) throw err;
+                console.log("Erasing a Dot: "+ query.sql);
+            });			
 		}
 				
 	};

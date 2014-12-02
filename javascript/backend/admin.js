@@ -4,7 +4,7 @@
 
 module.exports = 
 {
-		install_handlers: function(err, connection, io, session, socket) {
+		installHandlers: function(err, session, socket, io, db, rdb) {
 			socket.on('adminRequest', function(data) {
 				if(data == "wipedb") {
 					// Wipe the database:

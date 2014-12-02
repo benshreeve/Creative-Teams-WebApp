@@ -4,11 +4,10 @@
 
 module.exports = 
 {
-		install_handlers: function(err, connection, io, session, socket) {
+		installHandlers: function(err, session, socket, io, db, rdb, connection) {
 			var minScreen = 2;
 			var maxScreen = 2;
 			var totalUsers = 0;
-			var db = require('./mysql_db.js')(connection);
 			
 	        // When a client requests its session:
 	        socket.on('requestSession', function() {
@@ -154,14 +153,7 @@ module.exports =
 
 	            // Post to the database here:
 				
-//	            var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
-//	                if(err) throw err;
-//	                console.log("Dot written to database.  Drag is: " + dot.drag);
-//	                console.log("SQL: " + query.sql);
-//	            });
-	            db.insert_draw(dot);
-				
-
+	            dot.drag ? db.drawDot(dot) : db.eraseDot(dot);				
 	        });
 
 	        // When we receive undo info:
@@ -173,8 +165,9 @@ module.exports =
 	        socket.on('disconnect', function(){
 				totalUsers--;
 				io.sockets.emit('totalUsersUpdate', totalUsers);
-				db.deactivate_user(session.sessionAccessCode);
-				db.get_active_users_count();
+				db.deactivateUser(session.sessionAccessCode);
+				db.getActiveUsersCount();
+				rdb.delParticipant(session.sessionGroup, session.sessionAccessCode);
 	        });			
 		}		
 };
