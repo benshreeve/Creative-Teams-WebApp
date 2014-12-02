@@ -25,10 +25,10 @@ compression = require('compression');
 var minScreen = 2;
 var maxScreen = 2;
 var connection;
-
+var db;
 var totalUsers = 0;
 
-async.parallel([ connectToRedis(), connectToDB() ]);
+async.parallel([ connectToRedis(), connectToDB()]);
 
 function connectToRedis() {
     // Connect to Redis:
@@ -43,22 +43,27 @@ function connectToRedis() {
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
    
-    sessionSockets.on('connection', function(err, socket, session){
-	
-		totalUsers++;
-		
+    
+    sessionSockets.on('connection', function(err, socket, session){	
 		io.sockets.emit('totalUsersUpdate', totalUsers);
-
-		require('./javascript/backend/admin.js').install_handler(err, connection, io, session, socket);
-		require('./javascript/backend/pic_comp.js').install_handlers(err, connection, io, session, socket);
 		
+        // Store identification:
+        console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
+        db.activate_user(session.sessionAccessCode);
+		db.get_active_users_count();
+		require('./javascript/backend/admin.js').install_handlers(err, connection, io, session, socket);
+		require('./javascript/backend/pic_comp.js').install_handlers(err, connection, io, session, socket);		
+
+			
     }); 
 }
+
 
 
 function connectToDB() {
     connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
 
+    db = require('./javascript/backend/mysql_db.js')(connection);
     // Reset all users active flags to inactive, in case of crash:
     var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
 

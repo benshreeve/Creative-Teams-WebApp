@@ -8,6 +8,7 @@ module.exports =
 			var minScreen = 2;
 			var maxScreen = 2;
 			var totalUsers = 0;
+			var db = require('./mysql_db.js')(connection);
 			
 	        // When a client requests its session:
 	        socket.on('requestSession', function() {
@@ -147,28 +148,18 @@ module.exports =
 	            }
 	        });
 
-	        // Store identification:
-	        console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
-	        var post  = {active: 1};
-	        var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
-
-	        // Now print out the total number of users:
-	        connection.query('select * from users where users.active = "1"', function(err, rows){
-	            if(err) throw err;
-	            else console.log("Total number of users is: " + rows.length);
-	        });
-
 	        // When we receive drawing information:
 	        socket.on('mousedot', function(dot){
 	            socket.broadcast.emit('mousedot', dot);
 
 	            // Post to the database here:
 				
-	            var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
-	                if(err) throw err;
-	                console.log("Dot written to database.  Drag is: " + dot.drag);
-	                console.log("SQL: " + query.sql);
-	            });
+//	            var query = connection.query('INSERT INTO `transactions`(`xpoint`, `ypoint`, `drag`, `radius`, `owner`, `time`, `screen`, `colour`, `group`) VALUES ("'+ dot.x +'","'+ dot.y +'","'+ dot.drag +'","'+ dot.rad +'","'+ dot.owner +'", now(6),"'+ dot.screen +'","'+ dot.colour +'","'+ dot.group +'");', post, function(err, result) {
+//	                if(err) throw err;
+//	                console.log("Dot written to database.  Drag is: " + dot.drag);
+//	                console.log("SQL: " + query.sql);
+//	            });
+	            db.insert_draw(dot);
 				
 
 	        });
@@ -182,13 +173,8 @@ module.exports =
 	        socket.on('disconnect', function(){
 				totalUsers--;
 				io.sockets.emit('totalUsersUpdate', totalUsers);
-	            var post  = {active: 0};
-	            var query = connection.query('UPDATE users SET ? WHERE users.accessid = "' + session.sessionAccessCode +'";', post, function(err, result) {});
-
-	            connection.query('select * from users where users.active = "1"', function(err, rows){
-	                if(err) throw err;
-	                console.log("Total number of users is: " + rows.length);
-	            });
+				db.deactivate_user(session.sessionAccessCode);
+				db.get_active_users_count();
 	        });			
 		}		
 };
