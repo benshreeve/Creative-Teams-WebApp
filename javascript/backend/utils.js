@@ -4,7 +4,7 @@
 
 module.exports =
 {
-	is_dup: function(list, item) {
+	isDup: function(list, item) {
 		items = list.split(',');
 		console.log("items:", items, items.length);
 		console.log("item:", item);
@@ -18,7 +18,7 @@ module.exports =
 		return false;
 	},
 
-	is_equal: function(list1, list2) {
+	isEqual: function(list1, list2) {
 		if (list1.length != list2.length)
 			return false;
 		items1 = list1.split(',').sort();
@@ -28,7 +28,38 @@ module.exports =
 				return false;
 		}
 		return true;
-	}
+	},
+	
+	addItemUnique: function(list, item) {
+		if (!this.isDup(list, item)) {
+			if (list.length > 0)
+				list += ',';
+			list += item;
+		}
+		return list;
+	},
+	
+	delItem: function(list, item) {
+		items = list.split(',');
+		console.log("items:", items, items.length);
+		console.log("item:", item);
+		if (items.length > 0) {
+			index = items.indexOf(item);
+			if (index > -1) {
+				items.splice(index, 1);
+				var newList = "";
+				for (i = 0; i < items.length; i++) {
+					console.log("item, i", item, items[i]);
+					newList += items[i];
+					if (i < items.length-1)
+						newList += ',';				
+				}
+				return newList;
+			}
+		}		
+		return list;
+	},
+	
 		
 		
 };
