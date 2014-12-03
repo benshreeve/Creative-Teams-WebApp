@@ -48,10 +48,11 @@ function connectToRedis() {
     
     sessionSockets.on('connection', function(err, socket, session){    	
 		io.sockets.emit('totalUsersUpdate', totalUsers);
-		
+		id = session.sessionAccessCode.match(/[0-9]+/g);
+		console.log("team: ", id[0], "User: ", id[1]);
         // Store identification:
         console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
-        db.activateUser(session.sessionAccessCode);
+        db.activateUser(id[0], id[1]);
 		db.getActiveUsersCount();
 		rdb.addParticipant(session.sessionGroup, session.sessionAccessCode);
 		require('./javascript/backend/admin.js').installHandlers(err, session, socket, io, db, rdb);
@@ -62,7 +63,7 @@ function connectToRedis() {
 
 
 function connectToDB() {
-    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'heroku_8ca30c1ed121d0a'});
+    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
 
     db = require('./javascript/backend/mysql_db.js')(connection);
     // Reset all users active flags to inactive, in case of crash:
