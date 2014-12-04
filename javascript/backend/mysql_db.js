@@ -21,6 +21,11 @@ module.exports = function (conn) {
 			conn.query('UPDATE users SET ? WHERE users.TeamID = ' + teamID + ' AND users.UserID = ' + userID + ';', 
 					post, function(err, result) {});
 		},
+
+		deactivateAllUsers: function() {
+			post = {Active: 0};
+			conn.query('UPDATE users SET ? ;', post, function(err, result) {});
+		},
 		
 		enableUser: function(teamID, userID) {
 			post = {Enabled: 1};
@@ -83,6 +88,7 @@ module.exports = function (conn) {
 			conn.query('UPDATE users SET ? WHERE users.teamID = "'+ teamID + 
 					   '" and users.UserID="' + userID + '"', post, function(err, row) {if (err) throw err;});
 		}
+		
 				
 	};
 };
