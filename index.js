@@ -56,7 +56,7 @@ function startBackend() {
 		
 		channel.setup(socket, session.AccessCode);
 		
-		if (!session.Late)
+		if (session.Late)
 			installHandlers("10", {session:session, socket:socket, connection:connection, io:io});
 		else {
 			channel.joinTeam(session.AccessCode, session.TeamID);
@@ -180,7 +180,7 @@ function processNewUser(userRow, args) {
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
-			args.res.redirect("/admin/");
+			args.res.redirect("/test1/");
 		} else {
 			serveError(args.res, "User has already logged in ...");
 		}
