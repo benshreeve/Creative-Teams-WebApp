@@ -8,7 +8,7 @@ module.exports =
 			
 	        // When a client requests its session:
 	        context.socket.on('requestSession', function() {
-	            context.channel.sendUser(context.session.AccessCode, 'sessionRequest', 
+	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', 
 	            			    {sessionColor: context.session.UserID == 1 ? "purple" : "red", 
 	            				 sessionGroup: context.session.TeamID,
 	            				 sessionAccessCode: context.session.AccessCode,
@@ -25,7 +25,7 @@ module.exports =
 			
 			// When a client requests its session ID only:
 	        context.socket.on('sessionTitle', function() {
-	            context.channel.sendUser(context.session.AccessCode, 'sessionRequest', context.session);
+	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', context.session);
 				//sendState(session.sessionScreen);
 	        });
 			
@@ -63,14 +63,14 @@ module.exports =
                 		color = rows[i].UserID == 1 ? "purple" : "red"
                 	}
                 	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
-                    context.channel.sendUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
+                    context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
                     		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
                 }	        	
 	        }
 
 	        // When we receive drawing information:
 	        context.socket.on('mousedot', function(dot){
-	            context.channel.sendTeam(context.session.TeamID, 'mousedot', dot);
+	            context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
 	            // Post to the database here:				
 	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
 	        });
