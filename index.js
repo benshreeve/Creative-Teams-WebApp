@@ -24,14 +24,11 @@ redis = require('redis')
 utils = require('./javascript/backend/utils.js')
 
 
-var connection;
 var db, rdb;
-var teamStore;
-var totalUsers = 0;
 
-async.parallel([ connectToRedis(), connectToDB()]);
+async.parallel([ startBackend(), setupDBs()]);
 
-function connectToRedis() {
+function startBackend() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
     var sessionStore = new RedisStore({host: "130.216.38.234", port:13163, pass: "apple"});
@@ -47,14 +44,19 @@ function connectToRedis() {
     
     sessionSockets.on('connection', function(err, socket, session){
     	if (err) throw err;
-		io.sockets.emit('totalUsersUpdate', totalUsers);
+
         // Store identification:
         console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
 		rdb.addParticipant(session.TeamID, session.AccessCode);
         db.activateUser(session.TeamID, session.UserID);
         
 		db.getActiveUsersCount();
-		rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb});		
+		
+
+		if (session.Late)
+			installHandlers("10", {session:session, socket:socket, io:io, db:db, rdb:rdb});
+		else
+			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb});		
     }); 
 }
 
@@ -63,6 +65,9 @@ function installHandlers(currentTest, args) {
 	case "0":	
 		require('./javascript/backend/pic_comp.js').installHandlers(args.session, args.socket, args.io, args.db, args.rdb);
 		break;
+	case "10":	
+		require('./javascript/backend/admin.js').installHandlers(args.session, args.socket, args.io, args.db, args.rdb);
+		break;		
 	default:
 		console.log("no handler found for test: ", currentTest);
 	}
@@ -70,8 +75,8 @@ function installHandlers(currentTest, args) {
 
 
 
-function connectToDB() {
-    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
+function setupDBs() {
+    var connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
     db = require('./javascript/backend/mysql_db.js')(connection);
     
     // Reset all users active flags to inactive, in case of crash:
@@ -88,7 +93,7 @@ function connectToDB() {
         }
     });
 
-    teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
+    var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore); 
 }
 
