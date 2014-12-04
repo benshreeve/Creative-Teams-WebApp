@@ -21,10 +21,9 @@ database = require('mysql'),
 SessionSockets = require('session.socket.io'),
 compression = require('compression');
 redis = require('redis')
+utils = require('./javascript/backend/utils.js')
 
 
-var minScreen = 2;
-var maxScreen = 2;
 var connection;
 var db, rdb;
 var teamStore;
@@ -48,15 +47,15 @@ function connectToRedis() {
     
     sessionSockets.on('connection', function(err, socket, session){    	
 		io.sockets.emit('totalUsersUpdate', totalUsers);
-		id = session.sessionAccessCode.match(/[0-9]+/g);
-		console.log("team: ", id[0], "User: ", id[1]);
         // Store identification:
-        console.log('User: ' + session.sessionAccessCode + ' connected under the nickname ' + session.sessionNickName);
-        db.activateUser(id[0], id[1]);
+        console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
+		rdb.addParticipant(session.TeamID, session.AccessCode);
+        db.activateUser(session.TeamID, session.UserID);
+        
 		db.getActiveUsersCount();
-		rdb.addParticipant(session.sessionGroup, session.sessionAccessCode);
+		
 		require('./javascript/backend/admin.js').installHandlers(err, session, socket, io, db, rdb);
-		require('./javascript/backend/pic_comp.js').installHandlers(err, session, socket, io, db, rdb, connection);	
+		require('./javascript/backend/pic_comp.js').installHandlers(err, session, socket, io, db, rdb, connection);
     }); 
 }
 
@@ -142,54 +141,39 @@ function checkLogin(req, res, next) {
 /* ------------------------------------------------------------------------- */
 
 app.post("/public/*", function(req, res) {
-	try {
 
-    connection.query('select * from users where users.accessid = '+ connection.escape(req.body.accesscode) +';', function(err, rows){
-        if(err) throw err;
-
-		// If it is a valid access code:
-		if(rows.length > 0) {
-		
-			// If the user has not already logged in somewhere:
-			if(rows[0].active == "0") {
-				
-				// Update the database about the nickname:
-				var post  = {nickname: req.body.nickname};
-				var query = connection.query('UPDATE users SET ? WHERE users.accessid = '+ connection.escape(req.body.accesscode), post, function(err, row) {});
-				
-				// Write this info to the session:
-				req.session.sessionAccessCode = req.body.accesscode;	
-				req.session.sessionNickName = req.body.nickname;
-				req.session.sessionColour = rows[0].colour;
-				req.session.sessionGroup = rows[0].group;
-				req.session.sessionScreen = rows[0].screen;
-				req.session.sessionMinScreen = minScreen;
-				req.session.sessionMaxScreen = maxScreen;
-				
-				connection.query('select bgimage, collaborative, drawable from screens, users where users.accessid = '+ connection.escape(req.body.accesscode) +' and screens.ID = '+ connection.escape(req.session.sessionScreen) +';', function(err, result){
-					if(err) throw err;
-					req.session.sessionBackground = result[0].bgimage;
-					req.session.sessionCollaborative = result[0].collaborative;
-					req.session.sessionDrawable = result[0].drawable;
-					req.session.save();
-				});			
-				
-				// Finally, Redirect:
-				res.redirect("/test1/");
-			}
-			else serveError(res, "This user has already logged in.  Duplicates aren't allowed...");
-		}
-		else { 
-			// Instead, try to derive if this is an admin login:
-			connection.query('select login from admin where login = ' + connection.escape(req.body.accesscode), function(errr, result) {
-				if(result.length > 0) res.redirect("/admin/");
-				else res.redirect("/");
-			});	
-		}		
-    });
+	if (utils.checkAccessCode(req.body.accesscode)) {
+		db.getUser(utils.getTeamID(req.body.accesscode), utils.getUserID(req.body.accesscode), processNewUser, {req:req, res:res});
 	}
-	catch(e) { console.log(e); }
+	else {
+		serveError(res, "Invalid access code ...");
+	}
 });
+
+function processNewUser(userRow, args) {
+	if (userRow) {
+		if (userRow.Active == 0) {
+			db.setUserName(userRow.TeamID, userRow.UserID, args.req.body.nickname);
+			args.req.session.AccessCode = args.req.body.accesscode;
+			args.req.session.Name = args.req.body.nickname;
+			args.req.session.TeamID = userRow.TeamID;
+			args.req.session.UserID = userRow.UserID;
+			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
+			args.res.redirect("/test1/");
+		} else {
+			serveError(args.res, "User has already logged in ..."+userRow.Active);
+		}
+	} else {
+		serveError(args.res, "Invalid access code ...");
+	}
+	
+}
+
+function setLate(teamCurrentTest, args) {
+	args.userSession.Late = teamCurrentTest > 1 ? true : false;
+	console.log("userSession:", args.userSession);
+	args.userSession.save();		
+}
 
 
 /* ------------------------------------------------------------------------- */

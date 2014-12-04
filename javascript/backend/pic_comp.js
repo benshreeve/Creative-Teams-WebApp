@@ -8,8 +8,19 @@ module.exports =
 			
 	        // When a client requests its session:
 	        socket.on('requestSession', function() {
-	            socket.emit('sessionRequest', session);
-				sendState(session.sessionScreen);
+	            socket.emit('sessionRequest', {sessionColor: session.UserID == 1 ? "purple" : "red", 
+	            							   sessionGroup: session.TeamID,
+	            							   sessionAccessCode: session.AccessCode,
+	            							   sessionMinScreen: 2,
+	            							   sessionMaxScreen: 2,
+	            							   sessionScreen: 2,
+	            							   sessionCollaborative: true,
+	            							   sessionDrawable: "true",
+	            							   sessionBackground: "../images/picturecompletion/TTCT_Fig_Parts_Figure_1.svg",
+	            							   sessionNickName: session.Name
+	            							   });
+				//sendState(session.sessionScreen);
+	            db.getTransactions(1, 0, 1, sendTransactions);
 	        });
 			
 			// When a client requests its session ID only:
@@ -18,7 +29,7 @@ module.exports =
 				//sendState(session.sessionScreen);
 	        });
 			
-			
+			/*
 			function readState(screenNumber, limit1, limit2){
 				var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'" limit '+limit1+', '+limit2, function(err, rows){
 	                if(err) throw err;
@@ -40,10 +51,21 @@ module.exports =
 					for(var i = 0; i<rowNumber; i=i+10) {
 						setTimeout(readState(screenNumber, i, 10), 20*i);
 					}
-	            });
-				
-
-	            
+	            });	            
+	        }
+	        */
+	        function sendTransactions(rows) {
+                for(var i = 0; i<rows.length; i++) {
+                	var oData = eval('(' + rows[i].OperationData + ')');
+                	var drag = rows[i].Operation == 1 ? true : false;
+                	var color = "rgba(0,0,0,1)";
+                	if (drag) {
+                		color = rows[i].UserID == 1 ? "purple" : "red"
+                	}
+                	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
+                    socket.emit('mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
+                    		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
+                }	        	
 	        }
 
 	        // When we receive drawing information:
@@ -56,9 +78,9 @@ module.exports =
 
 	        // On client disconnection, update the database:
 	        socket.on('disconnect', function(){
-				db.deactivateUser(session.sessionAccessCode);
+				db.deactivateUser(session.TeamID, session.UserID);
 				db.getActiveUsersCount();
-				rdb.delParticipant(session.sessionGroup, session.sessionAccessCode);
+				rdb.delParticipant(session.TeamID, session.AccessCode);
 	        });			
 		}		
 };

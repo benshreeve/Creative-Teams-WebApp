@@ -60,6 +60,17 @@ module.exports =
 		return list;
 	},
 	
+	getTeamID: function(accessCode) {
+		return accessCode.match(/[0-9]+/g)[0];
+	},
+	
+	getUserID: function(accessCode) {
+		return accessCode.match(/[0-9]+/g)[1];
+	},
+	
+	checkAccessCode: function(accessCode) {
+		return /^s[0-9]+p[0-9]+$/.test(accessCode);
+	}
 		
 		
 };

@@ -44,7 +44,7 @@ socket.on('session', function (session) {
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
-	if(dot.group == groupNumber && dot.screen == screenNumber && ( (dot.owner === accessID) || (collaborative === true || collaborative === "true" ) ) ) {
+//	if(dot.group == groupNumber && dot.screen == screenNumber && ( (dot.owner === accessID) || (collaborative === true || collaborative === "true" ) ) ) {
 	
 		var testUser;
 		var testCollaborative;
@@ -56,7 +56,7 @@ socket.on('mousedot', function(dot){
 		console.log("collaborative is: " + collaborative + "(" + testCollaborative + ") and dot.owner is: " + dot.owner + " and access id is: " + accessID + " (" + testUser + ")");
 		addClickSimple(dot.x, dot.y, dot.drag, dot.rad, dot.colour, dot.owner);
 		redraw();
-	}
+//	}
 });
  
 // Undo when we get a request:

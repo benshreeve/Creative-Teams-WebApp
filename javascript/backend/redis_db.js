@@ -35,7 +35,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.Participants = util.delItem(reply.Participants, accessCode);
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				} else {
 					console.log("no record for this team");
 				}
@@ -50,7 +50,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.Participants = '';
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+				//	console.log("reply: ", reply);
 				}
 			});
 		},
@@ -64,7 +64,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.ReadyToStart = util.addItemUnique(reply.ReadyToStart, accessCode);
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});
 		},
@@ -77,7 +77,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.ReadyToStart = '';
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});
 		},
@@ -90,19 +90,19 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.TextEditingUser = accessCode;
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});			
 		},
 
-		getTextEditingUser: function(teamID, callback) {
+		getTextEditingUser: function(teamID, callback, args) {
 			conn.hgetall(teamID, function(err, reply) {
 				if (err) 
 					throw err;
 				
 				if (reply) {
-					callback(reply.TextEditingUser);
-					console.log("reply: ", reply);
+					callback(reply.TextEditingUser, args);
+					//console.log("reply: ", reply);
 				}
 			});			
 		},
@@ -115,24 +115,24 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.IdeaId = ideaID;
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});			
 		},
 		
-		getIdeaID: function(teamID, callback) {
+		getIdeaID: function(teamID, callback, args) {
 			conn.hgetall(teamID, function(err, reply) {
 				if (err) 
 					throw err;
 				
 				if (reply) {
-					callback(reply.IdeaId);
-					console.log("reply: ", reply);
+					callback(reply.IdeaId, args);
+					//console.log("reply: ", reply);
 				}
 			});			
 		},
 
-		genIdeaID: function(teamID, callback) {
+		genIdeaID: function(teamID, callback, args) {
 			conn.hgetall(teamID, function(err, reply) {
 				if (err) 
 					throw err;
@@ -140,8 +140,8 @@ module.exports = function (conn) {
 				if (reply) {
 					var id = reply.IdeaId ++;
 					conn.hmset(teamID, reply);
-					callback(id);
-					console.log("reply: ", reply);
+					callback(id, args);
+					//console.log("reply: ", reply);
 				}
 			});			
 		},
@@ -154,7 +154,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.CurrentTest = testID;
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});						
 		},
@@ -167,31 +167,35 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.CurrentScreen = screen;
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 			});						
 		},
 
-		getCurrentTest: function(teamID, callback) {
+		getCurrentTest: function(teamID, callback, args) {
 			conn.hgetall(teamID, function(err, reply) {
 				if (err) 
 					throw err;
 				
 				if (reply) {
-					callback(reply.CurrentTest);
-					console.log("reply: ", reply);
+					callback(reply.CurrentTest, args);
+					//console.log("reply: ", reply);
+				} else {
+					callback(0, args);
 				}
 			});						
 		},
 		
-		getCurrentScreen: function(teamID, callback) {
+		getCurrentScreen: function(teamID, callback, args) {
 			conn.hgetall(teamID, function(err, reply) {
 				if (err) 
 					throw err;
 				
 				if (reply) {
-					callback(reply.CurrentScreen);
-					console.log("reply: ", reply);
+					callback(reply.CurrentScreen, args);
+					//console.log("reply: ", reply);
+				} else {
+					callback(1);
 				}
 			});						
 		},
