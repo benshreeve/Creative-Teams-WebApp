@@ -48,5 +48,7 @@ module.exports =
 				console.log("update for session information:"+session.sessionScreen+":"+session.sessionMinScreen+":"+session.sessionMaxScreen);
 
 			});
+			
+			console.log("Handlers were installed for admin.");
 		}		
 };
