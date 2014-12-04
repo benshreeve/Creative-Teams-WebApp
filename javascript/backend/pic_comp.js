@@ -4,7 +4,7 @@
 
 module.exports = 
 {
-		installHandlers: function(err, session, socket, io, db, rdb, connection) {
+		installHandlers: function(session, socket, io, db, rdb) {
 			
 	        // When a client requests its session:
 	        socket.on('requestSession', function() {
@@ -81,6 +81,8 @@ module.exports =
 				db.deactivateUser(session.TeamID, session.UserID);
 				db.getActiveUsersCount();
 				rdb.delParticipant(session.TeamID, session.AccessCode);
-	        });			
+	        });	
+	        
+	        console.log("Hanlders were installed for picture completion test.");
 		}		
 };
