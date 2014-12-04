@@ -45,7 +45,8 @@ function connectToRedis() {
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
    
     
-    sessionSockets.on('connection', function(err, socket, session){    	
+    sessionSockets.on('connection', function(err, socket, session){
+    	if (err) throw err;
 		io.sockets.emit('totalUsersUpdate', totalUsers);
         // Store identification:
         console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
@@ -53,25 +54,34 @@ function connectToRedis() {
         db.activateUser(session.TeamID, session.UserID);
         
 		db.getActiveUsersCount();
-		
-		require('./javascript/backend/admin.js').installHandlers(err, session, socket, io, db, rdb);
-		require('./javascript/backend/pic_comp.js').installHandlers(err, session, socket, io, db, rdb, connection);
+		rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb});		
     }); 
+}
+
+function installHandlers(currentTest, args) {
+	switch (currentTest) {
+	case "0":	
+		require('./javascript/backend/pic_comp.js').installHandlers(args.session, args.socket, args.io, args.db, args.rdb);
+		break;
+	default:
+		console.log("no handler found for test: ", currentTest);
+	}
 }
 
 
 
 function connectToDB() {
     connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
-
     db = require('./javascript/backend/mysql_db.js')(connection);
+    
     // Reset all users active flags to inactive, in case of crash:
-    var query = connection.query('UPDATE users SET active = 0', function(err, result) {});
+    db.deactivateAllUsers();
 
     connection.on('error', function(err) {
         console.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-            connectToDB();                         // lost due to either server restart, or a
+            connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
+            db = require('./javascript/backend/mysql_db.js')(connection);
 			console.log("DB Connection ok ");
         } else {                                      // connnection idle timeout (the wait_timeout
             throw err;                                  // server variable configures this)
@@ -161,7 +171,7 @@ function processNewUser(userRow, args) {
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
 			args.res.redirect("/test1/");
 		} else {
-			serveError(args.res, "User has already logged in ..."+userRow.Active);
+			serveError(args.res, "User has already logged in ...");
 		}
 	} else {
 		serveError(args.res, "Invalid access code ...");
@@ -171,7 +181,6 @@ function processNewUser(userRow, args) {
 
 function setLate(teamCurrentTest, args) {
 	args.userSession.Late = teamCurrentTest > 1 ? true : false;
-	console.log("userSession:", args.userSession);
 	args.userSession.save();		
 }
 
