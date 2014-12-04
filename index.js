@@ -25,6 +25,7 @@ utils = require('./javascript/backend/utils.js')
 
 
 var db, rdb;
+var connection;
 
 async.parallel([ startBackend(), setupDBs()]);
 
@@ -55,8 +56,8 @@ function startBackend() {
 		
 		channel.setup(socket, session.AccessCode);
 		
-		if (session.Late)
-			installHandlers("10", {session:session, socket:socket, io:io, db:db, rdb:rdb, channel:channel});
+		if (!session.Late)
+			installHandlers("10", {session:session, socket:socket, connection:connection, io:io});
 		else {
 			channel.joinTeam(session.AccessCode, session.TeamID);
 			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb, channel:channel});
@@ -71,7 +72,7 @@ function installHandlers(currentTest, context) {
 		require('./javascript/backend/pic_comp.js').installHandlers(context);
 		break;
 	case "10":	
-		require('./javascript/backend/admin.js').installHandlers(context);
+		require('./javascript/backend/admin.js').installHandlers(context.session, context.socket, context.io, context.connection);
 		break;		
 	default:
 		console.log("no handler found for test: ", currentTest);
@@ -81,7 +82,7 @@ function installHandlers(currentTest, context) {
 
 
 function setupDBs() {
-    var connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
+    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
     db = require('./javascript/backend/mysql_db.js')(connection);
     
     // Reset all users active flags to inactive, in case of crash:
@@ -179,7 +180,7 @@ function processNewUser(userRow, args) {
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
-			args.res.redirect("/test1/");
+			args.res.redirect("/admin/");
 		} else {
 			serveError(args.res, "User has already logged in ...");
 		}
