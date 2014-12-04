@@ -44,7 +44,8 @@ function startBackend() {
     
     sessionSockets.on('connection', function(err, socket, session){
     	if (err) throw err;
-
+    	
+    	var channel = require('./javascript/backend/channel.js')(io);
         // Store identification:
         console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
 		rdb.addParticipant(session.TeamID, session.AccessCode);
@@ -52,21 +53,25 @@ function startBackend() {
         
 		db.getActiveUsersCount();
 		
-
+		channel.setup(socket, session.AccessCode);
+		
 		if (session.Late)
-			installHandlers("10", {session:session, socket:socket, io:io, db:db, rdb:rdb});
-		else
-			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb});		
+			installHandlers("10", {session:session, socket:socket, io:io, db:db, rdb:rdb, channel:channel});
+		else {
+			channel.joinTeam(session.AccessCode, session.TeamID);
+			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb, channel:channel});
+		}
+
     }); 
 }
 
-function installHandlers(currentTest, args) {
+function installHandlers(currentTest, context) {
 	switch (currentTest) {
 	case "0":	
-		require('./javascript/backend/pic_comp.js').installHandlers(args.session, args.socket, args.io, args.db, args.rdb);
+		require('./javascript/backend/pic_comp.js').installHandlers(context);
 		break;
 	case "10":	
-		require('./javascript/backend/admin.js').installHandlers(args.session, args.socket, args.io, args.db, args.rdb);
+		require('./javascript/backend/admin.js').installHandlers(context);
 		break;		
 	default:
 		console.log("no handler found for test: ", currentTest);

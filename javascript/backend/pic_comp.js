@@ -4,28 +4,28 @@
 
 module.exports = 
 {
-		installHandlers: function(session, socket, io, db, rdb) {
+		installHandlers: function(context) {
 			
 	        // When a client requests its session:
-	        socket.on('requestSession', function() {
-	            socket.emit('sessionRequest', {sessionColor: session.UserID == 1 ? "purple" : "red", 
-	            							   sessionGroup: session.TeamID,
-	            							   sessionAccessCode: session.AccessCode,
-	            							   sessionMinScreen: 2,
-	            							   sessionMaxScreen: 2,
-	            							   sessionScreen: 2,
-	            							   sessionCollaborative: true,
-	            							   sessionDrawable: "true",
-	            							   sessionBackground: "../images/picturecompletion/TTCT_Fig_Parts_Figure_1.svg",
-	            							   sessionNickName: session.Name
-	            							   });
+	        context.socket.on('requestSession', function() {
+	            context.channel.sendUser(context.session.AccessCode, 'sessionRequest', 
+	            			    {sessionColor: context.session.UserID == 1 ? "purple" : "red", 
+	            				 sessionGroup: context.session.TeamID,
+	            				 sessionAccessCode: context.session.AccessCode,
+	            				 sessionMinScreen: 2,
+	            				 sessionMaxScreen: 2,
+	            				 sessionScreen: 2,
+	            				 sessionCollaborative: true,
+	            				 sessionDrawable: "true",
+	            				 sessionBackground: "../images/picturecompletion/TTCT_Fig_Parts_Figure_1.svg",
+	            				 sessionNickName: context.session.Name});
 				//sendState(session.sessionScreen);
-	            db.getTransactions(1, 0, 1, sendTransactions);
+	            context.db.getTransactions(1, 0, 1, sendTransactions);
 	        });
 			
 			// When a client requests its session ID only:
-	        socket.on('sessionTitle', function() {
-	            socket.emit('sessionRequest', session);
+	        context.socket.on('sessionTitle', function() {
+	            context.channel.sendUser(context.session.AccessCode, 'sessionRequest', context.session);
 				//sendState(session.sessionScreen);
 	        });
 			
@@ -63,24 +63,24 @@ module.exports =
                 		color = rows[i].UserID == 1 ? "purple" : "red"
                 	}
                 	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
-                    socket.emit('mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
+                    context.channel.sendUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
                     		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
                 }	        	
 	        }
 
 	        // When we receive drawing information:
-	        socket.on('mousedot', function(dot){
-	            socket.broadcast.emit('mousedot', dot);
-
+	        context.socket.on('mousedot', function(dot){
+	            context.channel.sendTeam(context.session.TeamID, 'mousedot', dot);
 	            // Post to the database here:				
-	            dot.drag ? db.drawDot(dot) : db.eraseDot(dot);				
+	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
 	        });
 
 	        // On client disconnection, update the database:
-	        socket.on('disconnect', function(){
-				db.deactivateUser(session.TeamID, session.UserID);
-				db.getActiveUsersCount();
-				rdb.delParticipant(session.TeamID, session.AccessCode);
+	        context.socket.on('disconnect', function(){
+				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
+				context.db.getActiveUsersCount();
+				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
+				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
 	        });	
 	        
 	        console.log("Hanlders were installed for picture completion test.");
