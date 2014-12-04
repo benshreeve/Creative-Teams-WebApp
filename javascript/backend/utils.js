@@ -6,11 +6,8 @@ module.exports =
 {
 	isDup: function(list, item) {
 		items = list.split(',');
-		console.log("items:", items, items.length);
-		console.log("item:", item);
 		if (items.length > 0) {
 			for (i=0; i < items.length; i++) {
-				console.log("item, i", item, items[i]);
 				if (items[i] == item)
 					return true;
 			}
@@ -41,8 +38,6 @@ module.exports =
 	
 	delItem: function(list, item) {
 		items = list.split(',');
-		console.log("items:", items, items.length);
-		console.log("item:", item);
 		if (items.length > 0) {
 			index = items.indexOf(item);
 			if (index > -1) {

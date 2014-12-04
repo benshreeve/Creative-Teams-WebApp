@@ -12,7 +12,7 @@ module.exports = function (conn) {
 				if (reply) {
 					reply.Participants = util.addItemUnique(reply.Participants, accessCode);
 					conn.hmset(teamID, reply);
-					console.log("reply: ", reply);
+					//console.log("reply: ", reply);
 				}
 				else {
 					console.log("no record for this team. create one ...");
