@@ -60,7 +60,7 @@ function startBackend() {
 			installHandlers("10", {session:session, socket:socket, connection:connection, io:io});
 		else {
 			channel.joinTeam(session.AccessCode, session.TeamID);
-			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, io:io, db:db, rdb:rdb, channel:channel});
+			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 		}
 
     }); 
