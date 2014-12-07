@@ -3,206 +3,285 @@
  */
 module.exports = function (conn) {
 	var util = require("./utils.js");
+	var lock = require('redis-lock')(conn);
 	return {
 		addParticipant: function(teamID, accessCode) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {			
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.Participants = util.addItemUnique(reply.Participants, accessCode);
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
-				else {
-					console.log("no record for this team. create one ...");
-					conn.hmset(teamID, "CurrentTest", 0, 
+					if (reply) {
+						reply.Participants = util.addItemUnique(reply.Participants, accessCode);
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					else {
+						console.log("no record for this team. create one ...");
+						conn.hmset(teamID, "CurrentTest", 0, 
 									   "CurrentScreen", 1,
 									   "TextEditingUser", '',
 									   "RemainingTime", 9999,
 									   "IdeaId", 1,
 									   "Participants", accessCode,
 									   "ReadyToStart", '');
-				}
+					}
+					done();
+				});
 			});
 		},
 		
 		delParticipant: function(teamID, accessCode) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err)
-					throw err;
+			lock(teamID, function(done){
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.Participants = util.delItem(reply.Participants, accessCode);
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				} else {
-					console.log("no record for this team");
-				}
+					if (reply) {
+						reply.Participants = util.delItem(reply.Participants, accessCode);
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					} else {
+						console.log("no record for this team");
+					}
+					done();
+				});
 			});
 		},
 		
 		clearParticipants: function(teamID) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done){
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) { 
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.Participants = '';
-					conn.hmset(teamID, reply);
-				//	console.log("reply: ", reply);
-				}
+					if (reply) {
+						reply.Participants = '';
+						conn.hmset(teamID, reply);
+						//	console.log("reply: ", reply);
+					}
+					done();
+				});
 			});
 		},
 		
 
 		addReadyParticipant: function(teamID, accessCode) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.ReadyToStart = util.addItemUnique(reply.ReadyToStart, accessCode);
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
+					if (reply) {
+						reply.ReadyToStart = util.addItemUnique(reply.ReadyToStart, accessCode);
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
 			});
 		},
 		
 		clearReadyParticipants: function(teamID) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.ReadyToStart = '';
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
+					if (reply) {
+						reply.ReadyToStart = '';
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
 			});
 		},
 		
 		setTextEditingUser: function(teamID, accessCode) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done()
+						throw err;
+					}
 				
-				if (reply) {
-					reply.TextEditingUser = accessCode;
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
-			});			
-		},
-
-		getTextEditingUser: function(teamID, callback, args) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
-				
-				if (reply) {
-					callback(reply.TextEditingUser, args);
-					//console.log("reply: ", reply);
-				}
-			});			
+					if (reply) {
+						reply.TextEditingUser = accessCode;
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
+			});
 		},
 		
-		setIdeaID: function(teamID, ideaID) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+
+		getTextEditingUser: function(teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done()
+						throw err;
+					}
 				
-				if (reply) {
-					reply.IdeaId = ideaID;
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
-			});			
+					if (reply) {
+						callback(reply.TextEditingUser, args);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
+			});
+		},
+		
+		
+		setIdeaID: function(teamID, ideaID) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						reply.IdeaId = ideaID;
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
+			});
 		},
 		
 		getIdeaID: function(teamID, callback, args) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					callback(reply.IdeaId, args);
-					//console.log("reply: ", reply);
-				}
-			});			
+					if (reply) {
+						callback(reply.IdeaId, args);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});			
+			});
 		},
 
 		genIdeaID: function(teamID, callback, args) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					var id = reply.IdeaId ++;
-					conn.hmset(teamID, reply);
-					callback(id, args);
-					//console.log("reply: ", reply);
-				}
-			});			
+					if (reply) {
+						var id = reply.IdeaId ++;
+						conn.hmset(teamID, reply);
+						done();
+						callback(id, args);
+						//console.log("reply: ", reply);
+					} else 
+						done();
+				});
+			});
 		},
 		
 		setCurrentTest: function (teamID, testID) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.CurrentTest = testID;
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
-			});						
+					if (reply) {
+						reply.CurrentTest = testID;
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
+			});
 		},
 		
 		setCurrentScreen: function (teamID, screen) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					reply.CurrentScreen = screen;
-					conn.hmset(teamID, reply);
-					//console.log("reply: ", reply);
-				}
-			});						
+					if (reply) {
+						reply.CurrentScreen = screen;
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					}
+					done();
+				});
+			});
 		},
 
 		getCurrentTest: function(teamID, callback, args) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					callback(reply.CurrentTest, args);
-					//console.log("reply: ", reply);
-				} else {
-					callback(0, args);
-				}
-			});						
+					done();
+					
+					if (reply) {
+						callback(reply.CurrentTest, args);
+						//console.log("reply: ", reply);
+					} else {
+						callback(0, args);
+					}
+					
+				});
+			});
 		},
 		
 		getCurrentScreen: function(teamID, callback, args) {
-			conn.hgetall(teamID, function(err, reply) {
-				if (err) 
-					throw err;
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
 				
-				if (reply) {
-					callback(reply.CurrentScreen, args);
-					//console.log("reply: ", reply);
-				} else {
-					callback(1);
-				}
-			});						
+					done();
+					
+					if (reply) {
+						callback(reply.CurrentScreen, args);
+						//console.log("reply: ", reply);
+					} else {
+						callback(1);
+					}
+				});
+			});
 		},
 		
 		delTeam: function(teamID) {
-			conn.del(teamID);
+			lock(teamID, function(done) {
+				conn.del(teamID);
+				done();
+			});
 		}
-				
 	};
 };
