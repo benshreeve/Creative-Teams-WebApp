@@ -22,20 +22,20 @@ module.exports = function (io) {
 			io.sockets.sockets[accessCode].emit(cmd, args);
 		},
 		
-		sendToSmallestID: function(teamID, cmd, args) {
-			var smallestID = 9999;
+		sendToMinID: function(teamID, cmd, args) {
+			var minID = 9999;
 			var ac = '';
 		    for (var a in io.sockets.sockets) {
 		    	if (utils.checkAccessCode(a) && (utils.getTeamID(a) == teamID)) {
 		    		uid = utils.getUserID(a);
-		    		if (uid < smallestID) {
-		    			smallestID = uid;
+		    		if (uid < minID) {
+		    			minID = uid;
 		    			ac = a;
 		    		}
 		    	}
 		    }
 		    
-		    if (smallestID != 9999) {
+		    if (minID != 9999) {
 		    	this.sendToUser(ac, cmd, args);
 		    } else {
 		    	console.log("no user in team "+teamID+" is available ...");
