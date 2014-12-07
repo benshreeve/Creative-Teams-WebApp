@@ -83,6 +83,13 @@ module.exports =
 				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
 	        });	
 	        
+	        // When a client requests its session:
+	        context.socket.on('IsBackendReadyReq', function() {
+	        	console.log("backend is ready now ...");
+	        	context.channel.sendToUser(context.session.AccessCode, "IsBackendReadyRsp", "READY");
+	        });
+
+	        
 	        console.log("Hanlders were installed for picture completion test.");
 		}		
 };
