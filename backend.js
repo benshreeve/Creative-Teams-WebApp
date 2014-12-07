@@ -47,21 +47,23 @@ function startBackend() {
     	if (err) throw err;
     	
     	var channel = require('./javascript/backend/channel.js')(io);
+    	
         // Store identification:
         console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
-		rdb.addParticipant(session.TeamID, session.AccessCode);
-        db.activateUser(session.TeamID, session.UserID);
-        
-		db.getActiveUsersCount();
 		
 		channel.setup(socket, session.AccessCode);
-		
+			
 		if (session.Late)
 			installHandlers("10", {session:session, socket:socket, connection:connection, io:io});
 		else {
 			channel.joinTeam(session.AccessCode, session.TeamID);
 			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 		}
+		
+		rdb.addParticipant(session.TeamID, session.AccessCode);
+        db.activateUser(session.TeamID, session.UserID);
+        
+		db.getActiveUsersCount();
 
     }); 
 }
@@ -73,6 +75,9 @@ function installHandlers(currentTest, context) {
 		break;
 	case "10":	
 		require('./javascript/backend/admin.js').installHandlers(context.session, context.socket, context.io, context.connection);
+		break;
+	case "11":	
+		require('./javascript/backend/not_ready.js').installHandlers(context);
 		break;		
 	default:
 		console.log("no handler found for test: ", currentTest);
