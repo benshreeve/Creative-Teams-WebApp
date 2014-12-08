@@ -5,8 +5,11 @@
 module.exports = function(context)
 {
 	return {
-		testComplete: function() {
+		sendTestComplete: function() {
 	    	context.channel.sendToTeam(context.session.TeamID, 'TestCompleteMsg');
+		},
+
+		sendGetResultsReq: function() {
 	    	context.channel.sendToMinID(context.session.TeamID, 'GetResultsReq');
 		},
 		

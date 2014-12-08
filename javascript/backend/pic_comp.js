@@ -94,10 +94,15 @@ module.exports =
 	        	console.log("backend is ready now ...");
 	        	context.channel.sendToUser(context.session.AccessCode, "IsBackendReadyRsp", "READY");
 	        });
+	        
+	        function testComplete() {
+	        	commons.sendTestComplete();
+	        	commons.sendGetResultsReq();
+	        }
 
 	        commons.sendBackendReady();
 	        commons.setTestTime();	        
-	        var timer = commons.setupTestTimer(commons.testComplete);
+	        var timer = commons.setupTestTimer(testComplete);
 	        
 	        
 	        console.log("Hanlders were installed for picture completion test.");
