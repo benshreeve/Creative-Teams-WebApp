@@ -64,27 +64,12 @@ function startBackend() {
         db.activateUser(session.TeamID, session.UserID);
         
 		db.getActiveUsersCount();
-
     }); 
 }
 
 function installHandlers(currentTest, context) {
-	switch (currentTest) {
-	case "0":	
-		require('./javascript/backend/pic_comp.js').installHandlers(context);
-		break;
-	case "10":	
-		require('./javascript/backend/admin.js').installHandlers(context.session, context.socket, context.io, context.connection);
-		break;
-	case "11":	
-		require('./javascript/backend/not_ready.js').installHandlers(context);
-		break;		
-	default:
-		console.log("no handler found for test: ", currentTest);
-	}
+	require(utils.getTestHandler(currentTest)).installHandlers(context);
 }
-
-
 
 function setupDBs() {
     connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});

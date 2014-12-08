@@ -3,13 +3,14 @@
  */
 
 module.exports = function() {
-	var tests = [{name:"PracArea", screenLimit: 1},
-	             {name:"PicCon",   screenLimit: 1},
-	             {name:"PicComp",  screenLimit: 10},
-	             {name:"ParLines", screenLimit: 18},
-	             {name:"IdeaGen",  screenLimit: 1},
-	             {name:"DesChal",  screenLimit: 99},
-	             {name:"AltUses",  screenLimit: 1}];
+	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/pic_comp.js'},
+	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js'},
+	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js'},
+	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js'},
+	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js'},
+	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js'},
+	             {name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js'}];
+	var colours = ["", "purple", "red", "blue", "orange", "green"];
 	return {
 		isDup: function(list, item) {
 			items = list.split(',');
@@ -51,7 +52,6 @@ module.exports = function() {
 					items.splice(index, 1);
 					var newList = "";
 					for (i = 0; i < items.length; i++) {
-						console.log("item, i", item, items[i]);
 						newList += items[i];
 						if (i < items.length-1)
 							newList += ',';				
@@ -80,6 +80,14 @@ module.exports = function() {
 		
 		getTestScreenLimit: function(testID) {
 			return tests[testID].screenLimit;
+		},
+		
+		getTestHandler: function(testID) {
+			return tests[testID].handler;
+		},
+		
+		getUserColor: function(userID) {
+			return colours[userID];
 		}
 		
 	};
