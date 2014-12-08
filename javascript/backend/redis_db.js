@@ -23,7 +23,8 @@ module.exports = function (conn) {
 						conn.hmset(teamID, "CurrentTest", 0, 
 									   "CurrentScreen", 1,
 									   "TextEditingUser", '',
-									   "RemainingTime", 9999,
+									   "StartTime", 9999,
+									   "TestTime", 0,
 									   "IdeaId", 1,
 									   "Participants", accessCode,
 									   "ReadyToStart", '');
@@ -277,11 +278,58 @@ module.exports = function (conn) {
 			});
 		},
 		
+		updateTime: function (teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						currentTime = new Date().getTime();
+						if ((reply.StartTime != 9999) && (currentTime >= parseInt(reply.StartTime) + parseInt(reply.TestTime))) {
+							reply.StartTime = 9999;
+							reply.TestTime = 0;
+							conn.hmset(teamID, reply);
+							done();
+							callback(args);
+						} else
+							done();
+					} else
+						done();
+				});
+			});
+		},
+		
+		setTime: function(teamID, testTime) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						reply.StartTime = new Date().getTime();
+						reply.TestTime = testTime;
+						conn.hmset(teamID, reply);
+					}
+					
+					done();
+				});
+			});			
+		},
+		
 		delTeam: function(teamID) {
 			lock(teamID, function(done) {
 				conn.del(teamID);
 				done();
 			});
+		},
+		
+		updateTimes: function() {
+			lock()
 		}
 	};
 };

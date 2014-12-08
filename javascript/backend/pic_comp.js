@@ -5,6 +5,7 @@
 module.exports = 
 {
 		installHandlers: function(context) {
+			var commons = require('./commons.js')(context);
 			
 	        // When a client requests its session:
 	        context.socket.on('requestSession', function() {
@@ -62,8 +63,8 @@ module.exports =
                 	if (drag) {
                 		color = rows[i].UserID == 1 ? "purple" : "red"
                 	}
-                	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
-                    context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:6, colour:color, 
+                	console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
+                    context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:oData.rad, colour:color, 
                     		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
                 }	        	
 	        }
@@ -74,6 +75,10 @@ module.exports =
 	            // Post to the database here:				
 	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
 	        });
+	        
+	        context.socket.on('GetResultsRsp', function(results) {
+	        	console.log("results received ...", results);
+	        })
 
 	        // On client disconnection, update the database:
 	        context.socket.on('disconnect', function(){
@@ -81,6 +86,7 @@ module.exports =
 				context.db.getActiveUsersCount();
 				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
 				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
+				clearInterval(timer);
 	        });	
 	        
 	        // When a client requests its session:
@@ -89,7 +95,10 @@ module.exports =
 	        	context.channel.sendToUser(context.session.AccessCode, "IsBackendReadyRsp", "READY");
 	        });
 
-	        context.channel.sendToUser(context.session.AccessCode, "BackendReadyMsg");
+	        commons.sendBackendReady();
+	        commons.setTestTime();	        
+	        var timer = commons.setupTestTimer(commons.testComplete);
+	        
 	        
 	        console.log("Hanlders were installed for picture completion test.");
 		}		

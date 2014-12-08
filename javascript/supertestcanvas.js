@@ -27,6 +27,7 @@ var drawable = "true";
 
 var minScreen = 2;
 var maxScreen = 2;
+var backendReady = false;
 
 
 // Get info from the session: 
@@ -41,6 +42,25 @@ socket.on('session', function (session) {
     document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;
 });
 */
+
+socket.on('UpdateTimeMsg', function(time){
+	console.log("time received from backend: ", time);
+});
+
+socket.on('BackendReadyMsg', function(rsp) {
+	console.log("BackendReadyMsg received ...");
+	//stateSession();
+});
+
+socket.on('TestCompleteMsg', function(rsp) {
+	console.log("TestCompleteMsg received ...");
+});
+
+socket.on('GetResultsReq', function(rsp) {
+	console.log("GetResultsReq received ...");
+	socket.emit('GetResultsRsp', '**RESULTS**');
+});
+
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
@@ -92,6 +112,7 @@ function switchIntention(intention) {
 
 function stateSession() {
 	socket.emit('requestSession');
+	//pollBackend();
 }
 
 socket.on('screenUpdate', function(data) {
@@ -124,6 +145,11 @@ socket.on('sessionRequest', function(session) {
 });
 
 
+function pollBackend() {
+	console.log("polling backend ...");
+	socket.emit("IsBackendReadyReq");
+}
+
 function showTitle(){	
 	socket.emit('sessionTitle');
 }
@@ -138,6 +164,15 @@ function pushToSocket(type, data) {
 		socket.emit(type, data);
 	}
 }
+
+function sleep(milliseconds) {
+	  var start = new Date().getTime();
+	  for (var i = 0; i < 1e7; i++) {
+	    if ((new Date().getTime() - start) > milliseconds){
+	      break;
+	    }
+	  }
+	}
 
 function prepareCanvas() {
 	canvas = document.createElement('canvas');
@@ -168,7 +203,19 @@ function prepareCanvas() {
 		document.getElementById('deadzone-top').style.width = "100%";
 		document.getElementById('deadzone-bottom').style.width = "100%";
 	}	
+	
+	/*
+	do {
+		console.log("check for backend ...", backendReady);
+		pollBackend();
+		sleep(5000);
+	} while (!backendReady);
+	*/
+	//setInterval(function () {pollBackend();}, 5000);
+	
+	console.log("backendReady: ", backendReady);
 	// Ask for Session Details:
+	//
 	stateSession();
 	
 	function doTouchStart(e) {

@@ -27,7 +27,7 @@ utils = require('./javascript/backend/utils.js')
 var db, rdb;
 var connection;
 
-async.parallel([ startBackend(), setupDBs()]);
+async.parallel([startBackend(), setupDBs(), setupTimer()]);
 
 function startBackend() {
     // Connect to Redis:
@@ -46,7 +46,7 @@ function startBackend() {
     sessionSockets.on('connection', function(err, socket, session){
     	if (err) throw err;
     	
-    	var channel = require('./javascript/backend/channel.js')(io);
+    	channel = require('./javascript/backend/channel.js')(io);
     	
         // Store identification:
         console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
@@ -108,6 +108,11 @@ function setupDBs() {
     rdb = require('./javascript/backend/redis_db.js')(teamStore); 
 }
 
+function setupTimer() {	
+    setInterval(function() {
+    	require('./javascript/backend/channel.js')(io).sendToAll("UpdateTimeMsg", new Date().getTime());
+    }, 10*1000);
+}
 
 /* ------------------------------------------------------------------------- */
 /*								Routing Functions							 */
