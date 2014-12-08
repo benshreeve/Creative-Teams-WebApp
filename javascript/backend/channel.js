@@ -3,7 +3,7 @@
  */
 
 module.exports = function (io) {
-	utils = require('./utils.js');
+	utils = require('./utils.js')();
 	
 	return {
 		joinTeam: function(accessCode, teamID) {
