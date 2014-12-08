@@ -21,7 +21,7 @@ database = require('mysql'),
 SessionSockets = require('session.socket.io'),
 compression = require('compression');
 redis = require('redis')
-utils = require('./javascript/backend/utils.js')
+utils = require('./javascript/backend/utils.js')()
 
 
 var db, rdb;
