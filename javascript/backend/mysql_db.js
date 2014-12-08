@@ -91,16 +91,18 @@ module.exports = function (conn) {
 		},
 		
 		getTestTimeLimit: function(testID, callback, args) {
-			conn.query('select ' + utils.getTestName(testID) + 'TimeLimit from config', function(err, rows) {
+			var name = utils.getTestName(testID);
+			conn.query('select ' + name + 'TimeLimit from config', function(err, rows) {
 				if (err) throw err;
-				callback(rows[0], args);
+				callback(eval("rows[0]."+name+"TimeLimit"), args);
 			});			
 		},
 		
 		getTestInstructionFile: function(testID, callback, args) {
-			conn.query('select' + utils.getTestName(testID) + 'InstructionFile from config', function(err, rows) {
+			var name = utils.getTestName(testID);
+			conn.query('select ' + name + 'InstructionFile from config', function(err, rows) {
 				if (err) throw err;
-				callback(rows[0], args);
+				callback(eval("rows[0]."+name+"InstructionFile"), args);
 			});			
 		}
 
