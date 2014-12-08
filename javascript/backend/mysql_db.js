@@ -44,7 +44,7 @@ module.exports = function (conn) {
 			teamID = id[0];
 			userID = id[1];
 			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
-					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 1 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ '}"'+', now(6)'+');'
+					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 1 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ ' ,rad:' + dot.rad + '}"'+', now(6)'+');'
 			
             query = conn.query(q, post, function(err, result) {
                 if(err) throw err;
@@ -57,7 +57,7 @@ module.exports = function (conn) {
 			teamID = id[0];
 			userID = id[1];
 			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
-					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 2 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ '}"'+', now(6)'+');'
+					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 2 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ ',rad:' + dot.rad +'}"'+', now(6)'+');'
 			
 			query = conn.query(q, post, function(err, result) {                
 				if(err) throw err;
