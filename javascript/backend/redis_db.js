@@ -2,7 +2,7 @@
  * New node file
  */
 module.exports = function (conn) {
-	var util = require("./utils.js");
+	var util = require("./utils.js")();
 	var lock = require('redis-lock')(conn);
 	return {
 		addParticipant: function(teamID, accessCode) {
@@ -310,7 +310,7 @@ module.exports = function (conn) {
 						throw err;
 					}
 				
-					if (reply) {
+					if (reply && reply.StartTime == 9999) {
 						reply.StartTime = new Date().getTime();
 						reply.TestTime = testTime;
 						conn.hmset(teamID, reply);
