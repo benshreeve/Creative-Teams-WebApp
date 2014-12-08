@@ -89,6 +89,7 @@ module.exports =
 	        	context.channel.sendToUser(context.session.AccessCode, "IsBackendReadyRsp", "READY");
 	        });
 
+	        context.channel.sendToUser(context.session.AccessCode, "BackendReadyMsg");
 	        
 	        console.log("Hanlders were installed for picture completion test.");
 		}		
