@@ -1,4 +1,5 @@
 module.exports = function (conn) {
+	var utils = require('./utils.js')();
 	return {
 		getActiveUsersCount: function(callback, args) {
 			conn.query('select * from users where users.Active = "1"', function(err, rows){
@@ -87,8 +88,21 @@ module.exports = function (conn) {
 			var post  = {Name: name};
 			conn.query('UPDATE users SET ? WHERE users.teamID = "'+ teamID + 
 					   '" and users.UserID="' + userID + '"', post, function(err, row) {if (err) throw err;});
-		}
+		},
 		
-				
+		getTestTimeLimit: function(testID, callback, args) {
+			conn.query('select ' + utils.getTestName(testID) + 'TimeLimit from config', function(err, rows) {
+				if (err) throw err;
+				callback(rows[0], args);
+			});			
+		},
+		
+		getTestInstructionFile: function(testID, callback, args) {
+			conn.query('select' + utils.getTestName(testID) + 'InstructionFile from config', function(err, rows) {
+				if (err) throw err;
+				callback(rows[0], args);
+			});			
+		}
+
 	};
 };
