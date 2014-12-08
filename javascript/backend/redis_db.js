@@ -310,7 +310,7 @@ module.exports = function (conn) {
 						throw err;
 					}
 				
-					if (reply && reply.StartTime == 9999) {
+					if (reply) {
 						reply.StartTime = new Date().getTime();
 						reply.TestTime = testTime;
 						conn.hmset(teamID, reply);
@@ -319,6 +319,21 @@ module.exports = function (conn) {
 					done();
 				});
 			});			
+		},
+		
+		getTeam: function(teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					done();
+					
+					callback(reply, args);					
+				});
+			});						
 		},
 		
 		delTeam: function(teamID) {

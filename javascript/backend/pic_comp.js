@@ -6,11 +6,14 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
+	        var constants = require('./constants.js');
+	        var utils = require('./utils.js')();
+
 			
 	        // When a client requests its session:
 	        context.socket.on('requestSession', function() {
 	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', 
-	            			    {sessionColor: context.session.UserID == 1 ? "purple" : "red", 
+	            			    {sessionColor: utils.getUserColor(context.session.UserID), 
 	            				 sessionGroup: context.session.TeamID,
 	            				 sessionAccessCode: context.session.AccessCode,
 	            				 sessionMinScreen: 2,
@@ -63,7 +66,7 @@ module.exports =
                 	if (drag) {
                 		color = rows[i].UserID == 1 ? "purple" : "red"
                 	}
-                	console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
+                	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
                     context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:oData.rad, colour:color, 
                     		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
                 }	        	
@@ -86,7 +89,6 @@ module.exports =
 				context.db.getActiveUsersCount();
 				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
 				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
-				clearInterval(timer);
 	        });	
 	        
 	        // When a client requests its session:
@@ -99,11 +101,13 @@ module.exports =
 	        	commons.sendTestComplete();
 	        	commons.sendGetResultsReq();
 	        }
-
-	        commons.sendBackendReady();
-	        commons.setTestTime();	        
-	        var timer = commons.setupTestTimer(testComplete);
-	        
+	       	       
+	        commons.sendBackendReady();	        
+	        commons.setupTestTime(constants.PIC_COMP, testComplete);
+	               
+	        function x(t) {
+	        	console.log('t = ', t);
+	        }
 	        
 	        console.log("Hanlders were installed for picture completion test.");
 		}		
