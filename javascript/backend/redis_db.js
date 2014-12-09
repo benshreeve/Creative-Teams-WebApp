@@ -2,7 +2,7 @@
  * New node file
  */
 module.exports = function (conn) {
-	var util = require("./utils.js")();
+	var utils = require("./utils.js")();
 	var lock = require('redis-lock')(conn);
 	return {
 		addParticipant: function(teamID, accessCode) {
@@ -14,7 +14,7 @@ module.exports = function (conn) {
 					}
 				
 					if (reply) {
-						reply.Participants = util.addItemUnique(reply.Participants, accessCode);
+						reply.Participants = utils.addItemUnique(reply.Participants, accessCode);
 						conn.hmset(teamID, reply);
 						//console.log("reply: ", reply);
 					}
@@ -43,7 +43,7 @@ module.exports = function (conn) {
 					}
 				
 					if (reply) {
-						reply.Participants = util.delItem(reply.Participants, accessCode);
+						reply.Participants = utils.delItem(reply.Participants, accessCode);
 						conn.hmset(teamID, reply);
 						//console.log("reply: ", reply);
 					} else {
@@ -82,13 +82,31 @@ module.exports = function (conn) {
 					}
 				
 					if (reply) {
-						reply.ReadyToStart = util.addItemUnique(reply.ReadyToStart, accessCode);
+						reply.ReadyToStart = utils.addItemUnique(reply.ReadyToStart, accessCode);
 						conn.hmset(teamID, reply);
 						//console.log("reply: ", reply);
 					}
 					done();
 				});
 			});
+		},
+		
+		checkReadyParticipants: function(teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+					
+					done();
+					
+					if (reply) {
+						callback(utils.isEqual(reply.Participants, reply.ReadyToStart), args);
+					}
+
+				});
+			});			
 		},
 		
 		clearReadyParticipants: function(teamID) {
