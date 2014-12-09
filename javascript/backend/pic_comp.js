@@ -81,7 +81,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on('GetResultsRsp', function(res) {
-	        	console.log("results received ...");
+	        	console.log("results received from ", context.session.AccessCode, "...");
 	        	results.saveImage(res.image);
 	        	results.saveTitle(res.title);	        	        
 	        });
@@ -102,7 +102,6 @@ module.exports =
 	        });
 	        
 	        function testComplete() {
-	        	console.log("test is complete...");
 	        	commons.sendTestComplete();
 	        	commons.sendGetResultsReq();
 	        }
