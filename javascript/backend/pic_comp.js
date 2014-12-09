@@ -8,6 +8,7 @@ module.exports =
 			var commons = require('./commons.js')(context);
 	        var constants = require('./constants.js');
 	        var utils = require('./utils.js')();
+	        var results = require('./results')(context);
 
 			
 	        // When a client requests its session:
@@ -79,9 +80,11 @@ module.exports =
 	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
 	        });
 	        
-	        context.socket.on('GetResultsRsp', function(results) {
-	        	console.log("results received ...", results);
-	        })
+	        context.socket.on('GetResultsRsp', function(res) {
+	        	console.log("results received ...");
+	        	results.saveImage(res.image);
+	        	results.saveTitle(res.title);	        	        
+	        });
 
 	        // On client disconnection, update the database:
 	        context.socket.on('disconnect', function(){
@@ -89,6 +92,7 @@ module.exports =
 				context.db.getActiveUsersCount();
 				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
 				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
+				context.channel.disconnect(context.session.AccessCode);
 	        });	
 	        
 	        // When a client requests its session:
@@ -98,6 +102,7 @@ module.exports =
 	        });
 	        
 	        function testComplete() {
+	        	console.log("test is complete...");
 	        	commons.sendTestComplete();
 	        	commons.sendGetResultsReq();
 	        }
