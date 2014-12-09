@@ -18,6 +18,10 @@ module.exports = function (io) {
 			io.sockets.sockets[accessCode] = socket;
 		},
 		
+		disconnect: function(accessCode) {
+			io.sockets.sockets[accessCode] = undefined;
+		},
+		
 		sendToUser: function(accessCode, cmd, args) {
 			io.sockets.sockets[accessCode].emit(cmd, args);
 		},
@@ -28,7 +32,7 @@ module.exports = function (io) {
 		    for (var a in io.sockets.sockets) {
 		    	if (utils.checkAccessCode(a) && (utils.getTeamID(a) == teamID)) {
 		    		uid = utils.getUserID(a);
-		    		if (uid < minID) {
+		    		if (uid < minID && io.sockets.sockets[a] != undefined) {
 		    			minID = uid;
 		    			ac = a;
 		    		}
@@ -36,6 +40,7 @@ module.exports = function (io) {
 		    }
 		    
 		    if (minID != 9999) {
+		    	console.log('sending request to ', ac);
 		    	this.sendToUser(ac, cmd, args);
 		    } else {
 		    	console.log("no user in team "+teamID+" is available ...");
@@ -49,7 +54,7 @@ module.exports = function (io) {
 		
 		sendToAll: function(cmd, args) {
 		    for (var a in io.sockets.sockets) {
-		    	if (utils.checkAccessCode(a))
+		    	if (utils.checkAccessCode(a) && io.sockets.sockets[a] != undefined)
 		    		io.sockets.sockets[a].emit(cmd, args);
 		    }
 		}
