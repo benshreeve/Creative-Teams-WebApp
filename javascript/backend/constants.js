@@ -37,7 +37,7 @@ define("GET_RESULTS_RSP", "GetResultsRsp");
 
 
 // Messages
-define("GOTIO_MSG", "GotoMsg");
+define("GOTO_MSG", "GotoMsg");
 define("MOVE_SHAPE_MSG", "MoveShapeMsgMsg");
 define("ROTATE_SHAPE_MSG", "RotateShapeMsg");
 define("DRAW_MSG", "DrawMsg");
@@ -58,10 +58,16 @@ define("WAIT_MSG", "WaitMsg");
 define("RESUME_MSG", "ResumeMsg");
 define("END_DATA_MSG", "EndDataMsg");
 define("BACKEND_READY_MSG", "BackendReadyMsg");
-define("DISCONNECT_Msg", "disconnect");
+define("DISCONNECT_MSG", "disconnect");
+define("TITLE_BEING_EDITED_MSG", "TitleBeingEditedMsg");
 
 // PERM_REQ Operations
 
 define("LOAD_PRACTICE_AREA_PAGE", "LoadPracticeAreaPage");
+define("EDIT_TITLE", "EditTitle");
+// more values
+
 define("GRANTED", "Granted");
 define("DECLINED", "declined");
+define("READY", "Ready");
+define("NOT_READY", "NotReady");
