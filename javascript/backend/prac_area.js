@@ -7,10 +7,6 @@ module.exports =
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
 	        var constants = require('./constants.js');
-	        var utils = require('./utils.js')();
-	        var results = require('./results')(context);
-	        var constants = require('./constants');
-
 			
 	        context.socket.on(constants.GET_TEST_STATE_REQ, function() {
 	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
@@ -56,7 +52,7 @@ module.exports =
 	        }
 	        
 	        context.socket.on(constants.UPDATE_TITLE_MSG, function(title) {
-	        	context.channel.sendToTeam(context.session.TeamID, constants.UPDATE_TITLE_MSG, {title: title});
+	        	context.channel.sendToTeam(context.session.TeamID, constants.UPDATE_TITLE_MSG, title);
 	        	context.rdb.clearTextEditingUser(context.session.TeamID);
 	        });
 	        
