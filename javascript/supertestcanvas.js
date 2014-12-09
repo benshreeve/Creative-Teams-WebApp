@@ -58,7 +58,9 @@ socket.on('TestCompleteMsg', function(rsp) {
 
 socket.on('GetResultsReq', function(rsp) {
 	console.log("GetResultsReq received ...");
-	socket.emit('GetResultsRsp', '**RESULTS**');
+	var image = canvasSimple.toDataURL('image/png');
+	var title = "title"
+	socket.emit('GetResultsRsp', {"image":image, "title": title});
 });
 
 
