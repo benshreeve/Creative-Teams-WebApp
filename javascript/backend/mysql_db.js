@@ -104,6 +104,13 @@ module.exports = function (conn) {
 				if (err) throw err;
 				callback(eval("rows[0]."+name+"InstructionFile"), args);
 			});			
+		},
+		
+		getResultsPath: function(callback, args) {
+			conn.query('select ResultsPath from config', function(err, rows) {
+				if (err) throw err;
+				callback(rows[0].ResultsPath, args);
+			});						
 		}
 
 	};
