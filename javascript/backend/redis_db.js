@@ -102,7 +102,7 @@ module.exports = function (conn) {
 					done();
 					
 					if (reply) {
-						callback(utils.isEqual(reply.Participants, reply.ReadyToStart), args);
+						callback(utils.isEqual(reply.Participants, reply.ReadyToStart), utils.getLength(reply.ReadyToStart), args);
 					}
 
 				});
