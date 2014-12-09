@@ -36,8 +36,6 @@ define("GET_RESULTS_REQ", "GetResultsReq");
 define("GET_RESULTS_RSP", "GetResultsRsp");
 
 
-
-
 // Messages
 define("GOTIO_MSG", "GotoMsg");
 define("MOVE_SHAPE_MSG", "MoveShapeMsgMsg");
@@ -60,3 +58,4 @@ define("WAIT_MSG", "WaitMsg");
 define("RESUME_MSG", "ResumeMsg");
 define("END_DATA_MSG", "EndDataMsg");
 define("BACKEND_READY_MSG", "BackendReadyMsg");
+define("DISCONNECT_Msg", "disconnect");

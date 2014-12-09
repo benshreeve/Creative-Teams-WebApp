@@ -65,7 +65,7 @@ module.exports =
                 	var drag = rows[i].Operation == 1 ? true : false;
                 	var color = "rgba(0,0,0,1)";
                 	if (drag) {
-                		color = rows[i].UserID == 1 ? "purple" : "red"
+                		color = utils.getUserColor(rows[i].UserID);
                 	}
                 	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
                     context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:oData.rad, colour:color, 
