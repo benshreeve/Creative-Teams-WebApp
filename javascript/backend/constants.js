@@ -59,3 +59,9 @@ define("RESUME_MSG", "ResumeMsg");
 define("END_DATA_MSG", "EndDataMsg");
 define("BACKEND_READY_MSG", "BackendReadyMsg");
 define("DISCONNECT_Msg", "disconnect");
+
+// PERM_REQ Operations
+
+define("LOAD_PRACTICE_AREA_PAGE", "LoadPracticeAreaPage");
+define("GRANTED", "Granted");
+define("DECLINED", "declined");
