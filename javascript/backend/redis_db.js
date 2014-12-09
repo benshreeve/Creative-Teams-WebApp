@@ -127,7 +127,7 @@ module.exports = function (conn) {
 			});
 		},
 		
-		setTextEditingUser: function(teamID, accessCode) {
+		setTextEditingUser: function(teamID, name, callback, args) {
 			lock(teamID, function(done) {
 				conn.hgetall(teamID, function(err, reply) {
 					if (err) {
@@ -136,16 +136,36 @@ module.exports = function (conn) {
 					}
 				
 					if (reply) {
-						reply.TextEditingUser = accessCode;
-						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
+						if (reply.TextEditingUser == '') {
+							reply.TextEditingUser = name;
+							conn.hmset(teamID, reply);
+						}
+						done();
+						callback(reply.TextEditingUser);
+					} else
+						done();
+				});
+			});
+		},
+		
+		clearTextEditingUser: function(teamID) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done()
+						throw err;
 					}
+				
+					if (reply) {
+						reply.TextEditingUser = '';
+						conn.hmset(teamID, reply);
+					}
+					
 					done();
 				});
 			});
 		},
 		
-
 		getTextEditingUser: function(teamID, callback, args) {
 			lock(teamID, function(done) {
 				conn.hgetall(teamID, function(err, reply) {
