@@ -175,6 +175,7 @@ function processNewUser(userRow, args) {
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
+			db.getResultsPath(createTeamFolder, {teamID: userRow.TeamID});
 			args.res.redirect("/test1/");
 		} else {
 			serveError(args.res, "User has already logged in ...");
@@ -188,6 +189,13 @@ function processNewUser(userRow, args) {
 function setLate(teamCurrentTest, args) {
 	args.userSession.Late = teamCurrentTest > 1 ? true : false;
 	args.userSession.save();		
+}
+
+function createTeamFolder(path, args) {
+	var fs = require('fs');
+	console.log("path:", path);
+	if (!fs.existsSync(path+"/"+args.teamID))
+		fs.mkdirSync(path+"/"+args.teamID);
 }
 
 
