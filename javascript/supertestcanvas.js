@@ -63,6 +63,17 @@ socket.on('GetResultsReq', function(rsp) {
 	socket.emit('GetResultsRsp', {"image":image, "title": title});
 });
 
+socket.on('GetTestStateRsp', function(rsp) {
+	console.log("GetTestStateRsp: ", rsp);
+});
+
+socket.on('GetSessionStateRsp', function(rsp) {
+	console.log("GetTestStateRsp: ", rsp);
+});
+
+socket.on('PermRsp', function(rsp) {
+	console.log("PermRsp: ", rsp);
+});
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
@@ -113,7 +124,10 @@ function switchIntention(intention) {
 }
 
 function stateSession() {
-	socket.emit('requestSession');
+	socket.emit("GetTestStateReq");
+	socket.emit("GetSessionStateReq");
+	socket.emit("PermReq", "LoadPracticeAreaPage");
+//	socket.emit('requestSession');
 	//pollBackend();
 }
 

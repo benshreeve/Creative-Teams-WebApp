@@ -3,7 +3,7 @@
  */
 
 module.exports = function() {
-	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/pic_comp.js'},
+	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js'},
 	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js'},
 	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js'},
 	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js'},
@@ -60,6 +60,10 @@ module.exports = function() {
 				}
 			}		
 			return list;
+		},
+		
+		getLength: function(list) {
+			return list.split(',').length;
 		},
 		
 		getTeamID: function(accessCode) {
