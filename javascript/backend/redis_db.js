@@ -4,8 +4,8 @@
 module.exports = function (conn) {
 	var utils = require("./utils.js")();
 	var lock = require('redis-lock')(conn);
-//	var constants = require('./constants');
 	utils.includeConstants('./javascript/backend/constants.js');
+	
 	return {
 		addParticipant: function(teamID, accessCode) {
 			lock(teamID, function(done) {			

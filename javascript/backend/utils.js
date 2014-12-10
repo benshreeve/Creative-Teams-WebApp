@@ -10,7 +10,9 @@ module.exports = function() {
 	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js'},
 	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js'},
 	             {name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js'}];
+	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
+	
 	return {
 		isDup: function(list, item) {
 			items = list.split(',');
