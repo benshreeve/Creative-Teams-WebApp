@@ -75,6 +75,14 @@ socket.on('PermRsp', function(rsp) {
 	console.log("PermRsp: ", rsp);
 });
 
+socket.on('TitleBeingEditedMsg', function(rsp) {
+	console.log("TITLE_BEING_EDITED_MSG: ", rsp);
+});
+
+socket.on('UpdateTitleMsg', function(rsp) {
+	console.log("UPDATE_TITLE_MSG: ", rsp);
+});
+
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
 //	if(dot.group == groupNumber && dot.screen == screenNumber && ( (dot.owner === accessID) || (collaborative === true || collaborative === "true" ) ) ) {
@@ -127,7 +135,9 @@ function stateSession() {
 	socket.emit("GetTestStateReq");
 	socket.emit("GetSessionStateReq");
 	socket.emit("PermReq", "LoadPracticeAreaPage");
-//	socket.emit('requestSession');
+	socket.emit("PermReq", "EditTitle");
+	socket.emit("UpdateTitleMsg", "new title");
+	socket.emit('requestSession');
 	//pollBackend();
 }
 

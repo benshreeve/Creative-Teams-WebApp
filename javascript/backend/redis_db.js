@@ -53,6 +53,7 @@ module.exports = function (conn) {
 				});
 			});
 		},
+
 		
 		clearParticipants: function(teamID) {
 			lock(teamID, function(done){
@@ -90,6 +91,27 @@ module.exports = function (conn) {
 				});
 			});
 		},
+		
+		delReadyParticipant: function(teamID, accessCode) {
+			lock(teamID, function(done){
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						reply.ReadyToStart = utils.delItem(reply.ReadyToStart, accessCode);
+						conn.hmset(teamID, reply);
+						//console.log("reply: ", reply);
+					} else {
+						console.log("no record for this team");
+					}
+					done();
+				});
+			});
+		},
+		
 		
 		checkReadyParticipants: function(teamID, callback, args) {
 			lock(teamID, function(done) {

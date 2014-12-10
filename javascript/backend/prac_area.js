@@ -77,6 +77,7 @@ module.exports =
 				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
 				context.db.getActiveUsersCount();
 				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
+				context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
 				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
 				context.channel.disconnect(context.session.AccessCode);
 	        });	
