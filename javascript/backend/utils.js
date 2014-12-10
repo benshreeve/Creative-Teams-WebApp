@@ -92,6 +92,16 @@ module.exports = function() {
 		
 		getUserColor: function(userID) {
 			return colours[userID];
+		},
+		
+		includeConstants: function(path) {
+			var fs = require('fs');
+			var vm = require('vm');
+			var includeInThisContext = function(path) {
+				var code = fs.readFileSync(path);
+				vm.runInThisContext(code, path);
+			}.bind(this);
+			includeInThisContext(path);
 		}
 		
 	};

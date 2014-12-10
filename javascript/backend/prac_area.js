@@ -6,36 +6,38 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
-	        var constants = require('./constants.js');
+	        //var constants = require('./js');
+			utils.includeConstants('./javascript/backend/constants.js');
 			
-	        context.socket.on(constants.GET_TEST_STATE_REQ, function() {
+	        context.socket.on(GET_TEST_STATE_REQ, function() {
 	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
 	        });
 	        
 	        function sendTestState(teamInfo) {
-	        	context.channel.sendToUser(context.session.AccessCode, constants.GET_TEST_STATE_RSP, teamInfo);
+	        	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
 	        }
 	        
-	        context.socket.on(constants.GET_SESSION_STATE_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, constants.GET_SESSION_STATE_RSP, context.session);
+	        context.socket.on(GET_SESSION_STATE_REQ, function() {
+	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
 	        });
 	        
         
-	        context.socket.on(constants.PERM_REQ, function(op) {
+	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
-	        	case constants.LOAD_PRACTICE_AREA_PAGE:
+	        	case LOAD_PRACTICE_AREA_PAGE:
 	        		context.rdb.addReadyParticipant(context.session.TeamID, context.session.AccessCode);
 	        		context.rdb.getCurrentScreen(context.session.TeamID, loadPracAreaRsp);
 	        		break;
-	        	case constants.EDIT_TITLE:
+	        	case EDIT_TITLE:
 	        		context.rdb.setTextEditingUser(context.session.TeamID, context.session.Name, editTitleRsp);
 	        	}
 	        });
 	        
 	        function loadPracAreaRsp(currentScreen) {
-	        	if (currentScreen > constants.INSTRUCTION_SCREEN) {
-	        		context.channel.sendToUser(context.session.AccessCode, constants.PERM_RSP, 
-	        				{decision:constants.GRANTED, operation:constants.LOAD_PRACTICE_AREA_PAGE});
+	        	if (currentScreen > INSTRUCTION_SCREEN) {
+	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
+	        				{decision:GRANTED, operation:LOAD_PRACTICE_AREA_PAGE});
+	    	        commons.setupTestTime(PIC_COMP, testComplete);
 	        	} else {
 	        		context.rdb.checkReadyParticipants(context.session.TeamID, checkOtherParticipants);
 	        	}
@@ -43,35 +45,36 @@ module.exports =
 	        
 	        function checkOtherParticipants(allReady, len) {
 	        	if (allReady && len >= 2) {
-	        		context.channel.sendToTeam(context.session.TeamID, constants.PERM_RSP, 
-	        				{decision:constants.GRANTED, operation:constants.LOAD_PRACTICE_AREA_PAGE});
+	        		context.channel.sendToTeam(context.session.TeamID, PERM_RSP, 
+	        				{decision:GRANTED, operation:LOAD_PRACTICE_AREA_PAGE});
 	        		context.rdb.clearReadyParticipants(context.session.TeamID);
 	        		context.rdb.setCurrentScreen(context.session.TeamID, 1);
+	    	        commons.setupTestTime(PIC_COMP, testComplete);
 	        	}
 	        }	        
 	        
 	        function editTitleRsp(name) {
 	        	if (name != context.session.Name) {
-	        		context.channel.sendToUser(context.session.AccessCode, constants.PERM_RSP, 
-	        				{decision:constants.DECLINED, operation: constants.EDIT_TITLE, info: name});
+	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
+	        				{decision:DECLINED, operation: EDIT_TITLE, info: name});
 	        	} else {
-	        		context.channel.sendToUser(context.session.AccessCode, constants.PERM_RSP, 
-	        				{decision:constants.GRANTED, operation: constants.EDIT_TITLE});
-	        		context.channel.sendToTeam(context.session.TeamID, constants.TITLE_BEING_EDITED_MSG, {editingUser: name});
+	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
+	        				{decision:GRANTED, operation: EDIT_TITLE});
+	        		context.channel.sendToTeam(context.session.TeamID, TITLE_BEING_EDITED_MSG, {editingUser: name});
 	        	}
 	        }
 	        
-	        context.socket.on(constants.UPDATE_TITLE_MSG, function(title) {
-	        	context.channel.sendToTeam(context.session.TeamID, constants.UPDATE_TITLE_MSG, title);
+	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
+	        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
 	        	context.rdb.clearTextEditingUser(context.session.TeamID);
 	        });
 	        
 	        
-	        context.socket.on(constants.DRAW_MSG, function(dot) {
+	        context.socket.on(DRAW_MSG, function(dot) {
 	        	
 	        });
 	        
-	        context.socket.on(constants.ERASE_MSG, function(dot) {
+	        context.socket.on(ERASE_MSG, function(dot) {
 	        	
 	        });
 	        
@@ -83,7 +86,7 @@ module.exports =
 	        
 
 	        // On client disconnection, update the database:
-	        context.socket.on(constants.DISCONNECT_MSG, function(){
+	        context.socket.on(DISCONNECT_MSG, function(){
 				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
 				context.db.getActiveUsersCount();
 				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
@@ -93,12 +96,11 @@ module.exports =
 	        });	
 	        
 	        // When a client requests its session:
-	        context.socket.on(constants.IS_BACKEND_READY_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, constants.IS_BACKEND_READY_RSP, constants.READY);
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, READY);
 	        });
 	        	       	       
 	        commons.sendBackendReady();	        
-	        commons.setupTestTime(constants.PIC_COMP, testComplete);
 	        
 	        function testComplete() {
 	        	commons.sendTestComplete();

@@ -4,7 +4,8 @@
 module.exports = function (conn) {
 	var utils = require("./utils.js")();
 	var lock = require('redis-lock')(conn);
-	var constants = require('./constants');
+//	var constants = require('./constants');
+	utils.includeConstants('./javascript/backend/constants.js');
 	return {
 		addParticipant: function(teamID, accessCode) {
 			lock(teamID, function(done) {			
@@ -21,8 +22,8 @@ module.exports = function (conn) {
 					}
 					else {
 						console.log("no record for this team. create one ...");
-						conn.hmset(teamID, "CurrentTest", constants.PRAC_AREA, 
-									   "CurrentScreen", constants.INSTRUCTION_SCREEN,
+						conn.hmset(teamID, "CurrentTest", PRAC_AREA, 
+									   "CurrentScreen", INSTRUCTION_SCREEN,
 									   "TextEditingUser", '',
 									   "StartTime", 9999,
 									   "TestTime", 0,

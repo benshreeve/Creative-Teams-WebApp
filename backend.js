@@ -22,8 +22,9 @@ SessionSockets = require('session.socket.io'),
 compression = require('compression');
 redis = require('redis')
 utils = require('./javascript/backend/utils.js')()
-constants = require('./javascript/backend/constants.js');
+//constants = require('./javascript/backend/js');
 
+utils.includeConstants("./javascript/backend/constants.js");
 
 var db, rdb;
 var connection;
@@ -91,13 +92,14 @@ function setupDBs() {
     });
 
     var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
-    rdb = require('./javascript/backend/redis_db.js')(teamStore); 
+    rdb = require('./javascript/backend/redis_db.js')(teamStore);
+    //console.log("constants:", constants);
 }
 
 function setupTimer() {	
     setInterval(function() {
     	require('./javascript/backend/channel.js')(io).sendToAll("UpdateTimeMsg", new Date().getTime());
-    }, constants.UPDATE_TIME_INTERVAL*1000);
+    }, UPDATE_TIME_INTERVAL*1000);
 }
 
 /* ------------------------------------------------------------------------- */

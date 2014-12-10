@@ -2,74 +2,68 @@
  * New node file
  */
 
-function define(name, value) {
-    Object.defineProperty(exports, name, {
-        value:      value,
-        enumerable: true
-    });
-}
-
 // test IDs.
-define("PRAC_AREA", 0);
-define("PIC_CON", 1);
-define("PIC_COMP", 2);
-define("PAR_LINES", 3);
-define("IDEA_GEN", 4);
-define("DES_CHAL", 5);
-define("ALT_USES", 6);
+
+var PRAC_AREA = 0;
+var PIC_CON = 1;
+var PIC_COMP = 2;
+var PAR_LINES = 3;
+var IDEA_GEN = 4;
+var DES_CHAL = 5;
+var ALT_USES = 6;
  
 // Requests and responses
 
-define("PERM_REQ", "PermReq");
-define("PERM_RSP", "PermRsp");
-define("GET_TEST_STATE_REQ", "GetTestStateReq");
-define("GET_TEST_STATE_RSP", "GetTestStateRsp");
-define("GET_SESSION_STATE_REQ", "GetSessionStateReq");
-define("GET_SESSION_STATE_RSP", "GetSessionStateRsp");
-define("GET_TEST_INSTRUCTION_REQ", "GetTestInstructionReq");
-define("GET_TEST_INSTRUCTION_RSP", "GetTestInstructionRsp");
-define("JOIN_LATE_PARTICIPANT_REQ", "JoinLateParticipantReq");
-define("JOIN_LATE_PARTICIPANT_RSP", "JoinLateParticipantRsp");
-define("IS_BACKEND_READy_REQ", "IsBackendReadyReq");
-define("IS_BACKEND_READY_RSP", "IsBackendReadyRsp");
-define("GET_RESULTS_REQ", "GetResultsReq");
-define("GET_RESULTS_RSP", "GetResultsRsp");
+var PERM_REQ = "PermReq";
+var PERM_RSP = "PermRsp";
+var GET_TEST_STATE_REQ = "GetTestStateReq";
+var GET_TEST_STATE_RSP = "GetTestStateRsp";
+var GET_SESSION_STATE_REQ = "GetSessionStateReq";
+var GET_SESSION_STATE_RSP = "GetSessionStateRsp";
+var GET_TEST_INSTRUCTION_REQ = "GetTestInstructionReq";
+var GET_TEST_INSTRUCTION_RSP = "GetTestInstructionRsp";
+var JOIN_LATE_PARTICIPANT_REQ = "JoinLateParticipantReq";
+var JOIN_LATE_PARTICIPANT_RSP = "JoinLateParticipantRsp";
+var IS_BACKEND_READY_REQ = "IsBackendReadyReq";
+var IS_BACKEND_READY_RSP = "IsBackendReadyRsp";
+var GET_RESULTS_REQ = "GetResultsReq";
+var GET_RESULTS_RSP = "GetResultsRsp";
 
 
 // Messages
-define("GOTO_MSG", "GotoMsg");
-define("MOVE_SHAPE_MSG", "MoveShapeMsgMsg");
-define("ROTATE_SHAPE_MSG", "RotateShapeMsg");
-define("DRAW_MSG", "DrawMsg");
-define("ERASE_MSG", "EraseMsg");
-define("EDIT_DONE_MSG", "EditDoneMsg");
-define("CHANGE_SCREEN_MSG", "ChangeScreenMsg");
-define("ADD_IDEA_MSG", "AddIDeaMsg");
-define("DEL_IDEA_MSG", "DelIdeaMsg");
-define("UPDATE_IDEA_MSG", "UpdateIdeaMsg");
-define("ADD_USE_MSG", "AddUseMagMsg");
-define("DEL_USE_MSG", "DelUseMsg");
-define("UPDATE_USE_MSG", "UpdateUseMsg");
-define("START_DRAWING_MSG", "StartDrawingMsg");
-define("UPDATE_TITLE_MSG", "UpdateTitleMsg");
-define("UPDATE_TIME_MSG", "UpdateTimeMsg");
-define("TEST_COMPLETE_MSG", "TestCompleteMsg");
-define("WAIT_MSG", "WaitMsg");
-define("RESUME_MSG", "ResumeMsg");
-define("END_DATA_MSG", "EndDataMsg");
-define("BACKEND_READY_MSG", "BackendReadyMsg");
-define("DISCONNECT_MSG", "disconnect");
-define("TITLE_BEING_EDITED_MSG", "TitleBeingEditedMsg");
+var GOTO_MSG = "GotoMsg";
+var MOVE_SHAPE_MSG = "MoveShapeMsgMsg";
+var ROTATE_SHAPE_MSG = "RotateShapeMsg";
+var DRAW_MSG = "DrawMsg";
+var ERASE_MSG = "EraseMsg";
+var EDIT_DONE_MSG = "EditDoneMsg";
+var CHANGE_SCREEN_MSG = "ChangeScreenMsg";
+var ADD_IDEA_MSG = "AddIDeaMsg";
+var DEL_IDEA_MSG = "DelIdeaMsg";
+var UPDATE_IDEA_MSG = "UpdateIdeaMsg";
+var ADD_USE_MSG = "AddUseMagMsg";
+var DEL_USE_MSG = "DelUseMsg";
+var UPDATE_USE_MSG = "UpdateUseMsg";
+var START_DRAWING_MSG = "StartDrawingMsg";
+var UPDATE_TITLE_MSG = "UpdateTitleMsg";
+var UPDATE_TIME_MSG = "UpdateTimeMsg";
+var TEST_COMPLETE_MSG = "TestCompleteMsg";
+var WAIT_MSG = "WaitMsg";
+var RESUME_MSG = "ResumeMsg";
+var END_DATA_MSG = "EndDataMsg";
+var BACKEND_READY_MSG = "BackendReadyMsg";
+var DISCONNECT_MSG = "disconnect";
+var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
 
 // PERM_REQ Operations
 
-define("LOAD_PRACTICE_AREA_PAGE", "LoadPracticeAreaPage");
-define("EDIT_TITLE", "EditTitle");
+var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
+var EDIT_TITLE = "EditTitle";
 // more values
 
-define("GRANTED", "Granted");
-define("DECLINED", "declined");
-define("READY", "Ready");
-define("NOT_READY", "NotReady");
-define("UPDATE_TIME_INTERVAL", 10);
-define("INSTRUCTION_SCREEN", 0);
+var GRANTED = "Granted";
+var DECLINED = "declined";
+var READY = "Ready";
+var NOT_READY = "NotReady";
+var UPDATE_TIME_INTERVAL =  10;
+var INSTRUCTION_SCREEN =  0;
