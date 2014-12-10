@@ -71,3 +71,5 @@ define("GRANTED", "Granted");
 define("DECLINED", "declined");
 define("READY", "Ready");
 define("NOT_READY", "NotReady");
+define("UPDATE_TIME_INTERVAL", 10);
+define("INSTRUCTION_SCREEN", 0);

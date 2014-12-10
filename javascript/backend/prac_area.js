@@ -25,18 +25,28 @@ module.exports =
 	        	switch (op) {
 	        	case constants.LOAD_PRACTICE_AREA_PAGE:
 	        		context.rdb.addReadyParticipant(context.session.TeamID, context.session.AccessCode);
-	        		context.rdb.checkReadyParticipants(context.session.TeamID, loadPracAreaRsp);
+	        		context.rdb.getCurrentScreen(context.session.TeamID, loadPracAreaRsp);
 	        		break;
 	        	case constants.EDIT_TITLE:
 	        		context.rdb.setTextEditingUser(context.session.TeamID, context.session.Name, editTitleRsp);
 	        	}
 	        });
 	        
-	        function loadPracAreaRsp(allReady, len) {
+	        function loadPracAreaRsp(currentScreen) {
+	        	if (currentScreen > constants.INSTRUCTION_SCREEN) {
+	        		context.channel.sendToUser(context.session.AccessCode, constants.PERM_RSP, 
+	        				{decision:constants.GRANTED, operation:constants.LOAD_PRACTICE_AREA_PAGE});
+	        	} else {
+	        		context.rdb.checkReadyParticipants(context.session.TeamID, checkOtherParticipants);
+	        	}
+	        }
+	        
+	        function checkOtherParticipants(allReady, len) {
 	        	if (allReady && len >= 2) {
 	        		context.channel.sendToTeam(context.session.TeamID, constants.PERM_RSP, 
 	        				{decision:constants.GRANTED, operation:constants.LOAD_PRACTICE_AREA_PAGE});
 	        		context.rdb.clearReadyParticipants(context.session.TeamID);
+	        		context.rdb.setCurrentScreen(context.session.TeamID, 1);
 	        	}
 	        }	        
 	        

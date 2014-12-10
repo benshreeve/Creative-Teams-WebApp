@@ -22,6 +22,7 @@ SessionSockets = require('session.socket.io'),
 compression = require('compression');
 redis = require('redis')
 utils = require('./javascript/backend/utils.js')()
+constants = require('./javascript/backend/constants.js');
 
 
 var db, rdb;
@@ -96,7 +97,7 @@ function setupDBs() {
 function setupTimer() {	
     setInterval(function() {
     	require('./javascript/backend/channel.js')(io).sendToAll("UpdateTimeMsg", new Date().getTime());
-    }, 10*1000);
+    }, constants.UPDATE_TIME_INTERVAL*1000);
 }
 
 /* ------------------------------------------------------------------------- */
