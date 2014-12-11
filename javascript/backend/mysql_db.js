@@ -40,6 +40,16 @@ module.exports = function (conn) {
 					post, function(err, result) {});
 		},
 		
+		saveTransaction: function(teamID, userID, testID, transaction) {
+			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
+				teamID + '","' + testID + '","'+ userID + '","' + transaction.screenNumber + '","' + transaction.object + '","' + 
+				transaction.operation + '","' + JSON.stringify(transaction.operationData)+', now(6)'+');'
+            query = conn.query(q, post, function(err, result) {
+                if(err) throw err;
+                console.log("Saving a transaction:" + query.sql);
+            });			
+		},
+		
 		drawDot: function(dot) {
 			id = dot.owner.match(/[0-9]+/g);
 			teamID = id[0];

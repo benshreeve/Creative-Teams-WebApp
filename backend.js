@@ -93,7 +93,6 @@ function setupDBs() {
 
     var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
-    //console.log("constants:", constants);
 }
 
 function setupTimer() {	
@@ -197,7 +196,6 @@ function setLate(teamCurrentTest, args) {
 
 function createTeamFolder(path, args) {
 	var fs = require('fs');
-	console.log("path:", path);
 	if (!fs.existsSync(path+"/"+args.teamID))
 		fs.mkdirSync(path+"/"+args.teamID);
 }
