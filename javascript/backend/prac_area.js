@@ -70,7 +70,7 @@ module.exports =
 	        
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
-	        	
+	        	console.log(dot);				
 	        });
 	        
 	        context.socket.on(ERASE_MSG, function(dot) {

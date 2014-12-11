@@ -4,11 +4,13 @@
 <head>
 	<title>Creative Teams : Login</title>
 	<link rel="stylesheet" type="text/css" href="/css/formstyle.css?v=1">
+    <link rel="stylesheet" type="text/css" href="style.css">	
 	<meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, target-densitydpi=device-dpi">
 	<!--<meta content='width=device-width, height=device-height, initial-scale=1, minimal-ui, user-scalable=0' name='viewport'> -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/images/CreativeTeams-Icon.png">
+    <script src="../javascript/PopupWindow.js"></script>
 </head>
 
 <body>
@@ -24,6 +26,47 @@
 				<input type="text" placeholder="nickname" name="nickname"><br>
 				<input type="submit" name="Submit" value="Login">
 		</form>
+        <div class="agreement">
+			<h3><a href="#" class="white" onclick="Popup.show('simplediv');return false;">Ethics agreement </a></h3>
+		</div>
+        
+        <div id="simplediv">
+        <h1>Ethics Agreement</h1>
+        Provisional registration
+
+PhD candidates are initially provisionally registered. Provisional registration includes particular goals for the candidate to achieve in the first twelve months. Upon satisfactory completion of the first year, a candidate’s registration is confirmed. At 12 months, the Graduate Centre sends the provisional year review forms. These need to be filled out by the student and supervisor(s). Forms are forwarded to the PhD Coordinator and approved by the Department PhD Committee.
+
+Failure to complete all tasks assigned in the first year research plan may result in termination of registration and fellowships. 
+
+<br/><br/>
+
+Provisional Year Review
+
+The provisional review is formally conducted by a Review Panel.
+The Review Panel consists of the supervisor(s) and the advisory committee members of the PhD candidate.
+If the advisory committee is absent, two staff members should be invited by the main supervisor to act as part of the Review Panel for the assessment.
+
+ <br/><br/>
+
+Change of conditions
+
+Changes to your study plan should be discussed with your supervisor and the PhD Coordinator. The Graduate Centre must be notifed of changes such as
+
+Suspension
+Termination
+Change from full time to part time or from part time to full time
+Absence for more than two months
+
+As a doctoral candidate, you will be re-enrolled at the beginning of each academic year by the School of Graduate Studies. Fees should be paid on time each year to ensure successful re-enrolment
+
+More information is available about doctoral procedures, policies and guidelines.
+
+Or contact: phdcoordinator@cs.auckland.ac.nz
+
+        <p>
+        <input name="closeButton" type="button" value="Close" id="closeButton" onClick="Popup.hideAll();">
+        </p>
+        </div>
 
 	<script src='/javascript/jquery.js'></script>
   

@@ -184,6 +184,14 @@ function pushToSocket(type, data) {
 	if((type== "draw" || type=="erase") && drawable=="true") {
 		addClickSimple(data.x, data.y, data.drag, data.rad, data.colour, data.owner);
 		socket.emit('mousedot', data); 
+		
+		// Minh added
+		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: 1, Operation: type, OperationData: {x: data.x, y: data.y, drag: data.drag, rad: data.rad}}); 
+		//alert("screenNumber = " + screenNumber)
+		//alert("type = dot")
+		//alert("operation = " + type)
+		//alert(JSON.parse(data))
+		
 		redraw(); }
 	else if (type=="undo"){
 		undoMyLast(data);
