@@ -59,6 +59,7 @@ var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
 
 var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
 var EDIT_TITLE = "EditTitle";
+var START_TEST = "StartTest";
 // more values
 
 var GRANTED = "Granted";

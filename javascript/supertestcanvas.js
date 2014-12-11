@@ -83,6 +83,10 @@ socket.on('UpdateTitleMsg', function(rsp) {
 	console.log("UPDATE_TITLE_MSG: ", rsp);
 });
 
+socket.on('GotoMsg', function(rsp) {
+	console.log("GOTO_MSG: ", rsp);
+});
+
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
 socket.on('mousedot', function(dot){
 //	if(dot.group == groupNumber && dot.screen == screenNumber && ( (dot.owner === accessID) || (collaborative === true || collaborative === "true" ) ) ) {
@@ -137,6 +141,7 @@ function stateSession() {
 	socket.emit("PermReq", "LoadPracticeAreaPage");
 	socket.emit("PermReq", "EditTitle");
 	socket.emit("UpdateTitleMsg", "new title");
+	socket.emit("PermReq", "StartTest");
 	socket.emit('requestSession');
 	//pollBackend();
 }

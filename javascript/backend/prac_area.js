@@ -6,6 +6,7 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
+			var utils = require('./utils')();
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
@@ -20,49 +21,45 @@ module.exports =
 	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
 	        });
 	        
-        
+
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PRACTICE_AREA_PAGE:
-	        		context.rdb.addReadyParticipant(context.session.TeamID, context.session.AccessCode);
-	        		context.rdb.getCurrentScreen(context.session.TeamID, loadPracAreaRsp);
+	        		commons.checkAllReady(op, PRAC_AREA, !context.session.Late ? setupTestTimer: undefined);
+	        		break;
+	        	case START_TEST:
+	        		commons.checkAllReady(op, PRAC_AREA, startTest);
 	        		break;
 	        	case EDIT_TITLE:
-	        		context.rdb.setTextEditingUser(context.session.TeamID, context.session.Name, editTitleRsp);
+	        		commons.checkEditTitle();
 	        	}
 	        });
 	        
-	        function loadPracAreaRsp(currentScreen) {
-	        	if (currentScreen > INSTRUCTION_SCREEN) {
-	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
-	        				{decision:GRANTED, operation:LOAD_PRACTICE_AREA_PAGE});
-	    	        commons.setupTestTime(PIC_COMP, testComplete);
-	        	} else {
-	        		context.rdb.checkReadyParticipants(context.session.TeamID, checkOtherParticipants);
-	        	}
+	        function setupTestTimer() {
+	        	commons.setupTestTime(PIC_COMP, testComplete);
 	        }
 	        
-	        function checkOtherParticipants(allReady, len) {
-	        	if (allReady && len >= 2) {
-	        		context.channel.sendToTeam(context.session.TeamID, PERM_RSP, 
-	        				{decision:GRANTED, operation:LOAD_PRACTICE_AREA_PAGE});
-	        		context.rdb.clearReadyParticipants(context.session.TeamID);
-	        		context.rdb.setCurrentScreen(context.session.TeamID, 1);
-	    	        commons.setupTestTime(PIC_COMP, testComplete);
-	        	}
-	        }	        
-	        
-	        function editTitleRsp(name) {
-	        	if (name != context.session.Name) {
-	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
-	        				{decision:DECLINED, operation: EDIT_TITLE, info: name});
+	        function startTest() {
+	        	if (context.session.Late) {
+	        		rdb.getCurrentTest(context.session.TeamID, joinLateParticipant)
 	        	} else {
-	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
-	        				{decision:GRANTED, operation: EDIT_TITLE});
-	        		context.channel.sendToTeam(context.session.TeamID, TITLE_BEING_EDITED_MSG, {editingUser: name});
-	        	}
+	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_CON);
+	        		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
+	        		context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_CON));
+	        	}	        	
 	        }
 	        
+	        function joinLateParticipant(currentTest) {
+	        	context.session.Late = false;
+	        	context.session.save();
+	        	context.rdb.getCurrentScreen(context.sesssion.TeamID, sendTestURL, {currentTest: currentTest});
+	        }
+	        
+	        function sendTestURL(currentScreen, args) {
+	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
+	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
+	        }
+
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
 	        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
 	        	context.rdb.clearTextEditingUser(context.session.TeamID);
@@ -70,11 +67,13 @@ module.exports =
 	        
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
-	        	
+	        	dot.userID = context.session.UserID;
+	        	context.channel.sendToTeam(context.session.TeamID, DRAW_MSG, dot);
 	        });
 	        
 	        context.socket.on(ERASE_MSG, function(dot) {
-	        	
+	        	dot.userID = context.session.UserID;
+	        	context.channel.sendToTeam(context.session.TeamID, ERASE_MSG, dot);	        	
 	        });
 	        
 	        context.socket.on('mousedot', function(dot){

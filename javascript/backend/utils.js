@@ -3,13 +3,13 @@
  */
 
 module.exports = function() {
-	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js'},
-	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js'},
-	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js'},
-	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js'},
-	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js'},
-	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js'},
-	             {name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js'}];
+	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '', testURL:''},
+	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '', testURL:''},
+	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '', testURL:''},
+	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '', testURL:''},
+	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '', testURL:''},
+	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},
+	             {name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '', testURL:''}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
 	
@@ -91,7 +91,15 @@ module.exports = function() {
 		getTestHandler: function(testID) {
 			return tests[testID].handler;
 		},
+
+		getInstructionURL: function(testID) {
+			return tests[testID].instructionURL;
+		},
 		
+		getTestURL: function(testID) {
+			return tests[testID].testURL;
+		},
+
 		getUserColor: function(userID) {
 			return colours[userID];
 		},
