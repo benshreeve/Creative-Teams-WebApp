@@ -31,7 +31,11 @@ module.exports = function(context)
 		
 		checkEditTitle: function() {
 			context.rdb.setTextEditingUser(context.session.TeamID, context.session.Name, editTitleRsp);
-		},		
+		},	
+		
+		saveTransaction: function(testID, data) {
+			context.db.saveTransaction(context.session.TeamID, context.session.UserID, testID, data);
+		}
 		
 	};
 	
