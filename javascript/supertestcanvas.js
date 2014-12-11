@@ -85,6 +85,7 @@ socket.on('UpdateTitleMsg', function(rsp) {
 
 socket.on('GotoMsg', function(rsp) {
 	console.log("GOTO_MSG: ", rsp);
+	window.location.href = rsp;
 });
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.

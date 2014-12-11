@@ -6,9 +6,10 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
-	        var constants = require('./constants.js');
+//	        var constants = require('./constants.js');
 	        var utils = require('./utils.js')();
 	        var results = require('./results')(context);
+	        utils.includeConstants('./javascript/backend/constants.js')
 
 			
 	        // When a client requests its session:
@@ -107,12 +108,12 @@ module.exports =
 	        }
 	       	       
 	        commons.sendBackendReady();	        
-	        commons.setupTestTime(constants.PIC_COMP, testComplete);
+	        commons.setupTestTime(PIC_CON, testComplete);
 	               
 	        function x(t) {
 	        	console.log('t = ', t);
 	        }
 	        
-	        console.log("Hanlders were installed for picture completion test.");
+	        console.log("Hanlders were installed for picture construction test.");
 		}		
 };
