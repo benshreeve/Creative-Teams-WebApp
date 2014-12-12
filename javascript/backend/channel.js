@@ -42,7 +42,7 @@ module.exports = function (io) {
 		    if (minID != 9999) {
 		    	this.sendToUser(ac, cmd, args);
 		    } else {
-		    	console.log("no user in team "+teamID+" is available ...");
+		    	logger.debug("no user in team "+teamID+" is available ...");
 		    }
 		    		 
 		},

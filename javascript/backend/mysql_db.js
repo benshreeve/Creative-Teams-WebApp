@@ -1,5 +1,6 @@
 module.exports = function (conn) {
 	var utils = require('./utils.js')();
+	var logger = require('./logger.js')()
 	return {
 		getActiveUsersCount: function(callback, args) {
 			conn.query('select * from users where users.Active = "1"', function(err, rows){
@@ -7,7 +8,7 @@ module.exports = function (conn) {
 	            if (callback)
 	            	callback(rows.length, args);
 	            else
-	            	console.log("Total Number of users: ", rows.length);
+	            	logger.log("Total Number of users: ", rows.length);
 	        });
 		},
 		
@@ -46,7 +47,7 @@ module.exports = function (conn) {
 				transaction.operation + '","' + JSON.stringify(transaction.operationData)+', now(6)'+');'
             query = conn.query(q, post, function(err, result) {
                 if(err) throw err;
-                console.log("Saving a transaction:" + query.sql);
+                logger.debug("Saving a transaction:" + query.sql);
             });			
 		},
 		

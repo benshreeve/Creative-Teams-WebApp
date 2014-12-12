@@ -4,7 +4,8 @@
 module.exports = function (conn) {
 	var utils = require("./utils.js")();
 	var lock = require('redis-lock')(conn);
-	utils.includeConstants('./javascript/backend/constants.js');
+	var logger = require('./logger')();
+	utils.includeConstants('./javascript/backend/constants.js');	
 	
 	return {
 		addParticipant: function(teamID, accessCode) {
@@ -49,7 +50,7 @@ module.exports = function (conn) {
 						conn.hmset(teamID, reply);
 						//console.log("reply: ", reply);
 					} else {
-						console.log("no record for this team");
+						logger.debug("no record for this team");
 					}
 					done();
 				});
@@ -107,7 +108,7 @@ module.exports = function (conn) {
 						conn.hmset(teamID, reply);
 						//console.log("reply: ", reply);
 					} else {
-						console.log("no record for this team");
+						logger.debug("no record for this team");
 					}
 					done();
 				});

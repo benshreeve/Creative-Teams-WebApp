@@ -56,7 +56,7 @@ module.exports = function(context)
 	
 	function setupTime(time, callback, args) {
 	    time = 10;
-		console.log("time for this test is: ", time, " sec");
+		logger.debug("time for this test is: ", time, " sec");
 		context.rdb.setTime(context.session.TeamID, time*1000);
         setTimeout(function() {
         	context.rdb.updateTime(context.session.TeamID, callback, args);

@@ -7,6 +7,7 @@ module.exports =
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
 			var utils = require('./utils')();
+			var logger = require('./logger')();
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
@@ -102,7 +103,7 @@ module.exports =
 	        	commons.sendTestComplete();
 	        }
 	                       
-	        console.log("Hanlders were installed for practice area.");
+	        logger.debug("Hanlders were installed for practice area.");
 	        
 	        
 	        // When a client requests its session:

@@ -139,10 +139,10 @@ function switchIntention(intention) {
 function stateSession() {
 	socket.emit("GetTestStateReq");
 	socket.emit("GetSessionStateReq");
-	socket.emit("PermReq", "LoadPracticeAreaPage");
-	socket.emit("PermReq", "EditTitle");
-	socket.emit("UpdateTitleMsg", "new title");
-	socket.emit("PermReq", "StartTest");
+//	socket.emit("PermReq", "LoadPracticeAreaPage");
+//	socket.emit("PermReq", "EditTitle");
+//	socket.emit("UpdateTitleMsg", "new title");
+//	socket.emit("PermReq", "StartTest");
 	socket.emit('requestSession');
 	//pollBackend();
 }
