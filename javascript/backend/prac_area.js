@@ -67,13 +67,11 @@ module.exports =
 	        
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
-	        	dot.userID = context.session.UserID;
-	        	context.channel.sendToTeam(context.session.TeamID, DRAW_MSG, dot);
+	        	commons.broadcastTransaction(DRAW_MSG, PRAC_AREA, dot);
 	        });
 	        
 	        context.socket.on(ERASE_MSG, function(dot) {
-	        	dot.userID = context.session.UserID;
-	        	context.channel.sendToTeam(context.session.TeamID, ERASE_MSG, dot);	        	
+	        	commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
 	        });
 	        
 	        context.socket.on('mousedot', function(dot){

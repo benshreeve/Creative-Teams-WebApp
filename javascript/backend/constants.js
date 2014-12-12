@@ -68,3 +68,4 @@ var READY = "Ready";
 var NOT_READY = "NotReady";
 var UPDATE_TIME_INTERVAL =  10;
 var INSTRUCTION_SCREEN =  0;
+var debug = 1;

@@ -35,7 +35,22 @@ module.exports = function(context)
 		
 		saveTransaction: function(testID, data) {
 			context.db.saveTransaction(context.session.TeamID, context.session.UserID, testID, data);
-		}
+		},
+		
+		saveTransaction: function(testID, data) {
+			context.db.saveTransaction(context.session.TeamID, context.session.UserID, testID, data);
+		},
+		
+		broadcastTransaction: function(msg, testID, data) {
+        	data.userID = context.session.UserID;
+        	context.channel.sendToTeam(context.session.TeamID, msg, data);	        	
+		},
+		
+		saveAndBroadcastTransaction: function(masg, testID, data) {
+        	data.userID = context.session.UserID;
+        	this.saveTransaction(testID, data);
+        	context.channel.sendToTeam(context.session.TeamID, msg, data);	        				
+		}		
 		
 	};
 	
