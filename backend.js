@@ -22,7 +22,7 @@ SessionSockets = require('session.socket.io'),
 compression = require('compression');
 redis = require('redis')
 utils = require('./javascript/backend/utils.js')()
-//constants = require('./javascript/backend/js');
+logger = require('./javascript/backend/logger.js')();
 
 utils.includeConstants("./javascript/backend/constants.js");
 
@@ -51,12 +51,12 @@ function startBackend() {
     	channel = require('./javascript/backend/channel.js')(io);
     	
         // Store identification:
-        console.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
+        logger.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
 		
 		channel.setup(socket, session.AccessCode);
 			
 		if (session.Late)
-			installHandlers("10", {session:session, socket:socket, connection:connection, io:io});
+			installHandlers("0", {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 		else {
 			channel.joinTeam(session.AccessCode, session.TeamID);
 			rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
@@ -81,11 +81,11 @@ function setupDBs() {
     db.deactivateAllUsers();
 
     connection.on('error', function(err) {
-        console.log('db error', err);
+        logger.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
             connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
             db = require('./javascript/backend/mysql_db.js')(connection);
-			console.log("DB Connection ok ");
+			logger.log("DB Connection ok ");
         } else {                                      // connnection idle timeout (the wait_timeout
             throw err;                                  // server variable configures this)
         }
@@ -93,6 +93,7 @@ function setupDBs() {
 
     var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
+//    rdb.delTeam(1);
 }
 
 function setupTimer() {	
@@ -107,7 +108,7 @@ function setupTimer() {
 
 
 app.use(function(req, res, next){
-  console.log('%s %s', req.method, req.url);
+  logger.log('%s %s', req.method, req.url);
   next();
 });
 
@@ -205,4 +206,4 @@ function createTeamFolder(path, args) {
 /*								Listening Port								 */
 /* ------------------------------------------------------------------------- */
 
-http.listen(process.env.PORT || 4000, function(){ console.log('listening on *:4000'); });
+http.listen(process.env.PORT || 4000, function(){ logger.log('listening on *:4000'); });
