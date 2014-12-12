@@ -36,7 +36,7 @@ module.exports =
 	        });
 	        
 	        function setupTestTimer() {
-	    	        commons.setupTestTime(PIC_COMP, testComplete);
+	    	        commons.setupTestTime(PRAC_AREA, testComplete);
 	        }
 	        
 	        function startTest() {
