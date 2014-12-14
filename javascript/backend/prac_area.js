@@ -74,25 +74,11 @@ module.exports =
 	        context.socket.on(ERASE_MSG, function(dot) {
 	        	commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
 	        });
-	        
-	        context.socket.on('mousedot', function(dot){
-	            context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
-	            // Post to the database here:				
-//	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
-	        });
-	        
-
-	        // On client disconnection, update the database:
+	        	        
 	        context.socket.on(DISCONNECT_MSG, function(){
-				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
-				context.db.getActiveUsersCount();
-				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
-				context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
-				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
-				context.channel.disconnect(context.session.AccessCode);
+	        	commons.disconnetUser();
 	        });	
 	        
-	        // When a client requests its session:
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, READY);
 	        });
@@ -105,7 +91,14 @@ module.exports =
 	                       
 	        logger.debug("Hanlders were installed for practice area.");
 	        
-	        
+
+	        context.socket.on('mousedot', function(dot){
+	        	commons.broadcastTransaction('mousedot', PRAC_AREA, dot);
+	            //context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
+	            // Post to the database here:				
+//	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
+	        });
+	                
 	        // When a client requests its session:
 	        context.socket.on('requestSession', function() {
 	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', 

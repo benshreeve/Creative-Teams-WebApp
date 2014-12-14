@@ -50,11 +50,22 @@ module.exports = function(context)
         	context.channel.sendToTeam(context.session.TeamID, msg, data);	        	
 		},
 		
-		saveAndBroadcastTransaction: function(masg, testID, data) {
+		saveAndBroadcastTransaction: function(msg, testID, data) {
         	data.userID = context.session.UserID;
         	this.saveTransaction(testID, data);
         	context.channel.sendToTeam(context.session.TeamID, msg, data);	        				
-		}		
+		},
+		
+		disconnetUser: function () {
+        	logger.debug('Got a disconnet message.');
+			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
+			context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
+			context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
+			context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
+			context.channel.disconnect(context.session.AccessCode);
+			
+			context.db.getActiveUsersCount();			
+		}
 		
 	};
 	
