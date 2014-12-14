@@ -9,6 +9,14 @@ module.exports = function(context)
 	utils.includeConstants('../javascript/backend/constants.js');
 	
 	return {
+		sendTestStateRsp: function() {
+			context.rdb.getTeam(context.session.TeamID, sendTestState);
+		},
+		
+		sendSessionStateRsp: function() {
+			context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
+		},
+		
 		sendTestComplete: function() {
 	    	context.channel.sendToTeam(context.session.TeamID, TEST_COMPLETE_MSG);
 		},
@@ -21,9 +29,13 @@ module.exports = function(context)
 	        context.rdb.setTime(context.session.TeamID, time);
 		},
 		
-		sendBackendReady: function() {
+		sendBackendReadyMsg: function() {
 	        context.channel.sendToUser(context.session.AccessCode, BACKEND_READY_MSG);
 		},		
+		
+		sendIsBackendReadyRsp: function (rsp) {
+			context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, rsp);
+		},
 				
 		setupTestTime: function(testID, callback, args) {
 			context.db.getTestTimeLimit(testID, setupTime, callback, args)	     
@@ -56,6 +68,14 @@ module.exports = function(context)
         	context.channel.sendToTeam(context.session.TeamID, msg, data);	        				
 		},
 		
+		sendTransactions: function(testID) {
+			context.rdb.getCurrentScreen(context.session.TeamID, sendScreenTransactions, {testID: testID});
+		},
+		
+		sendEndData: function() {
+			context.channel.sendToUser(context.session.AccessCode, END_DATA_MSG);
+		},
+				
 		disconnetUser: function () {
         	logger.debug('Got a disconnet message.');
 			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
@@ -65,9 +85,19 @@ module.exports = function(context)
 			context.channel.disconnect(context.session.AccessCode);
 			
 			context.db.getActiveUsersCount();			
+		},
+		
+		handleUpdateTitleMsg: function(title) {
+        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
+        	context.rdb.clearTextEditingUser(context.session.TeamID);			
 		}
+				
 		
 	};
+	
+    function sendTestState(teamInfo) {
+    	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
+    }
 	
 	function setupTime(time, callback, args) {
 	    time = 10;
@@ -111,6 +141,27 @@ module.exports = function(context)
 			context.channel.sendToTeam(context.session.TeamID, TITLE_BEING_EDITED_MSG, {editingUser: name});
 		}
 	}
+	
+	function sendScreenTransactions(currentScreen, args) {
+		context.db.getTransactions(context.session.TeamID, args.testID, currentScreen, sendTransactions);
+	}
+	
+    function sendTransactions(rows) {
+        for(var i = 0; i<rows.length; i++) {
+        	var oData = eval('(' + rows[i].OperationData + ')');
+        	var drag = rows[i].Operation == 1 ? true : false;
+        	var color = "rgba(0,0,0,1)";
+        	if (drag) {
+        		color = utils.getUserColor(rows[i].UserID);
+        	}
+        	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
+            context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:oData.rad, colour:color, 
+            		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
+        }	 
+        this.sendEndData();
+        
+    }
+
 
 
 };

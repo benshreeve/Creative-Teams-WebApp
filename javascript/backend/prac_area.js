@@ -11,18 +11,13 @@ module.exports =
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
-	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
+	        	commons.sendTestStateRsp();
 	        });
-	        
-	        function sendTestState(teamInfo) {
-	        	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
-	        }
-	        
+	        	        
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
+	        	commons.sendSessionStateRsp();
 	        });
-	        
-        
+	               
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PRACTICE_AREA_PAGE:
@@ -54,16 +49,15 @@ module.exports =
 	        	context.session.Late = false;
 	        	context.session.save();
 	        	context.rdb.getCurrentScreen(context.sesssion.TeamID, sendTestURL, {currentTest: currentTest});
-	        	}
+	        }
 	        
 	        function sendTestURL(currentScreen, args) {
 	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
 	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
-	        	}
+	        }
 	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
-	        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
-	        	context.rdb.clearTextEditingUser(context.session.TeamID);
+	        	commons.handleUpdateTitleMsg(title);
 	        });
 	        
 	        
@@ -80,10 +74,10 @@ module.exports =
 	        });	
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, READY);
+	        	commons.sendIsBackendReadyRsp(READY);
 	        });
 	        	       	       
-	        commons.sendBackendReady();	        
+	        commons.sendBackendReadyMsg();	        
 	        
 	        function testComplete() {
 	        	commons.sendTestComplete();

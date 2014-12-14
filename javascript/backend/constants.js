@@ -54,12 +54,14 @@ var END_DATA_MSG = "EndDataMsg";
 var BACKEND_READY_MSG = "BackendReadyMsg";
 var DISCONNECT_MSG = "disconnect";
 var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
+var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
 
 // PERM_REQ Operations
 
 var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
+var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
 // more values
 
 var GRANTED = "Granted";

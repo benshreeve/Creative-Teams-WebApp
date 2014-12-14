@@ -29,7 +29,9 @@ module.exports = function (conn) {
 									   "TestTime", 0,
 									   "IdeaId", 1,
 									   "Participants", accessCode,
-									   "ReadyToStart", '');
+									   "ReadyToStart", '',
+									   "PicConBGCreator", '',
+									   "PicConBGCreated", false);
 					}
 					done();
 				});
@@ -383,6 +385,47 @@ module.exports = function (conn) {
 					callback(reply, args);					
 				});
 			});						
+		},
+		
+		setPicConBGCreator: function(teamID, accessCode, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+					if (reply) {
+						if (reply.PicConBGCreator == '') {
+							reply.PicConBgCreator = accessCode;
+							conn.hmset(teamID, reply);
+						}
+						
+						done();
+						
+						callback(reply.PicConBgCreator, args);												
+					} else
+						done();						
+				});
+			});											
+		},
+		
+		setPicConBGCreated: function(teamID, value) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+					
+					if (reply) {
+						reply.PicConBgCreated = value;
+						conn.hmset(teamID, reply);
+					}
+					
+					done();						
+					
+				});
+			});														
 		},
 		
 		delTeam: function(teamID) {
