@@ -28,6 +28,7 @@ var IS_BACKEND_READY_REQ = "IsBackendReadyReq";
 var IS_BACKEND_READY_RSP = "IsBackendReadyRsp";
 var GET_RESULTS_REQ = "GetResultsReq";
 var GET_RESULTS_RSP = "GetResultsRsp";
+var GET_TRANSACTIONS_REQ = "GetTransactionsReq"
 
 
 // Messages
@@ -62,6 +63,7 @@ var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
 var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
+var CREATE_BACKGROUND = "CreateBackGround";
 // more values
 
 var GRANTED = "Granted";

@@ -64,11 +64,11 @@ module.exports =
 	        });
 	        
 	        context.socket.on(MOVE_SHAPE_MSG, function(data) {
-	        	
+	        	commons.saveAndBroadcastTransaction(MOVE_SHAPE_MSG, PIC_CON, data);
 	        });
 	        
 	        context.socket.on(ROTATE_SHAPE_MSG, function(data) {
-	        	
+	        	commons.saveAndBroadcastTransaction(ROTATE_SHAPE_MSG, PIC_CON, data);	        	
 	        });
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
