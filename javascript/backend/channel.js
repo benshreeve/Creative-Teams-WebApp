@@ -8,11 +8,7 @@ module.exports = function (io) {
 	
 	return {
 		joinTeam: function(accessCode, teamID) {
-			if (io.sockets.sockets[accessCode]) {
-				io.sockets.sockets[accessCode].join(teamID);
-			} else {
-				logger.debug("");
-			}
+			io.sockets.sockets[accessCode].join(teamID);
 		},
 
 		leaveTeam: function(accessCode, teamID) {
