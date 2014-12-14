@@ -4,10 +4,15 @@
 
 module.exports = function (io) {
 	utils = require('./utils.js')();
+	logger = require('./logger.js')();
 	
 	return {
 		joinTeam: function(accessCode, teamID) {
-			io.sockets.sockets[accessCode].join(teamID);
+			if (io.sockets.sockets[accessCode]) {
+				io.sockets.sockets[accessCode].join(teamID);
+			} else {
+				logger.debug("");
+			}
 		},
 
 		leaveTeam: function(accessCode, teamID) {

@@ -7,7 +7,7 @@ module.exports =
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
 			var utils = require('./utils')();
-			var logger = require('./logger')();
+			var logger = require('./logger')(context);
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {

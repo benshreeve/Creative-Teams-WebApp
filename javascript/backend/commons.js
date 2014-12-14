@@ -4,13 +4,17 @@
 
 module.exports = function(context)
 {
+	var logger = require('./logger.js')(context);
+	var utils = require('./utils.js')();
+	utils.includeConstants('../javascript/backend/constants.js');
+	
 	return {
 		sendTestComplete: function() {
-	    	context.channel.sendToTeam(context.session.TeamID, 'TestCompleteMsg');
+	    	context.channel.sendToTeam(context.session.TeamID, TEST_COMPLETE_MSG);
 		},
 
 		sendGetResultsReq: function() {
-	    	context.channel.sendToMinID(context.session.TeamID, 'GetResultsReq');
+	    	context.channel.sendToMinID(context.session.TeamID, GET_RESULTS_REQ);
 		},
 		
 		setTestTime: function(time) {
@@ -18,7 +22,7 @@ module.exports = function(context)
 		},
 		
 		sendBackendReady: function() {
-	        context.channel.sendToUser(context.session.AccessCode, "BackendReadyMsg");
+	        context.channel.sendToUser(context.session.AccessCode, BACKEND_READY_MSG);
 		},		
 				
 		setupTestTime: function(testID, callback, args) {

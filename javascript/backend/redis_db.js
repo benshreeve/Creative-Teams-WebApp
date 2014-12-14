@@ -19,10 +19,9 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.Participants = utils.addItemUnique(reply.Participants, accessCode);
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					else {
-						console.log("no record for this team. create one ...");
+						logger.debug("no record for team " + teamID + ". create one ...");
 						conn.hmset(teamID, "CurrentTest", PRAC_AREA, 
 									   "CurrentScreen", INSTRUCTION_SCREEN,
 									   "TextEditingUser", '',
@@ -48,9 +47,8 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.Participants = utils.delItem(reply.Participants, accessCode);
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					} else {
-						logger.debug("no record for this team");
+						logger.debug("no record for team ", teamID);
 					}
 					done();
 				});
@@ -69,7 +67,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.Participants = '';
 						conn.hmset(teamID, reply);
-						//	console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -88,7 +85,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.ReadyToStart = utils.addItemUnique(reply.ReadyToStart, accessCode);
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -106,9 +102,8 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.ReadyToStart = utils.delItem(reply.ReadyToStart, accessCode);
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					} else {
-						logger.debug("no record for this team");
+						logger.debug("no record for team ", teamID);
 					}
 					done();
 				});
@@ -145,7 +140,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.ReadyToStart = '';
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -201,7 +195,6 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						callback(reply.TextEditingUser, args);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -220,7 +213,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.IdeaId = ideaID;
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -237,7 +229,6 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						callback(reply.IdeaId, args);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});			
@@ -257,7 +248,6 @@ module.exports = function (conn) {
 						conn.hmset(teamID, reply);
 						done();
 						callback(id, args);
-						//console.log("reply: ", reply);
 					} else 
 						done();
 				});
@@ -275,7 +265,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.CurrentTest = testID;
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -293,7 +282,6 @@ module.exports = function (conn) {
 					if (reply) {
 						reply.CurrentScreen = screen;
 						conn.hmset(teamID, reply);
-						//console.log("reply: ", reply);
 					}
 					done();
 				});
@@ -312,7 +300,6 @@ module.exports = function (conn) {
 					
 					if (reply) {
 						callback(reply.CurrentTest, args);
-						//console.log("reply: ", reply);
 					} else {
 						callback(0, args);
 					}
@@ -333,7 +320,6 @@ module.exports = function (conn) {
 					
 					if (reply) {
 						callback(reply.CurrentScreen, args);
-						//console.log("reply: ", reply);
 					} else {
 						callback(1);
 					}

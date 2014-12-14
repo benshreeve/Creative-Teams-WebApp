@@ -18,9 +18,9 @@ module.exports = function(context) {
 	
 		debug: function() {
 			if (debug) {
-				var cmd = "console.log('[";
+				var cmd = "console.log('[" + arguments.callee.caller.name;
 				if (context != undefined && context.session != undefined) 
-					cmd += context.session.AccessCode + "(" + context.session.Name + ")" + (context.session.Late ? ":Late" : "");
+					cmd += ":" + context.session.AccessCode + "(" + context.session.Name + ")" + (context.session.Late ? ":Late" : "");
 				cmd += "]',";
 				for (var i = 0; i < arguments.length; i++) {
 					cmd += '"'+arguments[i]+'"';
