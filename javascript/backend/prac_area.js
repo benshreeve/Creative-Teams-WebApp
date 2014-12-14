@@ -70,7 +70,7 @@ module.exports =
 	        });
 	        	        
 	        context.socket.on(DISCONNECT_MSG, function(){
-	        	commons.disconnetUser();
+	        	commons.disconnectUser();
 	        });	
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {

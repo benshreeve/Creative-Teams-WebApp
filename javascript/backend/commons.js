@@ -76,7 +76,7 @@ module.exports = function(context)
 			context.channel.sendToUser(context.session.AccessCode, END_DATA_MSG);
 		},
 				
-		disconnetUser: function () {
+		disconnectUser: function () {
         	logger.debug('Got a disconnet message.');
 			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
 			context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
