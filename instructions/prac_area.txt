@@ -1,0 +1,7 @@
+This is the practice area - here you will have 5 minutes to draw whatever you wish, time remaining is shown in the bottom left of the screen.
+
+The tools you see in the bottom bar allow you to choose various sizes of Pen or Eraser. The yellow and green arrow allow you to undo or redo parts of your drawing as required. You are limited to your colour (#show users colour here) which will remain the same throughout the test.
+
+On some tests you will need to enter a title or brief description of your teams drawing, you will see a button which lets you do this in the bottom left hand of the toolbar.
+
+The top bar shows your nickname and acess code. It will also be where navigation buttons are placed. 
