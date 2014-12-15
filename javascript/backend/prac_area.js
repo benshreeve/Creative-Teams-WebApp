@@ -10,12 +10,7 @@ module.exports =
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
-<<<<<<< HEAD
-	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
-				console.log('GET_TEST_STATE_RSP ' + sendTestState);
-=======
 	        	commons.sendTestStateRsp();
->>>>>>> parent of c5d2745... Merge branch 'AucklandDev' of https://github.com/creativeteams/CreativeTeams into AucklandDev
 	        });
 	        
 	        function sendTestState(teamInfo) {
@@ -23,12 +18,7 @@ module.exports =
 	        }
 	        
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
-<<<<<<< HEAD
-				console.log('GET_TEST_STATE_RSP ' + context.session.AccessCode);
-	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
-=======
 	        	commons.sendSessionStateRsp();
->>>>>>> parent of c5d2745... Merge branch 'AucklandDev' of https://github.com/creativeteams/CreativeTeams into AucklandDev
 	        });
 	        
         
@@ -113,15 +103,8 @@ module.exports =
 	        function testComplete() {
 	        	commons.sendTestComplete();
 	        }
-<<<<<<< HEAD
-	         
-			//commons.setTestTime(context.session.TeamID, testComplete);              
-	        console.log("Hanlders were installed for practice area.");
-	        
-=======
 	                       
 	        logger.debug("Hanlders were installed for practice area.");
->>>>>>> parent of c5d2745... Merge branch 'AucklandDev' of https://github.com/creativeteams/CreativeTeams into AucklandDev
 	        
 	        // When a client requests its session:
 	        context.socket.on('requestSession', function() {
