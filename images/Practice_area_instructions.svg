@@ -5,16 +5,16 @@
 	 height="1336px" viewBox="0 0 2048 1336" enable-background="new 0 0 2048 1336" xml:space="preserve">
 <g id="Layer_2" display="none">
 	
-		<image display="inline" overflow="visible" width="2048" height="1536" xlink:href="../../../../../../Dropbox/Camera Uploads/2014-11-07 13.10.21.png"  transform="matrix(1 0 0 1 0 -98)">
+		<image display="inline" overflow="visible" width="2048" height="1536" xlink:href="../../../../Camera Uploads/2014-11-07 13.10.21.png"  transform="matrix(1 0 0 1 0 -98)">
 	</image>
 </g>
 <g id="Practice_area">
 	<text transform="matrix(1 0 0 1 52.3223 94.7095)" font-family="'Helvetica'" font-size="50">The practice area</text>
-	<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 872.3228 1198)" font-family="'Helvetica'" font-size="50">Select your pen size here</text>
-	<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 1350.3223 1198)" font-family="'Helvetica'" font-size="50">Choose your eraser size here</text>
-	<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 1912.3223 1198)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Move forward a canvas </tspan><tspan x="0" y="60" font-family="'Helvetica'" font-size="50">(access practice area)</tspan></text>
-	<text transform="matrix(4.489659e-11 -1 1 4.489659e-11 1740.3223 1198)" font-family="'Helvetica'" font-size="50">Move back a canvas</text>
-	<text transform="matrix(1 0 0 1 55.5488 178.5811)"><tspan x="0" y="0" font-family="'Jura-Regular'" font-size="41">Welcome to the practice area, you have five minutes to make yourselves familiar with the drawing tool on the</tspan><tspan x="0" y="49.2" font-family="'Jura-Regular'" font-size="41">next screen before the test begins. Nothing you draw in the practice area will be assessed, </tspan></text>
+	<text transform="matrix(1 0 0 1 738.7769 1109.3379)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Select your </tspan><tspan x="0" y="60" font-family="'Helvetica'" font-size="50">pen size here</tspan></text>
+	<text transform="matrix(1 0 0 1 1200.9395 1111.5)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Choose your </tspan><tspan x="0" y="60" font-family="'Helvetica'" font-size="50">eraser size here</tspan></text>
+	<text transform="matrix(1 0 0 1 1714.7148 802.0498)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Move forward </tspan><tspan x="102.76" y="60" font-family="'Helvetica'" font-size="50">a canvas </tspan><tspan x="-175.072" y="120" font-family="'Helvetica'" font-size="50">(access practice area)</tspan></text>
+	<text transform="matrix(1 0 0 1 1599.9883 1069.5498)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="50">Move back </tspan><tspan x="0" y="60" font-family="'Helvetica'" font-size="50">a canvas</tspan></text>
+	<text transform="matrix(1 0 0 1 55.5488 178.5811)"><tspan x="0" y="0" font-family="'Jura-Regular'" font-size="38">This is the practice area - here you will have 5 minutes to draw whatever you wish, time remaining is shown in </tspan><tspan x="0" y="45.6" font-family="'Jura-Regular'" font-size="38">the bottom left of the screen.</tspan><tspan x="0" y="91.2" font-family="'Jura-Regular'" font-size="38">The tools you see in the bottom bar allow you to choose various sizes of Pen or Eraser. </tspan><tspan x="0" y="136.8" font-family="'Jura-Regular'" font-size="38">The yellow and green arrow allow you to undo or redo parts of your drawing as required. </tspan><tspan x="0" y="182.4" font-family="'Jura-Regular'" font-size="38">You are limited to your colour which will remain the same throughout the test.</tspan><tspan x="0" y="228" font-family="'Jura-Regular'" font-size="38">On some tests you will need to enter a title or brief description of your teams drawing, </tspan><tspan x="0" y="273.6" font-family="'Jura-Regular'" font-size="38">you will see a button which lets you do this in the bottom left hand of the toolbar.</tspan><tspan x="0" y="319.2" font-family="'Jura-Regular'" font-size="38">The top bar shows your nickname and access code. It will also be where navigation buttons are placed.</tspan></text>
 	<g>
 		<g>
 			<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="857" y1="1206" x2="857" y2="1298.789"/>
@@ -35,7 +35,7 @@
 	</g>
 	<g>
 		<g>
-			<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1725" y1="1206" x2="1725" y2="1298.789"/>
+			<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1725" y1="1143" x2="1725" y2="1298.789"/>
 			<g>
 				<path d="M1725,1335c-6.322-17.039-17.109-38.18-28.535-51.284l28.535,10.321l28.529-10.321
 					C1742.104,1296.82,1731.316,1317.961,1725,1335z"/>
@@ -44,7 +44,7 @@
 	</g>
 	<g>
 		<g>
-			<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1896" y1="1207" x2="1896" y2="1299.789"/>
+			<line fill="none" stroke="#000000" stroke-width="6" stroke-miterlimit="10" x1="1896" y1="933" x2="1896" y2="1299.789"/>
 			<g>
 				<path d="M1896,1336c-6.322-17.039-17.109-38.18-28.535-51.284l28.535,10.321l28.529-10.321
 					C1913.104,1297.82,1902.316,1318.961,1896,1336z"/>
