@@ -28,6 +28,7 @@ var IS_BACKEND_READY_REQ = "IsBackendReadyReq";
 var IS_BACKEND_READY_RSP = "IsBackendReadyRsp";
 var GET_RESULTS_REQ = "GetResultsReq";
 var GET_RESULTS_RSP = "GetResultsRsp";
+var GET_TRANSACTIONS_REQ = "GetTransactionsReq"
 
 
 // Messages
@@ -54,12 +55,15 @@ var END_DATA_MSG = "EndDataMsg";
 var BACKEND_READY_MSG = "BackendReadyMsg";
 var DISCONNECT_MSG = "disconnect";
 var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
+var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
 
 // PERM_REQ Operations
 
 var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
+var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
+var CREATE_BACKGROUND = "CreateBackGround";
 // more values
 
 var GRANTED = "Granted";
@@ -68,10 +72,4 @@ var READY = "Ready";
 var NOT_READY = "NotReady";
 var UPDATE_TIME_INTERVAL =  10;
 var INSTRUCTION_SCREEN =  0;
-
-var OPERATION_ID = [];
-OPERATION_ID["draw"] = 1;
-OPERATION_ID["erase"] = 2;
-OPERATION_ID["move"] = 3;
-OPERATION_ID["rotate"] = 4;
-OPERATION_ID["add"] = 5;
+var debug = 1;
