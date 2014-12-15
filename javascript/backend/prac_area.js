@@ -7,23 +7,27 @@ module.exports =
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
 			var utils = require('./utils')();
+			var logger = require('./logger')(context);
 			utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
+<<<<<<< HEAD
 	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
 				console.log('GET_TEST_STATE_RSP ' + sendTestState);
+=======
+	        	commons.sendTestStateRsp();
+>>>>>>> 9cb99bb80c84d833389b50184af7b522b4179770
 	        });
-	        
-	        function sendTestState(teamInfo) {
-	        	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
-	        }
-	        
+	        	        
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
+<<<<<<< HEAD
 				console.log('GET_TEST_STATE_RSP ' + context.session.AccessCode);
 	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
+=======
+	        	commons.sendSessionStateRsp();
+>>>>>>> 9cb99bb80c84d833389b50184af7b522b4179770
 	        });
-	        
-        
+	               
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PRACTICE_AREA_PAGE:
@@ -38,7 +42,7 @@ module.exports =
 	        });
 	        
 	        function setupTestTimer() {
-	    	        commons.setupTestTime(PIC_COMP, testComplete);
+	    	        commons.setupTestTime(PRAC_AREA, testComplete);
 	        }
 	        
 	        function startTest() {
@@ -55,62 +59,58 @@ module.exports =
 	        	context.session.Late = false;
 	        	context.session.save();
 	        	context.rdb.getCurrentScreen(context.sesssion.TeamID, sendTestURL, {currentTest: currentTest});
-	        	}
+	        }
 	        
 	        function sendTestURL(currentScreen, args) {
 	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
 	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
-	        	}
+	        }
 	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
-	        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
-	        	context.rdb.clearTextEditingUser(context.session.TeamID);
+	        	commons.handleUpdateTitleMsg(title);
 	        });
 	        
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
-	        	dot.userID = context.session.UserID;
-	        	context.channel.sendToTeam(context.session.TeamID, DRAW_MSG, dot);
+	        	commons.broadcastTransaction(DRAW_MSG, PRAC_AREA, dot);
 	        });
 	        
 	        context.socket.on(ERASE_MSG, function(dot) {
-	        	dot.userID = context.session.UserID;
-	        	context.channel.sendToTeam(context.session.TeamID, ERASE_MSG, dot);	        	
+	        	commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
 	        });
-	        
-	        context.socket.on('mousedot', function(dot){
-	            context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
-	            // Post to the database here:				
-//	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
-	        });
-	        
-
-	        // On client disconnection, update the database:
+	        	        
 	        context.socket.on(DISCONNECT_MSG, function(){
-				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
-				context.db.getActiveUsersCount();
-				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
-				context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
-				context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
-				context.channel.disconnect(context.session.AccessCode);
+	        	commons.disconnectUser();
 	        });	
 	        
-	        // When a client requests its session:
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, READY);
+	        	commons.sendIsBackendReadyRsp(READY);
 	        });
 	        	       	       
-	        commons.sendBackendReady();	        
+	        commons.sendBackendReadyMsg();	        
 	        
 	        function testComplete() {
 				console.log("test complete ...");
 	        	commons.sendTestComplete();
 	        }
+<<<<<<< HEAD
 	         
 			//commons.setTestTime(context.session.TeamID, testComplete);              
 	        console.log("Hanlders were installed for practice area.");
 	        
+=======
+	                       
+	        logger.debug("Hanlders were installed for practice area.");
+>>>>>>> 9cb99bb80c84d833389b50184af7b522b4179770
 	        
+
+	        context.socket.on('mousedot', function(dot){
+	        	commons.broadcastTransaction('mousedot', PRAC_AREA, dot);
+	            //context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
+	            // Post to the database here:				
+//	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
+	        });
+	                
 	        // When a client requests its session:
 	        
 			context.socket.on('requestSession', function() {
