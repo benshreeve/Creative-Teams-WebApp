@@ -56,6 +56,8 @@ var BACKEND_READY_MSG = "BackendReadyMsg";
 var DISCONNECT_MSG = "disconnect";
 var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
 var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
+var UNDO_MSG = "UndoMsg";
+var REDO_MSG = "RedoMsg"
 
 // PERM_REQ Operations
 
