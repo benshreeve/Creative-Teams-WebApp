@@ -98,7 +98,7 @@ module.exports =
 	        	context.channel.sendToUser(context.session.AccessCode, IS_BACKEND_READY_RSP, READY);
 	        });
 	        	       	       
-	        commons.sendBackendReady();	        
+	        commons.sendBackendReadyMsg();	        
 	        
 	        function testComplete() {
 	        	commons.sendTestComplete();
