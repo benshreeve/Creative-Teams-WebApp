@@ -90,8 +90,11 @@ module.exports = function(context)
 		handleUpdateTitleMsg: function(title) {
         	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
         	context.rdb.clearTextEditingUser(context.session.TeamID);			
-		}
-				
+		},
+
+		sendInstructionFile: function() {
+			context.rdb.getCurrentTest(context.session.TeamID, sendTestInstruction);
+		}		
 		
 	};
 	
@@ -162,6 +165,18 @@ module.exports = function(context)
         
     }
 
-
+    function sendTestInstruction(currentTest) {
+		context.db.getTestInstructionFile(currentTest, sendFile);
+    }
+    
+    function sendFile(fileName) {
+    	var fs = require('fs');
+    	
+    	fs.readFile(fileName, function (err, data) {
+    		if (err) throw err;
+    		
+    		context.channel.sendToUser(context.session.AccessCode, GET_TEST_INSTRUCTION_RSP, data.toString());
+    	});
+    }
 
 };
