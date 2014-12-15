@@ -43,17 +43,63 @@ socket.on('session', function (session) {
 });
 */
 
+var totalTestTime = 0;
+var startTime = 0;
+var currentTime = 0;
+var remainTime = 0;
+var Name = "";
+var AccessCode = "";
+
 socket.on('UpdateTimeMsg', function(time){
-	console.log("time received from backend: ", time);
+	console.log("time received from backend: ", time);	
+	remainTime =  parseInt(totalTestTime - (time-startTime)/1000);	
+	if(remainTime >= 0){
+		remainMin = parseInt(remainTime/60);
+		remainSec =  parseInt(remainTime%60);
+		if (remainSec.toString().length == 1) {
+			remainSec = "0" + remainSec;
+		}
+		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";
+	
+	}	
 });
 
+function updateTimer(){
+	if(remainTime >= 0)
+	{
+		remainTime = remainTime-1;	
+		remainMin = parseInt(remainTime/60);
+		remainSec =  parseInt(remainTime%60);
+		if (remainSec.toString().length == 1) {
+			remainSec = "0" + remainSec;
+		}
+		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";		
+	}
+	else{
+		document.getElementById('timeRemained').innerHTML = "Practice time over";	
+		document.getElementById('top-right-button').style.display = "";
+	}
+	checkAddEditTitle();	
+}
+
+function checkAddEditTitle(){
+	if(document.getElementById('titleArea').value != ""){
+		document.getElementById('enterTitle').value = "Edit Title";
+	}
+	else{
+		document.getElementById('enterTitle').value = "Add Title";
+	}	
+}
+
 socket.on('BackendReadyMsg', function(rsp) {
-	console.log("BackendReadyMsg received ...");
-	//stateSession();
+	console.log("BackendReadyMsg received ...");	
 });
 
 socket.on('TestCompleteMsg', function(rsp) {
 	console.log("TestCompleteMsg received ...");
+	document.getElementById('top-right-button').style.display = "";
+	// make the next test button appear
+	
 });
 
 socket.on('GetResultsReq', function(rsp) {
@@ -63,12 +109,31 @@ socket.on('GetResultsReq', function(rsp) {
 	socket.emit('GetResultsRsp', {"image":image, "title": title});
 });
 
-socket.on('GetTestStateRsp', function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
+socket.on('GetTestStateRsp', function(rsp) {	
+	startTime = rsp.StartTime
+	currentTime = rsp.StartTime		
+	totalTestTime = rsp.TestTime/1000;	
+	document.getElementById('timeRemained').innerHTML = "Contact server";
+	var myVar = setInterval(function(){ 
+	updateTimer() ;
+	}, 1000);
 });
 
 socket.on('GetSessionStateRsp', function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
+	console.log("GetSessionStateRsp: ", rsp);	
+	Name = rsp.Name;
+	AccessCode = rsp.AccessCode;
+	//set the header title	
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	
+	if(!rsp.Late){		
+		document.getElementById('top-right-button').style.display = "none";
+	}
+	else
+	{		
+		document.getElementById('top-right-button').style.display = "";
+		document.getElementById('top-right-button').value = 'Take me to the test';
+	}
 });
 
 socket.on('PermRsp', function(rsp) {
@@ -77,15 +142,35 @@ socket.on('PermRsp', function(rsp) {
 
 socket.on('TitleBeingEditedMsg', function(rsp) {
 	console.log("TITLE_BEING_EDITED_MSG: ", rsp);
+	if(Name != rsp.editingUser){
+		document.getElementById('supertitle').innerHTML = "Title is being edited by " + rsp.editingUser;
+		document.getElementById('enterTitle').style.display = 'none';
+	}
+	
 });
 
 socket.on('UpdateTitleMsg', function(rsp) {
 	console.log("UPDATE_TITLE_MSG: ", rsp);
+	//update title for everyone
+	if(document.getElementById('titleArea')){
+		document.getElementById('titleArea').value = rsp;
+		document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;
+		document.getElementById('enterTitle').style.display = '';
+	}
+	checkAddEditTitle();		
 });
 
 socket.on('GotoMsg', function(rsp) {
 	console.log("GOTO_MSG: ", rsp);
 	window.location.href = rsp;
+});
+
+//When there are some response from backend
+socket.on(PERM_RSP, function(rsp) {	
+	if(rsp.decision == GRANTED && rsp.operation == EDIT_TITLE) {		
+		Popup.show('addTitle');
+	}
+	//window.location.href = rsp;
 });
 
 // Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
@@ -95,14 +180,23 @@ socket.on('mousedot', function(dot){
 		var testUser;
 		var testCollaborative;
 		
-		if(dot.owner === accessID) testUser = true; else testUser = false;
-		
-		if(collaborative) testCollaborative = true; else testCollaborative = false;
-	
+		if(dot.owner === accessID) testUser = true; else testUser = false;		
+		if(collaborative) testCollaborative = true; else testCollaborative = false;	
 		console.log("collaborative is: " + collaborative + "(" + testCollaborative + ") and dot.owner is: " + dot.owner + " and access id is: " + accessID + " (" + testUser + ")");
-		addClickSimple(dot.x, dot.y, dot.drag, dot.rad, dot.colour, dot.owner);
-		redraw();
+		//addClickSimple(dot.x, dot.y, dot.drag, dot.rad, dot.colour, dot.owner);
+		//redraw();
 //	}
+});
+
+socket.on(DRAW_MSG, function(dot){
+	console.log(dot);
+	if(dot.Operation == OPERATION_ID["draw"]){
+		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "blue", dot.userID);
+	}
+	else if(dot.Operation == OPERATION_ID["erase"]){
+		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);
+	}
+	redraw();	
 });
  
 // Undo when we get a request:
@@ -118,15 +212,9 @@ socket.on('switchResponse', function(data) {
 		screenNumber = data.newScreenNumber;		
 		collaborative = JSON.parse(data.collaborative);
 		drawable = data.drawable;
-		
-		//alert("This is screen " + screenNumber + " and it's setting for collaborative is " + collaborative);
-		
-		var testCollaborative;
-		
+		var testCollaborative;		
 		if(collaborative) testCollaborative = true;
 		else testCollaborative = false;
-		
-		//alert("And collaborative evaluated to " + testCollaborative); 
 	}
 });
 
@@ -134,16 +222,26 @@ socket.on('switchResponse', function(data) {
 function switchIntention(intention) {
 	console.log("screen number sent was: " + screenNumber);
 	socket.emit('switchRequest', { intention:intention, screenNumber:screenNumber });
+	//undo and redo
+	if(intention == 'back'){
+		console.log("back " + pointsArray.length);
+		pointsArray.splice(pointsArray.length - 1, 1);
+		resetCache();
+	}
 }
 
 function stateSession() {
+	
 	socket.emit("GetTestStateReq");
 	socket.emit("GetSessionStateReq");
-	socket.emit("PermReq", "LoadPracticeAreaPage");
+	/*socket.emit("PermReq", "LoadPracticeAreaPage");
 	socket.emit("PermReq", "EditTitle");
 	socket.emit("UpdateTitleMsg", "new title");
 	socket.emit("PermReq", "StartTest");
+	*/
 	socket.emit('requestSession');
+	//socket.emit("PermReq", "StartTest");
+	
 	//pollBackend();
 }
 
@@ -155,7 +253,7 @@ socket.on('screenUpdate', function(data) {
 });
 
 socket.on('sessionRequest', function(session) {	
-	
+	/*
 	myColour = session.sessionColour;
 	groupNumber = session.sessionGroup;
 	accessID = session.sessionAccessCode;
@@ -171,8 +269,33 @@ socket.on('sessionRequest', function(session) {
 	collaborative = session.sessionCollaborative;	
 	screenNumber = session.sessionScreen;
 	drawable = session.sessionDrawable;		
+	*/
+	//document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
 	
-	document.getElementById('supertitle').innerHTML = session.sessionNickName  + " / " + accessID;	
+	
+	//Minh
+	
+	
+	
+	myColour = "red";
+	groupNumber = session.TeamID;
+	accessID = session.AccessCode;
+	switchIntention(0);
+	drawable = "true";	
+	//alert(session.sessionDrawable); //alert(session.UserID);
+	
+	
+
+	// If variables are sent for the first time...
+	
+	
+	//screenNumber = session.sessionScreen;
+	//switchBackground(session.sessionBackground);
+	//collaborative = session.sessionCollaborative;	
+	//screenNumber = 0;
+		
+	
+	//document.getElementById('supertitle').innerHTML = session.NickName  + " / " + session.AccessCode;	
 	
 });
 
@@ -188,15 +311,11 @@ function showTitle(){
 	
 function pushToSocket(type, data) {
 	if((type== "draw" || type=="erase") && drawable=="true") {
-		addClickSimple(data.x, data.y, data.drag, data.rad, data.colour, data.owner);
-		socket.emit('mousedot', data); 
+		//addClickSimple(data.x, data.y, data.drag, data.rad, data.colour, data.owner);
+		//socket.emit('mousedot', data); 
 		
-		// Minh added
-		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: 1, Operation: type, OperationData: {x: data.x, y: data.y, drag: data.drag, rad: data.rad}}); 
-		//alert("screenNumber = " + screenNumber)
-		//alert("type = dot")
-		//alert("operation = " + type)
-		//alert(JSON.parse(data))
+		// Minh added, i need to add drag in as well
+		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: 1, Operation: OPERATION_ID[type], OperationData: {x: data.x, y: data.y, rad: data.rad, drag: false}}); 		
 		
 		redraw(); }
 	else if (type=="undo"){

@@ -93,6 +93,7 @@ function setupDBs() {
 
     var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
+	rdb.delTeam(2);
 }
 
 function setupTimer() {	

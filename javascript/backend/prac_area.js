@@ -11,6 +11,7 @@ module.exports =
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
 	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
+				console.log('GET_TEST_STATE_RSP ' + sendTestState);
 	        });
 	        
 	        function sendTestState(teamInfo) {
@@ -18,6 +19,7 @@ module.exports =
 	        }
 	        
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
+				console.log('GET_TEST_STATE_RSP ' + context.session.AccessCode);
 	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
 	        });
 	        
@@ -101,14 +103,17 @@ module.exports =
 	        commons.sendBackendReady();	        
 	        
 	        function testComplete() {
+				console.log("test complete ...");
 	        	commons.sendTestComplete();
 	        }
-	                       
+	         
+			//commons.setTestTime(context.session.TeamID, testComplete);              
 	        console.log("Hanlders were installed for practice area.");
 	        
 	        
 	        // When a client requests its session:
-	        context.socket.on('requestSession', function() {
+	        
+			context.socket.on('requestSession', function() {
 	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', 
 	            			    {sessionColor: utils.getUserColor(context.session.UserID), 
 	            				 sessionGroup: context.session.TeamID,
@@ -120,6 +125,6 @@ module.exports =
 	            				 sessionDrawable: "true",
 	            				 sessionBackground: "../images/picturecompletion/TTCT_Fig_Parts_Figure_1.svg",
 	            				 sessionNickName: context.session.Name});
-	        });
+	        });			
 		}		
 };

@@ -68,3 +68,10 @@ var READY = "Ready";
 var NOT_READY = "NotReady";
 var UPDATE_TIME_INTERVAL =  10;
 var INSTRUCTION_SCREEN =  0;
+
+var OPERATION_ID = [];
+OPERATION_ID["draw"] = 1;
+OPERATION_ID["erase"] = 2;
+OPERATION_ID["move"] = 3;
+OPERATION_ID["rotate"] = 4;
+OPERATION_ID["add"] = 5;
