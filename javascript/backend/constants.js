@@ -66,6 +66,25 @@ var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
 var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
 var CREATE_BACKGROUND = "CreateBackGround";
+
+// objects and operations
+
+var DOT = 1;
+var SHAPE = 2;
+var TITLE = 3;
+var NOTE = 4;
+var IDEA = 5;
+var OBJECT = 6;
+
+var DRAW = 1;
+var ERASE = 2;
+var MOVE = 3;
+var ROTATE = 4;
+var ADD = 5;
+var UNDO = 6;
+var REDO = 7;
+
+
 // more values
 
 var GRANTED = "Granted";

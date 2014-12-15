@@ -69,12 +69,12 @@ module.exports =
 	        	commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
 	        });
 
-	        context.socket.on(UNDO_MSG, function() {
-	        	commons.broadcastTransaction(UNDO_MSG, PRAC_AREA, {});
+	        context.socket.on(UNDO_MSG, function(object) {
+	        	commons.broadcastTransaction(UNDO_MSG, PRAC_AREA, object);
 	        });
 
-	        context.socket.on(REDO_MSG, function() {
-	        	commons.broadcastTransaction(REDO_MSG, PRAC_AREA, {});
+	        context.socket.on(REDO_MSG, function(object) {
+	        	commons.broadcastTransaction(REDO_MSG, PRAC_AREA, object);
 	        });
 	        
 	        context.socket.on(DISCONNECT_MSG, function(){
