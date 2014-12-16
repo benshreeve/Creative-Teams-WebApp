@@ -19,9 +19,9 @@ passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy,
 database = require('mysql'),
 SessionSockets = require('session.socket.io'),
-compression = require('compression');
-redis = require('redis')
-utils = require('./javascript/backend/utils.js')()
+compression = require('compression'),
+redis = require('redis'),
+utils = require('./javascript/backend/utils.js')(),
 logger = require('./javascript/backend/logger.js')();
 
 utils.includeConstants("./javascript/backend/constants.js");
@@ -93,7 +93,7 @@ function setupDBs() {
 
     var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
-//    rdb.delTeam(1);
+    rdb.delTeam(1);
 }
 
 function setupTimer() {	

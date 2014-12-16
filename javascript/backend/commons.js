@@ -6,7 +6,7 @@ module.exports = function(context)
 {
 	var logger = require('./logger.js')(context);
 	var utils = require('./utils.js')();
-	utils.includeConstants('../javascript/backend/constants.js');
+	utils.includeConstants('./javascript/backend/constants.js');
 	
 	return {
 		sendTestStateRsp: function() {
