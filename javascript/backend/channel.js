@@ -28,20 +28,9 @@ module.exports = function (io) {
 		},
 		
 		sendToMinID: function(teamID, cmd, args) {
-			var minID = 9999;
-			var ac = '';
-		    for (var a in io.sockets.sockets) {
-		    	if (utils.checkAccessCode(a) && (utils.getTeamID(a) == teamID)) {
-		    		uid = utils.getUserID(a);
-		    		if (uid < minID && io.sockets.sockets[a] != undefined) {
-		    			minID = uid;
-		    			ac = a;
-		    		}
-		    	}
-		    }
-		    
-		    if (minID != 9999) {
-		    	this.sendToUser(ac, cmd, args);
+			var minID = this.getMinID(teamID);
+		    if (minID != '') {
+		    	this.sendToUser(minID, cmd, args);
 		    } else {
 		    	logger.debug("no user in team "+teamID+" is available ...");
 		    }
@@ -57,8 +46,22 @@ module.exports = function (io) {
 		    	if (utils.checkAccessCode(a) && io.sockets.sockets[a] != undefined)
 		    		io.sockets.sockets[a].emit(cmd, args);
 		    }
+		},
+		
+		getMinID: function(teamID) {
+			var minID = 9999;
+			var ac = '';
+		    for (var a in io.sockets.sockets) {
+		    	if (utils.checkAccessCode(a) && (utils.getTeamID(a) == teamID)) {
+		    		uid = utils.getUserID(a);
+		    		if (uid < minID && io.sockets.sockets[a] != undefined) {
+		    			minID = uid;
+		    			ac = a;
+		    		}
+		    	}
+		    }
+		    return ac;			
 		}
-	
-				
+					
 	};
 };
