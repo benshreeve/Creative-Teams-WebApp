@@ -103,6 +103,10 @@ module.exports =
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PIC_COMP));
 	        	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_COMP));
 	        });
+	        
+	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
+	        	commons.sendInstructionFile();
+	        });	        
 	        	        	       	      
 	        commons.sendBackendReadyMsg();	        
 	        
