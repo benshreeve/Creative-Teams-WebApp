@@ -78,7 +78,15 @@ module.exports =
 	        context.socket.on(ERASE_MSG, function(dot) {
 	        	commons.saveAndBroadcastTransaction(ERASE_MSG, PIC_CON, dot);
 	        });
-	             
+	        
+	        context.socket.on(UNDO_MSG, function(object) {
+	        	commons.saveAndBroadcastTransaction(UNDO_MSG, PIC_CON, object);
+	        });
+	        
+	        context.socket.on(REDO_MSG, function(object) {
+	        	commons.saveAndBroadcastTransaction(REDO_MSG, PIC_CON, object);
+	        });
+	        	             
 	        context.socket.on(DISCONNECT_MSG, function() {
 	        	commons.disconnectUser();
 	        });	
