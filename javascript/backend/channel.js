@@ -12,7 +12,11 @@ module.exports = function (io) {
 		},
 
 		leaveTeam: function(accessCode, teamID) {
-			io.sockets.sockets[accessCode].leave(teamID);
+			try {
+				io.sockets.sockets[accessCode].leave(teamID);
+			} catch(ex) {
+				logger.debug("socket for " + accessCode + " already disconnected.");
+			}
 		},
 
 		setup: function(socket, accessCode) {
@@ -24,7 +28,11 @@ module.exports = function (io) {
 		},
 		
 		sendToUser: function(accessCode, cmd, args) {
-			io.sockets.sockets[accessCode].emit(cmd, args);
+			try {
+				io.sockets.sockets[accessCode].emit(cmd, args);
+			} catch(ex) {
+				logger.debug("socket for " + accessCode + " already disconnected.");
+			}				
 		},
 		
 		sendToMinID: function(teamID, cmd, args) {
@@ -38,13 +46,21 @@ module.exports = function (io) {
 		},
 
 		sendToTeam: function(teamID, cmd, args) {
-			io.to(teamID).emit(cmd, args)
+			try {
+				io.to(teamID).emit(cmd, args)
+			} catch(ex) {
+				logger.debug("Error sending to team: "+teamID);
+			}				
 		},
 		
 		sendToAll: function(cmd, args) {
 		    for (var a in io.sockets.sockets) {
 		    	if (utils.checkAccessCode(a) && io.sockets.sockets[a] != undefined)
-		    		io.sockets.sockets[a].emit(cmd, args);
+		    		try {
+		    			io.sockets.sockets[a].emit(cmd, args);
+					} catch(ex) {
+						logger.debug("socket for " + a + " already disconnected.");
+					}		    			
 		    }
 		},
 		
