@@ -43,7 +43,7 @@ module.exports =
 	        });
 	        
 	        function setupTestTimer() {
-	    	        commons.setupTestTime(PRAC_AREA, testComplete);
+	    	        commons.setupTestTime(PIC_CON, testComplete);
 	        }
 	        
 	        function sendCreateBGRsp(creator) {
@@ -100,7 +100,7 @@ module.exports =
 	        	results.saveImage(res.image);
 	        	results.saveTitle(res.title);
 	        	
-	        	logger.debg("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PIC_COMP));
+	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PIC_COMP));
 	        	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_COMP));
 	        });
 	        	        	       	      
@@ -110,7 +110,8 @@ module.exports =
 	        	commons.sendTestComplete();
 	        	commons.sendGetResultsReq();
 	        }
-	                       
+	          
+	        setupTestTimer(PIC_CON, testComplete);
 	        logger.debug("Hanlders were installed for picture construction test.");
 	        
 	        // When we receive drawing information:
