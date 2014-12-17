@@ -112,7 +112,7 @@ module.exports = function(context)
 	}
 	
 	function checkAllReadyRsp(currentScreen, args) {
-		if (context.session.Late || (args.testID == PRAC_AREA && currentScreen > INSTRUCTION_SCREEN)) {
+		if (context.session.Late || (args.testID == PRAC_AREA && currentScreen > INSTRUCTION_SCREEN && args.op != START_TEST)) {
 			context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
 					{decision:GRANTED, operation:args.op});
 			if (args.callback)
