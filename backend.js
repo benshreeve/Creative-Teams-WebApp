@@ -178,9 +178,8 @@ function processNewUser(userRow, args) {
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
-			db.getResultsPath(createTeamFolder, {teamID: userRow.TeamID});
-			//args.res.redirect("/test1/");
-			args.res.redirect("/introduction/");
+			db.getResultsPath(createTeamFolder, {teamID: userRow.TeamID});			
+			args.res.redirect("/tests/introductions.html");
 		} else {
 			serveError(args.res, "User has already logged in ...");
 		}
