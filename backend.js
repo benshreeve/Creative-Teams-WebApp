@@ -34,7 +34,7 @@ async.parallel([startBackend(), setupDBs(), setupTimer()]);
 function startBackend() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
-    var sessionStore = new RedisStore({host: "130.216.38.234", port:13163, pass: "apple"});
+    var sessionStore = new RedisStore({host: "130.216.38.216", port:13163, pass: "apple"});
 
 	app.use(compression());
 	
@@ -91,7 +91,7 @@ function setupDBs() {
         }
     });
 
-    var teamStore = redis.createClient(13163, '130.216.38.234', {auth_pass:'apple'});
+    var teamStore = redis.createClient(13163, '130.216.38.216', {auth_pass:'apple'});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
     rdb.delTeam(1);
 }
@@ -190,7 +190,7 @@ function processNewUser(userRow, args) {
 }
 
 function setLate(teamCurrentTest, args) {
-	args.userSession.Late = teamCurrentTest > 1 ? true : false;
+	args.userSession.Late = teamCurrentTest > 0 ? true : false;
 	args.userSession.save();		
 }
 

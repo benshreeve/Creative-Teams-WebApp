@@ -37,7 +37,7 @@ module.exports =
 	        
 	        function startTest() {
 	        	if (context.session.Late) {
-	        		rdb.getCurrentTest(context.session.TeamID, joinLateParticipant)
+	        		context.rdb.getCurrentTest(context.session.TeamID, joinLateParticipant)
 	        	} else {
 	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_CON);
 	        		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
@@ -48,7 +48,7 @@ module.exports =
 	        function joinLateParticipant(currentTest) {
 	        	context.session.Late = false;
 	        	context.session.save();
-	        	context.rdb.getCurrentScreen(context.sesssion.TeamID, sendTestURL, {currentTest: currentTest});
+	        	context.rdb.getCurrentScreen(context.session.TeamID, sendTestURL, {currentTest: currentTest});
 	        }
 	        
 	        function sendTestURL(currentScreen, args) {
