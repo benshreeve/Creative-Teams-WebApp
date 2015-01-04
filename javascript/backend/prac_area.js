@@ -88,7 +88,11 @@ module.exports =
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile();
 	        });
-	        	       	       
+
+	        context.socket.on(GET_INTRODUCTION_REQ, function() {
+	        	commons.sendIntroduction();
+	        });
+	        
 	        commons.sendBackendReadyMsg();	        
 	        
 	        function testComplete() {

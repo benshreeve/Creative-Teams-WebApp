@@ -14,38 +14,28 @@
 		<script src="../javascript/backend/constants.js"></script>
 		<script> 
 		var socket = io.connect(); 
-        socket.on('PermRsp', function(object) {				
+        socket.on(PERM_RSP, function(object) {				
 			if(object.decision==GRANTED && object.operation==LOAD_PRACTICE_AREA_PAGE)		{
 				document.location='practice_area.html';
 			}
 		});
+		
+		socket.on(GET_INTRODUCTION_RSP, function(intro) {
+			document.getElementById('intro').innerHTML = intro;
+		});
+		
+		socket.emit(GET_INTRODUCTION_REQ);
         </script>
 		
 	</head>
-	<body onload="">
-
-	
+	<body onload="">	
 		<div id="deadzone-top">	
 			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative teams Introduction</h1>
 			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
 		</div>	
 		
 		<div id="simplediv2">
-        Welcome to the creative teams test.
-        <br/><br/>
-		This series of tests set out to explore how creativity changes between teams. Each test has it's own set of instruction and aims, please read each set of instructions carefully before you start each test.
-        <br/><br/>
-        The focus of this system is to explore how crative you are as a team, we aren't looking at individual crativity, so don't worry, you (and your team) will remain completely anonymous.
-        <br/><br/>
-        Go on, give everything a go - the breaod aim here is explore your collective creativity, dream up things which no one else would think of, butwhich  still make senese!
-        
-       <br/><br/>
-       Please alert the invigilator if you have any questions during or after the test.
-       <br/><br/>
-       Good luck!
-
-		<br/><br/><hr/><br/>
-
+		<p id="intro"></p>
 
         <p id="statusDiv" style="color:#090">
         <input name="enterButton" type="button" value="Enter pratice area" id="closeButton" 

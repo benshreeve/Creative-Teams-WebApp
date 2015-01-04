@@ -28,7 +28,9 @@ var IS_BACKEND_READY_REQ = "IsBackendReadyReq";
 var IS_BACKEND_READY_RSP = "IsBackendReadyRsp";
 var GET_RESULTS_REQ = "GetResultsReq";
 var GET_RESULTS_RSP = "GetResultsRsp";
-var GET_TRANSACTIONS_REQ = "GetTransactionsReq"
+var GET_TRANSACTIONS_REQ = "GetTransactionsReq";
+var GET_INTRODUCTION_REQ = "GetIntroductionReq";
+var GET_INTRODUCTION_RSP = "GetIntroductionRsp";
 
 
 // Messages

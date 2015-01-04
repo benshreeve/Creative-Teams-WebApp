@@ -53,19 +53,14 @@ module.exports = function(context)
 			context.db.saveTransaction(context.session.TeamID, context.session.UserID, testID, data);
 		},
 		
-		saveTransaction: function(testID, data) {
-			context.db.saveTransaction(context.session.TeamID, context.session.UserID, testID, data);
-		},
-		
 		broadcastTransaction: function(msg, testID, data) {
         	data.userID = context.session.UserID;
         	context.channel.sendToTeam(context.session.TeamID, msg, data);	        	
 		},
 		
 		saveAndBroadcastTransaction: function(msg, testID, data) {
-        	data.userID = context.session.UserID;
         	this.saveTransaction(testID, data);
-        	context.channel.sendToTeam(context.session.TeamID, msg, data);	        				
+        	this.broadcastTransaction(msg, testID, data);	        				
 		},
 		
 		sendTransactions: function(testID) {
@@ -94,7 +89,11 @@ module.exports = function(context)
 
 		sendInstructionFile: function() {
 			context.rdb.getCurrentTest(context.session.TeamID, sendTestInstruction);
-		}		
+		},		
+		
+		sendIntroduction: function() {
+			context.db.getIntroductionFile(sendIntroduction);
+		}
 		
 	};
 	
@@ -166,16 +165,20 @@ module.exports = function(context)
     }
 
     function sendTestInstruction(currentTest) {
-		context.db.getTestInstructionFile(currentTest, sendFile);
+		context.db.getTestInstructionFile(currentTest, sendFile, {msg:GET_TEST_INSTRUCTION_RSP});
     }
     
-    function sendFile(fileName) {
+    function sendIntroduction() {
+    	context.db.getIntroductionFile(sendFile, {msg:GET_INTRODUCTION_RSP});
+    }
+    
+    function sendFile(fileName, args) {
     	var fs = require('fs');
     	
     	fs.readFile(fileName, function (err, data) {
     		if (err) throw err;
     		
-    		context.channel.sendToUser(context.session.AccessCode, GET_TEST_INSTRUCTION_RSP, data.toString());
+    		context.channel.sendToUser(context.session.AccessCode, args.msg, data.toString());
     	});
     }
 

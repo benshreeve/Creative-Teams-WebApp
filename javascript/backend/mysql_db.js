@@ -116,6 +116,13 @@ module.exports = function (conn) {
 				callback(eval("rows[0]."+name+"InstructionFile"), args);
 			});			
 		},
+
+		getIntroductionFile: function(callback, args) {			
+			conn.query('select IntroductionFile from config', function(err, rows) {
+				if (err) throw err;
+				callback(eval("rows[0].IntroductionFile"), args);
+			});			
+		},
 		
 		getResultsPath: function(callback, args) {
 			conn.query('select ResultsPath from config', function(err, rows) {
