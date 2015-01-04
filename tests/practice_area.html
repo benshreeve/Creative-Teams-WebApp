@@ -14,7 +14,10 @@
 		<script src="../javascript/backend/constants.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script> 
-		var socket = io.connect(); 		
+		var socket = io.connect();
+		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
+			document.getElementById('instruction').innerHTML = instructions;
+		}); 		
         </script>
 		<link rel="stylesheet" type="text/css" href="../public/style.css">
 	</head>
@@ -63,16 +66,10 @@
 		</div>
         
         <div id="practiceIntro">
-        <h1>Practice Area Instruction</h1>
-        <br/><br/>
-        This is the practice area - here you will have 5 minutes to draw whatever you wish, time remaining is shown in the bottom left of the screen.
-        <br/><br/>
-		The tools you see in the bottom bar allow you to choose various sizes of Pen or Eraser. The yellow and green arrow allow you to undo or redo parts of your drawing as required. You are limited to your colour <span style="color:#090">(#show users colour here)</span> which will remain the same throughout the test.
-        <br/><br/>
-        On some tests you will need to enter a title or brief description of your teams drawing, you will see a button which lets you do this in the bottom left hand of the toolbar.
-        <br/><br/>
-        The top bar shows your nickname and acess code. It will also be where navigation buttons are placed.        
-        <br/><br/>       
+        <script>
+        	socket.emit(GET_TEST_INSTRUCTION_REQ);
+        </script>
+		<p id = "instruction"></p>
         <p>
         <input name="enterButton" type="button" value="Close and start practising" id="closeButton" onClick="closeAndStart();"> 
         </p>
