@@ -59,7 +59,8 @@ var DISCONNECT_MSG = "disconnect";
 var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
 var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
 var UNDO_MSG = "UndoMsg";
-var REDO_MSG = "RedoMsg"
+var REDO_MSG = "RedoMsg";
+var BACKEND_READY_RECVD_MSG = "BackendReadyRecvdMsg";
 
 // PERM_REQ Operations
 
@@ -97,3 +98,4 @@ var UPDATE_TIME_INTERVAL =  10;
 var INSTRUCTION_SCREEN =  0;
 var debug = 1;
 var COLOURS = ["", "purple", "red", "blue", "orange", "green"];
+var BACKEND_READY_MSG_INTERVAL = 2000;

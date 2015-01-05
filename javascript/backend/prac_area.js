@@ -78,6 +78,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on(DISCONNECT_MSG, function(){
+	        	clearInterval(backendReadyTimer);
 	        	commons.disconnectUser();
 	        });	
 	        
@@ -93,7 +94,16 @@ module.exports =
 	        	commons.sendIntroduction();
 	        });
 	        
-	        commons.sendBackendReadyMsg();	        
+	        context.socket.on(BACKEND_READY_RECVD_MSG, function() {
+	        	logger.debug("backend received message received ...");
+	        	clearInterval(backendReadyTimer);
+	        });
+	        
+	        function sendBackendReady() {
+	        	context.channel.sendToUser(context.session.AccessCode, BACKEND_READY_MSG, PRAC_AREA);
+	        }
+	        
+	        var backendReadyTimer = setInterval(sendBackendReady, BACKEND_READY_MSG_INTERVAL);	        
 	        
 	        function testComplete() {
 	        	commons.sendTestComplete();
