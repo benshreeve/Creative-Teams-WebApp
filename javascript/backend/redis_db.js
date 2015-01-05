@@ -289,7 +289,7 @@ module.exports = function (conn) {
 				});
 			});
 		},
-
+				
 		getCurrentTest: function(teamID, callback, args) {
 			lock(teamID, function(done) {
 				conn.hgetall(teamID, function(err, reply) {
@@ -426,6 +426,46 @@ module.exports = function (conn) {
 					
 				});
 			});														
+		},
+		
+		verify: function(teamID, condition, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					done();
+					
+					var func = new Function('reply', "return " + condition);
+					
+					callback(func(reply), args);					
+				});
+			});									
+		},
+		
+		waitFor: function(teamID, condition, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					done();
+				
+					var func = new Function('reply', "return " + condition);
+					if (func(reply)) {
+						callback(args);		
+					}
+					else {
+						setTimeout(function (teamID, condition, callback, args){
+							this(teamID, condition, callback, args);
+						}, 1000);
+					}
+				});
+			});
 		},
 		
 		delTeam: function(teamID) {

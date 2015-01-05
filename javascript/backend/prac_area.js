@@ -41,10 +41,10 @@ module.exports =
 	        	} else {
 	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_CON);
 	        		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
-	        		context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_CON));
+	        		context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + PIC_CON + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", commons.redirectToTest, PIC_CON);	        		
 	        	}
 	        }
-	        
+	        	        
 	        function joinLateParticipant(currentTest) {
 	        	context.session.Late = false;
 	        	context.session.save();

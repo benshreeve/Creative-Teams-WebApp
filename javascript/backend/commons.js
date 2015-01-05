@@ -93,6 +93,10 @@ module.exports = function(context)
 		
 		sendIntroduction: function() {
 			context.db.getIntroductionFile(sendIntroduction);
+		},
+		
+		redirectToTest: function(testID) {
+			context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(testID));
 		}
 		
 	};
