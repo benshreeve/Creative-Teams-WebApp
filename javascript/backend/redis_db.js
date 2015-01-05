@@ -446,26 +446,7 @@ module.exports = function (conn) {
 		},
 		
 		waitFor: function(teamID, condition, callback, args) {
-			lock(teamID, function(done) {
-				conn.hgetall(teamID, function(err, reply) {
-					if (err) {
-						done();
-						throw err;
-					}
-				
-					done();
-				
-					var func = new Function('reply', "return " + condition);
-					if (func(reply)) {
-						callback(args);		
-					}
-					else {
-						setTimeout(function (teamID, condition, callback, args){
-							this(teamID, condition, callback, args);
-						}, 1000);
-					}
-				});
-			});
+			waitForCondition(teamID, condition, callback, args);
 		},
 		
 		delTeam: function(teamID) {
@@ -479,4 +460,28 @@ module.exports = function (conn) {
 			lock()
 		}
 	};
+
+	function waitForCondition(teamID, condition, callback, args) {
+		lock(teamID, function(done) {
+			conn.hgetall(teamID, function(err, reply) {
+				if (err) {
+					done();
+					throw err;
+				}
+		
+				done();
+		
+				var func = new Function('reply', "return " + condition);
+				if (func(reply)) {
+					callback(args);		
+				}
+				else {
+					setTimeout(
+					verifyCondition(teamID, condition, callback, args), 1000);
+				}
+			});
+		});
+	}
+	
+
 };
