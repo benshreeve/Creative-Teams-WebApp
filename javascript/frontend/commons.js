@@ -21,13 +21,7 @@ var screenNumber = 2;
 var myColour = "black";
 var accessID;
 var groupNumber;
-var collaborative = true;
-var bgimage;
 var drawable = "true";
-
-var minScreen = 2;
-var maxScreen = 2;
-var backendReady = false;
 
 var totalTestTime = 0;
 var startTime = 0;
@@ -36,34 +30,37 @@ var remainTime = 0;
 var Name = "";
 var AccessCode = "";
 var undoArray = [];
+var originalTitle = "";
 
-socket.on('UpdateTimeMsg', function(time){
-	console.log("time received from backend: ", time);	
-	remainTime =  parseInt(totalTestTime - (time-startTime)/1000);	
+
+function calculateRemainingTime(currentTime) {	
+	remainTime =  parseInt(totalTestTime - (currentTime-startTime)/1000);	
+	console.log("time received from backend: ", currentTime, totalTestTime, startTime, remainTime);
 	if(remainTime >= 0){
 		remainMin = parseInt(remainTime/60);
 		remainSec =  parseInt(remainTime%60);
 		if (remainSec.toString().length == 1) {
 			remainSec = "0" + remainSec;
 		}
-		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";
-	
-	}	
-});
+		return {min: remainMin, sec: remainSec};
+	}
+	return {min: 0, sec:0};
+}
 
 function updateTimer(){
-	if(remainTime >= 0)
-	{
+	console.log("updateTimer: ", remainTime);
+	if(remainTime >= 0) {
 		remainTime = remainTime-1;	
 		remainMin = parseInt(remainTime/60);
 		remainSec =  parseInt(remainTime%60);
 		if (remainSec.toString().length == 1) {
 			remainSec = "0" + remainSec;
 		}
+		console.log("min:sec ->", remainMin, remainSec);
 		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";		
 	}
 	else{
-		document.getElementById('timeRemained').innerHTML = "Practice time over";	
+		document.getElementById('timeRemained').innerHTML = "Time is up!";	
 		document.getElementById('top-right-button').style.display = "";
 	}
 	checkAddEditTitle();	
@@ -80,97 +77,49 @@ function checkAddEditTitle(){
 	}	
 }
 
-socket.on('BackendReadyMsg', function(rsp) {
-	console.log("BackendReadyMsg received ...");	
-});
-
-socket.on('TestCompleteMsg', function(rsp) {
-	console.log("TestCompleteMsg received ...");
-	document.getElementById('top-right-button').style.display = "";
-	// make the next test button appear
-	
-});
-
-socket.on('GetResultsReq', function(rsp) {
-	console.log("GetResultsReq received ...");
-	var image = canvasSimple.toDataURL('image/png');
-	var title = "title"
-	socket.emit('GetResultsRsp', {"image":image, "title": title});
-});
-
-socket.on('GetTestStateRsp', function(rsp) {	
-	startTime = rsp.StartTime
-	currentTime = rsp.StartTime		
-	totalTestTime = rsp.TestTime/1000;	
+function storeTestState(testState) {
+	startTime = testState.StartTime
+	currentTime = testState.StartTime		
+	totalTestTime = testState.TestTime/1000;
+	remainTime =  parseInt(totalTestTime - (currentTime-startTime)/1000);
 	document.getElementById('timeRemained').innerHTML = "Contact server";
 	var myVar = setInterval(function(){ 
-	updateTimer() ;
+		updateTimer() ;
 	}, 1000);
-});
+}
 
-socket.on('GetSessionStateRsp', function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);	
-	Name = rsp.Name;
-	AccessCode = rsp.AccessCode;
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
-	
-	if(!rsp.Late){		
-		document.getElementById('top-right-button').style.display = "none";
-	}
-	else
-	{		
-		document.getElementById('top-right-button').style.display = "";
-		document.getElementById('top-right-button').value = 'Take me to the test';
-	}
-});
+function storeSessionState(sessionState) {
+	groupNumber = sessionState.TeamID;
+	accessID = sessionState.AccessCode;
+	drawable = "true";	
+	Name = sessionState.Name;
+	AccessCode = sessionState.AccessCode;	
+}
 
-socket.on('PermRsp', function(rsp) {
-	console.log("PermRsp: ", rsp);
-});
-
-socket.on('TitleBeingEditedMsg', function(rsp) {
-	console.log("TITLE_BEING_EDITED_MSG: ", rsp);
-	if(Name != rsp.editingUser){
-		//document.getElementById('supertitle').innerHTML = "Title is being edited by " + rsp.editingUser;
-		//document.getElementById('enterTitle').style.display = 'none';
-		document.getElementById('enterTitle').value = "Editing by " + rsp.editingUser;
+function handleTitleBeingEdited(info) {
+	console.log("TITLE_BEING_EDITED_MSG: ", info);
+	if(Name != info.editingUser){
+		document.getElementById('enterTitle').value = "Editing by " + info.editingUser;
 		document.getElementById('enterTitle').style.color="red";
 	}
-	
-});
+}
 
-socket.on('UpdateTitleMsg', function(rsp) {
-	console.log("UPDATE_TITLE_MSG: ", rsp);
+function handleUpdateTitle(info) {
+	console.log("UPDATE_TITLE_MSG: ", info);
 	//update title for everyone
 	if(document.getElementById('titleArea')){
-		document.getElementById('titleArea').value = rsp;
-		//document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;
-		//document.getElementById('enterTitle').style.display = '';
+		document.getElementById('titleArea').value = info;
 		document.getElementById('enterTitle').value = "Add Title";
 		document.getElementById('enterTitle').style.color="grey";
 	}
-	checkAddEditTitle();		
-});
+	checkAddEditTitle();	
+}
 
-socket.on('GotoMsg', function(rsp) {
-	console.log("GOTO_MSG: ", rsp);
-	window.location.href = rsp;
-});
-
-//When there are some response from backend
-socket.on(PERM_RSP, function(rsp) {	
-	if(rsp.decision == GRANTED && rsp.operation == EDIT_TITLE) {		
-		Popup.show('addTitle');
-	}	
-});
-
-//When received undo
-socket.on(UNDO_MSG, function(rsp) {	
+function handleUndo(info) {
 	var i;
 	for(i = pointsArray.length - 1; i >=0; i--){
 		point = pointsArray[i];			
-		if(point.owner == rsp.userID){
+		if(point.owner == info.userID){
 			pointsArray.splice(i, 1);
 			undoArray.push(point);			
 			if(point.drag == false){				
@@ -178,16 +127,15 @@ socket.on(UNDO_MSG, function(rsp) {
 			}
 		}
 	}	
-	resetCache();	
-});
+	resetCache();		
+}
 
-//When received redo
-socket.on(REDO_MSG, function(rsp) {	
+function handleRedo(info) {
 	var i;
 	var realDrag = false;
 	for(i = undoArray.length - 1; i >=0; i--){
 		point = undoArray[i];		
-		if(point.owner == rsp.userID){						
+		if(point.owner == info.userID){						
 			if(point.drag == false && realDrag){	
 				break;		
 			}
@@ -198,49 +146,11 @@ socket.on(REDO_MSG, function(rsp) {
 			pointsArray.push(point);			
 		}				
 	}
-	resetCache();
-});
-
-// Handle draw requests.  Ignore if not in our group, screen or if this screen is not collaborative.
-socket.on('mousedot', function(dot){
-		var testUser;
-		var testCollaborative;		
-		if(dot.owner === accessID) testUser = true; else testUser = false;		
-		if(collaborative) testCollaborative = true; else testCollaborative = false;	
-		console.log("collaborative is: " + collaborative + "(" + testCollaborative + ") and dot.owner is: " + dot.owner + " and access id is: " + accessID + " (" + testUser + ")");
-});
-
-socket.on(DRAW_MSG, function(dot){
-	//console.log(dot);	
-	if(dot.Operation == DRAW){
-		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, COLOURS[dot.userID], dot.userID);
-	}
-	else if(dot.Operation == ERASE){
-		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
-	}
-	redraw();	
-});
- 
-// Procedure for dealing with our request:
-socket.on('switchResponse', function(data) {
-	if(data.response == false) alert(data.reason);
-	else {
-        pointsArray.length = 0;
-        clearcanvas();
-		switchBackground(data.bgimage);
-		screenNumber = data.newScreenNumber;		
-		collaborative = JSON.parse(data.collaborative);
-		drawable = data.drawable;
-		var testCollaborative;		
-		if(collaborative) testCollaborative = true;
-		else testCollaborative = false;
-	}
-});
+	resetCache();	
+}
 
 // Ask the server if we can move forward or backward:
 function switchIntention(intention) {
-	//console.log("screen number sent was: " + screenNumber);
-	socket.emit('switchRequest', { intention:intention, screenNumber:screenNumber });
 	//undo and redo
 	if(intention == 'back'){
 		socket.emit(UNDO_MSG, {userID: accessID, ScreenNumber: screenNumber, ObjectID: DOT, Operation: UNDO, OperationData:{}});  		
@@ -250,42 +160,13 @@ function switchIntention(intention) {
 	}
 }
 
-function stateSession() {
-	
+function stateSession() {	
 	socket.emit("GetTestStateReq");
-	socket.emit("GetSessionStateReq");
-	socket.emit('requestSession');	
+	socket.emit("GetSessionStateReq");	
 }
 
-socket.on('screenUpdate', function(data) {
-	if(screenNumber < data.min)
-		switchIntention(data.min);
-	else if(screenNumber > data.max)
-		switchIntention(data.max);
-});
 
-socket.on('sessionRequest', function(session) {		
-	
-	myColour = "red";
-	groupNumber = session.TeamID;
-	accessID = session.AccessCode;
-	switchIntention(0);
-	drawable = "true";	
-});
-
-
-function pollBackend() {
-	console.log("polling backend ...");
-	socket.emit("IsBackendReadyReq");
-}
-
-function showTitle(){	
-	socket.emit('sessionTitle');
-}
-	
 function pushToSocket(type, data) {
-	//console.log("drag: data.drag " + data.drag);
-	// Minh added
 	if(type== "draw" && drawable=="true") {			
 		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: DOT, Operation: DRAW, OperationData: {x: data.x, y: data.y, rad: data.rad, drag: data.drag}}); 
 		redraw(); 
@@ -295,15 +176,6 @@ function pushToSocket(type, data) {
 		redraw(); 
 	}	
 }
-
-function sleep(milliseconds) {
-	  var start = new Date().getTime();
-	  for (var i = 0; i < 1e7; i++) {
-	    if ((new Date().getTime() - start) > milliseconds){
-	      break;
-	    }
-	  }
-	}
 
 function prepareCanvas() {
 	canvas = document.createElement('canvas');
@@ -335,7 +207,6 @@ function prepareCanvas() {
 		document.getElementById('deadzone-bottom').style.width = "100%";
 	}	
 	
-	console.log("backendReady: ", backendReady);
 	// Ask for Session Details:
 	
 	stateSession();
@@ -552,4 +423,46 @@ function switchStroke(size, id) {
 			left: (startPos + (buttonWidth *2) + (rightMargin * 2))
 		}, { duration: speed, queue: false });		
 	}
+}
+
+
+function showIntroduction(){
+	if(document.getElementById('top-left-button').value == 'Instructions'){
+		document.getElementById('top-left-button').value = 'Practice Area';
+		Popup.show('practiceIntro');                        
+	}
+}
+
+function sendRequestToNextTest(){	
+	document.getElementById('top-right-button').value = 'Waiting for server responses...';    
+	socket.emit(PERM_REQ, START_TEST);  
+}
+
+function sendRequestToUpdateTitle(){
+	socket.emit(PERM_REQ, EDIT_TITLE); 
+	originalTitle = document.getElementById('titleArea').value;
+}
+
+function closeAndStart(){
+	Popup.hideAll();
+	document.getElementById('top-left-button').value = 'Instructions';
+}
+
+function saveTitle(){
+	socket.emit('UpdateTitleMsg', document.getElementById('titleArea').value); 
+	Popup.hideAll();
+}
+
+function cancelUpdateTitle(){
+	socket.emit('UpdateTitleMsg', originalTitle); 
+	Popup.hideAll();
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }

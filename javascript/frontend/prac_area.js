@@ -1,34 +1,80 @@
-// JavaScript Document
-var originalTitle = "";
+socket.on(UPDATE_TIME_MSG, function(time){
+	remainingTime = calculateRemainingTime(time);
+	console.log("UPDTAE_TIME_MSG: ", remainingTime.min,",", remainingTime.sec);
+	document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
+});
 
-function showIntroduction(){
-	if(document.getElementById('top-left-button').value == 'Instructions'){
-		document.getElementById('top-left-button').value = 'Practice Area';
-		Popup.show('practiceIntro');                        
+
+socket.on(TEST_COMPLETE_MSG, function(rsp) {
+	console.log("TestCompleteMsg received ...");
+	document.getElementById('top-right-button').style.display = "";
+});
+
+socket.on(GET_RESULTS_REQ, function(rsp) {
+	console.log("GetResultsReq received ...");
+	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+});
+
+socket.on(GET_TEST_STATE_RSP, function(rsp) {
+	console.log("GetTestStateRsp: ", rsp);
+	storeTestState(rsp);
+});
+
+socket.on(GET_SESSION_STATE_RSP, function(rsp) {
+	console.log("GetSessionStateRsp: ", rsp);
+	storeSessionState(rsp);
+	
+	//set the header title	
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	
+	if(!rsp.Late){		
+		document.getElementById('top-right-button').style.display = "none";
 	}
-}
+	else
+	{		
+		document.getElementById('top-right-button').style.display = "";
+		document.getElementById('top-right-button').value = 'Take me to the test';
+	}
+});
 
-function sendRequestToNextTest(){	
-	document.getElementById('top-right-button').value = 'Waiting for server responses...';    
-	socket.emit(PERM_REQ, START_TEST);  
-}
+socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
+	handleTitleBeingEdited(rsp);	
+});
 
-function sendRequestToUpdateTitle(){
-	socket.emit(PERM_REQ, EDIT_TITLE); 
-	originalTitle = document.getElementById('titleArea').value;
-}
+socket.on(UPDATE_TITLE_MSG, function(rsp) {
+	handleUpdateTitle(rsp);
+});
 
-function closeAndStart(){
-	Popup.hideAll();
-	document.getElementById('top-left-button').value = 'Instructions';
-}
+socket.on(GOTO_MSG, function(rsp) {
+	console.log("GOTO_MSG: ", rsp);
+	window.location.href = rsp;
+});
 
-function saveTitle(){
-	socket.emit('UpdateTitleMsg', document.getElementById('titleArea').value); 
-	Popup.hideAll();
-}
+//When there are some response from backend
+socket.on(PERM_RSP, function(rsp) {	
+	if(rsp.decision == GRANTED && rsp.operation == EDIT_TITLE) {		
+		Popup.show('addTitle');
+	}	
+});
 
-function cancelUpdateTitle(){
-	socket.emit('UpdateTitleMsg', originalTitle); 
-	Popup.hideAll();
-}
+//When received undo
+socket.on(UNDO_MSG, function(rsp) {
+	handleUndo(rsp);
+});
+
+//When received redo
+socket.on(REDO_MSG, function(rsp) {
+	handleRedo(rsp);
+});
+
+socket.on(DRAW_MSG, function(dot){
+	//console.log(dot);	
+	if(dot.Operation == DRAW){
+		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, COLOURS[dot.userID], dot.userID);
+	}
+	else if(dot.Operation == ERASE){
+		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
+	}
+	redraw();	
+});
+ 
