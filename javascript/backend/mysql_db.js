@@ -46,8 +46,10 @@ module.exports = function (conn) {
 				teamID + '","' + testID + '","'+ userID + '","' + transaction.ScreenNumber + '","' + transaction.ObjectID + '","' + 
 				transaction.Operation + '","' + JSON.stringify(transaction.OperationData).replace(/["]/g, '\\\"')+'", now(6)'+');'
             query = conn.query(q, post, function(err, result) {
-                console.log("Saving a transaction:" + query.sql);
-                if(err) throw err;
+                if(err) {
+                    logger.log("Saving a transaction:" + query.sql);
+                	throw err;
+                }
             });			
 		},
 		
