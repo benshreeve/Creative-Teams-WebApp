@@ -90,7 +90,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(READY);
+	        	commons.sendIsBackendReadyRsp(PRAC_AREA);
 	        });
 	        
 	        function pracAreaTestComplete() {

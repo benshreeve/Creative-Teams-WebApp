@@ -88,7 +88,7 @@ module.exports =
 	        });	
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(READY);
+	        	commons.sendIsBackendReadyRsp(PIC_CON);
 	        });
 
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
