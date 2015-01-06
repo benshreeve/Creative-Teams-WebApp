@@ -43,11 +43,11 @@ module.exports = function (conn) {
 		
 		saveTransaction: function(teamID, userID, testID, transaction) {
 			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
-				teamID + '","' + testID + '","'+ userID + '","' + transaction.screenNumber + '","' + transaction.object + '","' + 
-				transaction.operation + '","' + JSON.stringify(transaction.operationData)+', now(6)'+');'
+				teamID + '","' + testID + '","'+ userID + '","' + transaction.ScreenNumber + '","' + transaction.ObjectID + '","' + 
+				transaction.Operation + '","' + JSON.stringify(transaction.OperationData).replace(/["]/g, '\\\"')+'", now(6)'+');'
             query = conn.query(q, post, function(err, result) {
+                console.log("Saving a transaction:" + query.sql);
                 if(err) throw err;
-                logger.debug("Saving a transaction:" + query.sql);
             });			
 		},
 		
