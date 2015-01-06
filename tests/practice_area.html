@@ -15,14 +15,29 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script> 
 		var socket = io.connect();
+		var backendReady = false;
+		
 		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
 			document.getElementById('instruction').innerHTML = instructions;
-		}); 		
+			Popup.show('practiceIntro');
+		});
+		
+		socket.on(IS_BACKEND_READY_RSP, function(response) {
+			if (response == PRAC_AREA) {
+				clearInterval(backendReadyTimer);
+				backendReady = true;
+				socket.emit(GET_TEST_INSTRUCTION_REQ);
+				prepareCanvas();
+			}	
+		});
+		
+		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		
         </script>
 		<link rel="stylesheet" type="text/css" href="../public/style.css">
 	</head>
-	<body 
-    onload="javascript:prepareCanvas();Popup.show('practiceIntro');" 
+	    <!--   onload="javascript:prepareCanvas();Popup.show('practiceIntro');" -->
+	<body  
     onresize="javascript:resizeCanvas()"
     onClick="if(document.getElementById('practiceIntro').style.display=='none'){ document.getElementById('top-left-button').value = 'Instructions'; }"
     >
@@ -66,9 +81,6 @@
 		</div>
         
         <div id="practiceIntro">
-        <script>
-        	socket.emit(GET_TEST_INSTRUCTION_REQ);
-        </script>
 		<p id = "instruction"></p>
         <p>
         <input name="enterButton" type="button" value="Close and start practising" id="closeButton" onClick="closeAndStart();"> 
