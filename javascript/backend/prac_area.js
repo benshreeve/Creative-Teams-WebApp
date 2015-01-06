@@ -27,7 +27,10 @@ module.exports =
 	        		commons.checkAllReady(op, PRAC_AREA, pracAreaStartTest);
 	        		break;
 	        	case EDIT_TITLE:
-	        		commons.checkEditTitle();
+	        		if (!context.session.Late)
+	        			commons.checkEditTitle();
+	        		else
+	        			context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {operation: op, decision:GRANTED});
 	        	}
 	        });
 	        
@@ -57,7 +60,8 @@ module.exports =
 	        }
 	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
-	        	commons.handleUpdateTitleMsg(title);
+	        	if (!context.session.Late)
+	        		commons.handleUpdateTitleMsg(title);
 	        });
 	        
 	        
