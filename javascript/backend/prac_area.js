@@ -62,19 +62,31 @@ module.exports =
 	        
 	        
 	        context.socket.on(DRAW_MSG, function(dot) {
-	        	commons.broadcastTransaction(DRAW_MSG, PRAC_AREA, dot);
+	        	if (context.session.Late)
+	        		commons.unicastTransaction(DRAW_MSG, PRAC_AREA, dot);
+	        	else
+	        		commons.broadcastTransaction(DRAW_MSG, PRAC_AREA, dot);
 	        });
 	        
 	        context.socket.on(ERASE_MSG, function(dot) {
-	        	commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
+	        	if (context.session.Late)
+	        		commons.unicastTransaction(ERASE_MSG, PRAC_AREA, dot);
+	        	else
+	        		commons.broadcastTransaction(ERASE_MSG, PRAC_AREA, dot);
 	        });
 
 	        context.socket.on(UNDO_MSG, function(object) {
-	        	commons.broadcastTransaction(UNDO_MSG, PRAC_AREA, object);
+	        	if (context.session.Late)
+	        		commons.unicastTransaction(UNDO_MSG, PRAC_AREA, object);
+	        	else
+	        		commons.broadcastTransaction(UNDO_MSG, PRAC_AREA, object);
 	        });
 
 	        context.socket.on(REDO_MSG, function(object) {
-	        	commons.broadcastTransaction(REDO_MSG, PRAC_AREA, object);
+	        	if (context.session.Late)
+	        		commons.unicastTransaction(REDO_MSG, PRAC_AREA, object);
+	        	else
+	        		commons.broadcastTransaction(REDO_MSG, PRAC_AREA, object);
 	        });
 	        
 	        context.socket.on(DISCONNECT_MSG, function(){

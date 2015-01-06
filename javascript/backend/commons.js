@@ -57,7 +57,12 @@ module.exports = function(context)
         	data.userID = context.session.UserID;
         	context.channel.sendToTeam(context.session.TeamID, msg, data);	        	
 		},
-		
+
+		unicastTransaction: function(msg, testID, data) {
+        	data.userID = context.session.UserID;
+        	context.channel.sendToUser(context.session.AccessCode, msg, data);	        	
+		},
+
 		saveAndBroadcastTransaction: function(msg, testID, data) {
         	this.saveTransaction(testID, data);
         	this.broadcastTransaction(msg, testID, data);	        				
