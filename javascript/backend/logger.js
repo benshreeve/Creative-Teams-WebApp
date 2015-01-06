@@ -8,7 +8,7 @@ module.exports = function(context) {
 		log: function() {
 			var cmd = "console.log(";
 			for (var i = 0; i < arguments.length; i++) {
-				cmd += '"'+arguments[i]+'"';
+				cmd += "'"+arguments[i]+"'";
 				if (i < arguments.length-1)
 					cmd += ',';
 			}
@@ -23,7 +23,7 @@ module.exports = function(context) {
 					cmd += ":" + context.session.AccessCode + "(" + context.session.Name + ")" + (context.session.Late ? ":Late" : "");
 				cmd += "]',";
 				for (var i = 0; i < arguments.length; i++) {
-					cmd += '"'+arguments[i]+'"';
+					cmd += "'"+arguments[i]+"'";
 					if (i < arguments.length-1)
 						cmd += ',';
 				}
