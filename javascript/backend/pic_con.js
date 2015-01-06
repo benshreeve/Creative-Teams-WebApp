@@ -110,29 +110,7 @@ module.exports =
 	        }
 	          
 	        //setupTestTimer(PIC_CON, testComplete);
-	        logger.debug("Hanlders were installed for picture construction test.");
-	        
-	        // When we receive drawing information:
-	        context.socket.on('mousedot', function(dot){
-	            context.channel.sendToTeam(context.session.TeamID, 'mousedot', dot);
-	            // Post to the database here:				
-	            dot.drag ? context.db.drawDot(dot) : context.db.eraseDot(dot);				
-	        });
-	        
-	        // When a client requests its session:
-	        context.socket.on('requestSession', function() {
-	            context.channel.sendToUser(context.session.AccessCode, 'sessionRequest', 
-	            			    {sessionColor: utils.getUserColor(context.session.UserID), 
-	            				 sessionGroup: context.session.TeamID,
-	            				 sessionAccessCode: context.session.AccessCode,
-	            				 sessionMinScreen: 2,
-	            				 sessionMaxScreen: 2,
-	            				 sessionScreen: 2,
-	            				 sessionCollaborative: true,
-	            				 sessionDrawable: "true",
-	            				 sessionBackground: "../images/picturecompletion/TTCT_Fig_Parts_Figure_1.svg",
-	            				 sessionNickName: context.session.Name});
-	        });
+	        logger.debug("Hanlders were installed for picture construction test.");	        
 		}		
 };
 
