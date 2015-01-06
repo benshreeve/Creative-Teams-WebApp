@@ -60,7 +60,6 @@ var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
 var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
 var UNDO_MSG = "UndoMsg";
 var REDO_MSG = "RedoMsg";
-var BACKEND_READY_RECVD_MSG = "BackendReadyRecvdMsg";
 
 // PERM_REQ Operations
 

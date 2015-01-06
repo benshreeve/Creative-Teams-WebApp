@@ -10,18 +10,14 @@ module.exports =
 			var logger = require('./logger')(context);
 			var results = require('./results')(context);
 			
-			utils.includeConstants('./javascript/backend/constants.js');
+		//	utils.includeConstants('./javascript/backend/constants.js');
 			
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
-	        	context.rdb.getTeam(context.session.TeamID, sendTestState);
+	        	commons.sendTestStateRsp();
 	        });
-	        
-	        function sendTestState(teamInfo) {
-	        	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
-	        }
-	        
+	               
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
-	        	context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
+	        	commons.sendSessionStateRsp();
 	        });
 	        
 	        context.socket.on(GET_TRANSACTIONS_REQ, function() {
@@ -31,10 +27,10 @@ module.exports =
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PICCON_TEST_PAGE:
-	        		commons.checkAllReady(op, PIC_CON, setupTestTimer);
+	        		commons.checkAllReady(op, PIC_CON, picConSetupTestTimer);
 	        		break;
 	        	case CREATE_BACKGROUND:
-	        		context.rdb.setPicConBGCreator(context.session.TeamID, context.session.AccessCode, sendCreateBGRsp);
+	        		context.rdb.setPicConBGCreator(context.session.TeamID, context.session.AccessCode, picConSendCreateBGRsp);
 	        		break;
 	        	case EDIT_TITLE:
 	        		commons.checkEditTitle();
@@ -42,11 +38,11 @@ module.exports =
 	        	}
 	        });
 	        
-	        function setupTestTimer() {
-	    	        commons.setupTestTime(PIC_CON, testComplete);
+	        function picConSetupTestTimer() {
+	    	        commons.setupTestTime(PIC_CON, picConTestComplete);
 	        }
 	        
-	        function sendCreateBGRsp(creator) {
+	        function picConSendCreateBGRsp(creator) {
 	        	if (creator == context.session.AccessCode) {
 	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {decision:GRANTED});	        		
 	        	} else {
@@ -107,15 +103,13 @@ module.exports =
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile();
 	        });	        
-	        	        	       	      
-	        commons.sendBackendReadyMsg();	        
-	        
-	        function testComplete() {
+	        	        	       	              
+	        function picConTestComplete() {
 	        	commons.sendTestComplete();
 	        	commons.sendGetResultsReq();
 	        }
 	          
-	        setupTestTimer(PIC_CON, testComplete);
+	        //setupTestTimer(PIC_CON, testComplete);
 	        logger.debug("Hanlders were installed for picture construction test.");
 	        
 	        // When we receive drawing information:

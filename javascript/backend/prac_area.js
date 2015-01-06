@@ -21,23 +21,23 @@ module.exports =
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PRACTICE_AREA_PAGE:
-	        		commons.checkAllReady(op, PRAC_AREA, !context.session.Late ? setupTestTimer: undefined);
+	        		commons.checkAllReady(op, PRAC_AREA, !context.session.Late ? pracAreaSetupTestTimer: undefined);
 	        		break;
 	        	case START_TEST:
-	        		commons.checkAllReady(op, PRAC_AREA, startTest);
+	        		commons.checkAllReady(op, PRAC_AREA, pracAreaStartTest);
 	        		break;
 	        	case EDIT_TITLE:
 	        		commons.checkEditTitle();
 	        	}
 	        });
 	        
-	        function setupTestTimer() {
-	    	        commons.setupTestTime(PRAC_AREA, testComplete);
+	        function pracAreaSetupTestTimer() {
+	    	        commons.setupTestTime(PRAC_AREA, pracAreaTestComplete);
 	        }
 	        
-	        function startTest() {
+	        function pracAreaStartTest() {
 	        	if (context.session.Late) {
-	        		context.rdb.getCurrentTest(context.session.TeamID, joinLateParticipant)
+	        		context.rdb.getCurrentTest(context.session.TeamID, pracAreaJoinLateParticipant)
 	        	} else {
 	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_CON);
 	        		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
@@ -45,13 +45,13 @@ module.exports =
 	        	}
 	        }
 	        	        
-	        function joinLateParticipant(currentTest) {
+	        function pracAreaJoinLateParticipant(currentTest) {
 	        	context.session.Late = false;
 	        	context.session.save();
-	        	context.rdb.getCurrentScreen(context.session.TeamID, sendTestURL, {currentTest: currentTest});
+	        	context.rdb.getCurrentScreen(context.session.TeamID, pracAreaSendTestURL, {currentTest: currentTest});
 	        }
 	        
-	        function sendTestURL(currentScreen, args) {
+	        function pracAreaSendTestURL(currentScreen, args) {
 	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
 	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
 	        }
@@ -78,14 +78,9 @@ module.exports =
 	        });
 	        
 	        context.socket.on(DISCONNECT_MSG, function(){
-	        	clearInterval(backendReadyTimer);
 	        	commons.disconnectUser();
 	        });	
-	        
-	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(READY);
-	        });
-	        
+	                
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile();
 	        });
@@ -94,18 +89,11 @@ module.exports =
 	        	commons.sendIntroduction();
 	        });
 	        
-	        context.socket.on(BACKEND_READY_RECVD_MSG, function() {
-	        	logger.debug("backend received message received ...");
-	        	clearInterval(backendReadyTimer);
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	commons.sendIsBackendReadyRsp(READY);
 	        });
 	        
-	        function sendBackendReady() {
-	        	context.channel.sendToUser(context.session.AccessCode, BACKEND_READY_MSG, PRAC_AREA);
-	        }
-	        
-	        var backendReadyTimer = setInterval(sendBackendReady, BACKEND_READY_MSG_INTERVAL);	        
-	        
-	        function testComplete() {
+	        function pracAreaTestComplete() {
 	        	commons.sendTestComplete();
 	        }
 	                       
