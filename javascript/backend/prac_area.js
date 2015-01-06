@@ -82,7 +82,7 @@ module.exports =
 	        });	
 	                
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
-	        	commons.sendInstructionFile();
+	        	commons.sendInstructionFile(PRAC_AREA);
 	        });
 
 	        context.socket.on(GET_INTRODUCTION_REQ, function() {

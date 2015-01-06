@@ -87,8 +87,8 @@ module.exports = function(context)
         	context.rdb.clearTextEditingUser(context.session.TeamID);			
 		},
 
-		sendInstructionFile: function() {
-			context.rdb.getCurrentTest(context.session.TeamID, sendTestInstruction);
+		sendInstructionFile: function(testID) {
+			sendTestInstruction(testID);
 		},		
 		
 		sendIntroduction: function() {

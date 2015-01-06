@@ -101,7 +101,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
-	        	commons.sendInstructionFile();
+	        	commons.sendInstructionFile(PIC_CON);
 	        });	        
 	        	        	       	              
 	        function picConTestComplete() {
