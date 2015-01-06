@@ -14,6 +14,8 @@
 		<script src="../javascript/backend/constants.js"></script>
 		<script> 
 		var socket = io.connect(); 
+		var backendReady = false;
+		
         socket.on(PERM_RSP, function(object) {				
 			if(object.decision==GRANTED && object.operation==LOAD_PICCON_TEST_PAGE)		{
 				document.location='pic_con.html';
@@ -24,7 +26,16 @@
 			document.getElementById('instructions').innerHTML = instructions;
 		});
 		
-		socket.emit(GET_TEST_INSTRUCTION_REQ);
+		socket.on(IS_BACKEND_READY_RSP, function(response) {
+			if (response == PIC_CON) {
+				clearInterval(backendReadyTimer);
+				socket.emit(GET_TEST_INSTRUCTION_REQ);
+				backendReady = true;
+			}	
+		});
+		
+		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+				
         </script>
 		
 	</head>
@@ -38,10 +49,12 @@
 		<p id="instructions"></p>
 
         <p id="statusDiv" style="color:#090">
-        <input name="enterButton" type="button" value="Enter pratice area" id="closeButton" 
+        <input name="enterButton" type="button" value="Start this test" id="closeButton" 
         onClick="
-        socket.emit(PERM_REQ, LOAD_PICCON_TEST_PAGE);
-        document.getElementById('statusDiv').innerHTML='<img src=\'wait.gif\'><br/>When there are 2 or more users online, you will be redirected straight to Practice Page...';
+        if (backendReady) {
+        	socket.emit(PERM_REQ, LOAD_PICCON_TEST_PAGE);
+        	document.getElementById('statusDiv').innerHTML='<img src=\'wait.gif\'><br/>When there are 2 or more users online, you will be redirected straight to Practice Page...';
+        }
         ">
         </p>        
         </div>			

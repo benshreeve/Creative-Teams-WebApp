@@ -25,16 +25,15 @@
 			document.getElementById('intro').innerHTML = intro;
 		});
 		
-		socket.on(BACKEND_READY_MSG, function(testID) {
-			console.log("backend ready message received for: ", testID, "[", backendReady, "]");
-			if (backendReady)
-				socket.emit(BACKEND_READY_RECVD_MSG);				
-			else if (testID == PRAC_AREA) {
-				backendReady = true;
-				socket.emit(BACKEND_READY_RECVD_MSG);
+		socket.on(IS_BACKEND_READY_RSP, function(response) {
+			if (response == PRAC_AREA) {
+				clearInterval(backendReadyTimer);
 				socket.emit(GET_INTRODUCTION_REQ);
+				backendReady = true;
 			}	
 		});
+		
+		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
 		
         </script>
 		
