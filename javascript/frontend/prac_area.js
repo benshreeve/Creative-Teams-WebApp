@@ -68,13 +68,11 @@ socket.on(REDO_MSG, function(rsp) {
 });
 
 socket.on(DRAW_MSG, function(dot){
-	//console.log(dot);	
-	if(dot.Operation == DRAW){
-		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, COLOURS[dot.userID], dot.userID);
-	}
-	else if(dot.Operation == ERASE){
-		addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
-	}
+	addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, COLOURS[dot.userID], dot.userID);
 	redraw();	
 });
- 
+
+socket.on(ERASE_MSG, function(dot){	
+	addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
+	redraw();	
+});

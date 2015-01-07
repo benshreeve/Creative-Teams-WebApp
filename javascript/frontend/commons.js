@@ -17,11 +17,10 @@ var circleDiv = document.getElementById('circle');
 var canvasDiv = document.getElementById('canvasDiv');
 
 // Default Instance Information:
-var screenNumber = 2;
+var screenNumber = 1;
 var myColour = "black";
 var accessID;
 var groupNumber;
-var drawable = "true";
 
 var totalTestTime = 0;
 var startTime = 0;
@@ -86,12 +85,12 @@ function storeTestState(testState) {
 	var myVar = setInterval(function(){ 
 		updateTimer() ;
 	}, 1000);
+	screenNumber = testState.CurrentScreen;
 }
 
 function storeSessionState(sessionState) {
 	groupNumber = sessionState.TeamID;
-	accessID = sessionState.AccessCode;
-	drawable = "true";	
+	accessID = sessionState.AccessCode;	
 	Name = sessionState.Name;
 	AccessCode = sessionState.AccessCode;	
 }
@@ -152,27 +151,27 @@ function handleRedo(info) {
 // Ask the server if we can move forward or backward:
 function switchIntention(intention) {
 	//undo and redo
-	if(intention == 'back'){
+	if(intention == 'undo'){
 		socket.emit(UNDO_MSG, {userID: accessID, ScreenNumber: screenNumber, ObjectID: DOT, Operation: UNDO, OperationData:{}});  		
 	}
-	else if(intention == 'next'){
+	else if(intention == 'redo'){
 		socket.emit(REDO_MSG, {userID: AccessCode, ScreenNumber: screenNumber, ObjectID: DOT, Operation: REDO, OperationData:{}});  		
 	}
 }
 
 function stateSession() {	
-	socket.emit("GetTestStateReq");
-	socket.emit("GetSessionStateReq");	
+	socket.emit(GET_TEST_STATE_REQ);
+	socket.emit(GET_SESSION_STATE_REQ);	
 }
 
 
 function pushToSocket(type, data) {
-	if(type== "draw" && drawable=="true") {			
+	if(type== "draw") {			
 		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: DOT, Operation: DRAW, OperationData: {x: data.x, y: data.y, rad: data.rad, drag: data.drag}}); 
 		redraw(); 
 	}
-	else if(type=="erase" && drawable=="true") {			
-		socket.emit(DRAW_MSG, { ScreenNumber: screenNumber, ObjectID: DOT, Operation: ERASE, OperationData: {x: data.x, y: data.y, rad: data.rad, drag: data.drag}}); 		
+	else if(type=="erase") {			
+		socket.emit(ERASE_MSG, { ScreenNumber: screenNumber, ObjectID: DOT, Operation: ERASE, OperationData: {x: data.x, y: data.y, rad: data.rad, drag: data.drag}}); 		
 		redraw(); 
 	}	
 }
