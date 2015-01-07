@@ -60,7 +60,8 @@ function updateTimer(){
 	}
 	else{
 		document.getElementById('timeRemained').innerHTML = "Time is up!";	
-		document.getElementById('top-right-button').style.display = "";
+		if (document.getElementById('top-right-button'))
+			document.getElementById('top-right-button').style.display = "";
 	}
 	checkAddEditTitle();	
 }
