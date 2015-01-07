@@ -16,6 +16,7 @@
 		<script> 
 		var socket = io.connect();
 		var backendReady = false;
+		var testName = 'Practice Area';
 		
 		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
 			document.getElementById('instruction').innerHTML = instructions;
@@ -42,7 +43,7 @@
     onClick="if(document.getElementById('practiceIntro').style.display=='none'){ document.getElementById('top-left-button').value = 'Instructions'; }"
     >
 		<div id="deadzone-top">	
-        	<input name="button" type="button" value="Practice Area" style="float:left; margin-top:25px;" class="topButton" id="top-left-button" onClick="showIntroduction();">
+        	<input name="button" type="button" value="Practice Area" style="float:left; margin-top:25px;" class="topButton" id="top-left-button" onClick="showInstructions(testName);">
             <input name="button" type="button" value="Next test" style="float:right; margin-top:25px;" class="topButton" id="top-right-button" onClick="sendRequestToNextTest();">
 			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative Teams</h1>			
 		</div>		

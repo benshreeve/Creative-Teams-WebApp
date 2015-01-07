@@ -426,9 +426,10 @@ function switchStroke(size, id) {
 }
 
 
-function showIntroduction(){
+function showInstructions(testName){
+	console.log('showInstructions:', testName, document.getElementById('top-left-button').value);
 	if(document.getElementById('top-left-button').value == 'Instructions'){
-		document.getElementById('top-left-button').value = 'Practice Area';
+		document.getElementById('top-left-button').value = testName;
 		Popup.show('practiceIntro');                        
 	}
 }
