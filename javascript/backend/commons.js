@@ -107,11 +107,12 @@ module.exports = function(context)
 	};
 	
     function sendTestState(teamInfo) {
+    	teamInfo.CurrentTime = new Date().getTime();
     	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
     }
 	
 	function setupTime(time, callback, args) {
-	    time = 20;
+	    time = 30;
 		logger.debug("time for this test is: ", time, " sec");
 		context.rdb.setTime(context.session.TeamID, time*1000);
         setTimeout(function() {

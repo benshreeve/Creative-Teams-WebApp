@@ -79,7 +79,7 @@ function checkAddEditTitle(){
 
 function storeTestState(testState) {
 	startTime = testState.StartTime
-	currentTime = testState.StartTime		
+	currentTime = testState.CurrentTime		
 	totalTestTime = testState.TestTime/1000;
 	remainTime =  parseInt(totalTestTime - (currentTime-startTime)/1000);
 	document.getElementById('timeRemained').innerHTML = "Contact server";
