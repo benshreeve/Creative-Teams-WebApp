@@ -73,7 +73,7 @@ module.exports = function(context)
 		},
 		
 		sendEndData: function() {
-			context.channel.sendToUser(context.session.AccessCode, END_DATA_MSG);
+			sendEndDataMsg();
 		},
 				
 		disconnectUser: function () {
@@ -111,7 +111,7 @@ module.exports = function(context)
     }
 	
 	function setupTime(time, callback, args) {
-	    time = 10;
+	    time = 20;
 		logger.debug("time for this test is: ", time, " sec");
 		context.rdb.setTime(context.session.TeamID, time*1000);
         setTimeout(function() {
@@ -157,20 +157,19 @@ module.exports = function(context)
 		context.db.getTransactions(context.session.TeamID, args.testID, currentScreen, sendTransactions);
 	}
 	
+	function sendEndDataMsg() {
+		context.channel.sendToUser(context.session.AccessCode, END_DATA_MSG);
+	}
     function sendTransactions(rows) {
-        for(var i = 0; i<rows.length; i++) {
-        	var oData = eval('(' + rows[i].OperationData + ')');
-        	var drag = rows[i].Operation == 1 ? true : false;
-        	var color = "rgba(0,0,0,1)";
-        	if (drag) {
-        		color = utils.getUserColor(rows[i].UserID);
-        	}
-        	//console.log("oData: ", oData, "operation:", rows[i].Operation, "drag:", drag, "color: ", color);                	
-            context.channel.sendToUser(context.session.AccessCode, 'mousedot', {x:oData.x, y:oData.y, drag:drag, rad:oData.rad, colour:color, 
-            		owner:'s'+rows[i].TeamID+'p'+rows[i].UserID, group:rows[i].TeamdID, screen:2});
+    	var messageMap = ["", DRAW_MSG, ERASE_MSG, MOVE_SHAPE_MSG, ROTATE_SHAPE_MSG, "", UNDO_MSG, REDO_MSG];
+    	
+        for(var i = 0; i<rows.length; i++) {                 	
+            context.channel.sendToUser(context.session.AccessCode, messageMap[rows[i].Operation], 
+            		{userID: rows[i].UserID, screenNumber: rows[i].ScreenNumber, ObjectID: rows[i].Object, 
+            		 Operation: rows[i].Operation, OperationData: eval("(" + rows[i].OperationData + ")")}
+            );
         }	 
-        this.sendEndData();
-        
+        sendEndDataMsg();        
     }
 
     function sendTestInstruction(currentTest) {
