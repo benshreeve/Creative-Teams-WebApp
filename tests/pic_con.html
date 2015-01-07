@@ -28,6 +28,7 @@
 				backendReady = true;
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
 				prepareCanvas();
+				socket.emit(GET_TRANSACTIONS_REQ);
 			}	
 		});
 		

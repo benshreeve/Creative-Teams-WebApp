@@ -7,7 +7,6 @@ socket.on(UPDATE_TIME_MSG, function(time){
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
-	document.getElementById('top-right-button').style.display = "";
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
