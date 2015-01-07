@@ -10,10 +10,6 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	document.getElementById('top-right-button').style.display = "";
 });
 
-socket.on(GET_RESULTS_REQ, function(rsp) {
-	console.log("GetResultsReq received ...");
-	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
-});
 
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
 	console.log("GetTestStateRsp: ", rsp);
