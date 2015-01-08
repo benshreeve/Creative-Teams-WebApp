@@ -42,9 +42,9 @@ module.exports =
 	        	if (context.session.Late) {
 	        		context.rdb.getCurrentTest(context.session.TeamID, pracAreaJoinLateParticipant)
 	        	} else {
-	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_CON);
+	        		context.rdb.setCurrentTest(context.session.TeamID, PIC_COMP);
 	        		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
-	        		context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + PIC_CON + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", commons.redirectToTest, PIC_CON);	        		
+	        		context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + PIC_COMP + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", commons.redirectToTest, PIC_COMP);	        		
 	        	}
 	        }
 	        	        

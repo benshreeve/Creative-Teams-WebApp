@@ -5,7 +5,7 @@
 module.exports = function() {
 	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '', testURL:''},
 	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
-	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '', testURL:''},
+	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
 	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '', testURL:''},
 	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '', testURL:''},
 	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},

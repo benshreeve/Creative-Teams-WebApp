@@ -31,6 +31,8 @@ var GET_RESULTS_RSP = "GetResultsRsp";
 var GET_TRANSACTIONS_REQ = "GetTransactionsReq";
 var GET_INTRODUCTION_REQ = "GetIntroductionReq";
 var GET_INTRODUCTION_RSP = "GetIntroductionRsp";
+var GET_SCREEN_RESULTS_REQ = "GetScreenResultsReq";
+var GET_SCREEN_RESULTS_RSP = "GetScreenResultsRsp";
 
 
 // Messages
@@ -67,6 +69,7 @@ var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
 var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
+var LOAD_PICCOMP_TEST_PAGE = "LoadPicCompTestPage";
 var CREATE_BACKGROUND = "CreateBackGround";
 
 // objects and operations
