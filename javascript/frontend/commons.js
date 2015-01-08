@@ -47,7 +47,6 @@ function calculateRemainingTime(currentTime) {
 }
 
 function updateTimer(){
-	console.log("updateTimer: ", remainTime);
 	if(remainTime >= 0) {
 		remainTime = remainTime-1;	
 		remainMin = parseInt(remainTime/60);
@@ -55,7 +54,6 @@ function updateTimer(){
 		if (remainSec.toString().length == 1) {
 			remainSec = "0" + remainSec;
 		}
-		console.log("min:sec ->", remainMin, remainSec);
 		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";		
 	}
 	else{
