@@ -40,7 +40,7 @@ module.exports =
 	        }
 	                        	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
-	        	commons.handleUpdateTitleMsg(title);
+	        	commons.saveAndBroadcastUpdateTitleMsg(PIC_COMP, title);
 	        });
 	        	        
 	        context.socket.on(DRAW_MSG, function(dot) {
@@ -76,12 +76,18 @@ module.exports =
 	        	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PAR_LINES));
 	        });
 	        
-	        context.socket.on(GET_SCREEN_RESULTS_RSP, function(res) {
-	        	logger.debug("Screen Results received ...");
+	        context.socket.on(NEXT_SCREEN_MSG, function(res) {
+	        	logger.debug("Next screen message received ...");
 	        	results.saveImage(res.image);
 	        	results.saveTitle(res.title);	        	
 	        });	        
 	        
+	        context.socket.on(PREV_SCREEN_MSG, function(res) {
+	        	logger.debug("Prev screen message received ...");
+	        	results.saveImage(res.image);
+	        	results.saveTitle(res.title);	        	
+	        });	        
+	        	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile(PIC_COMP);
 	        });	        

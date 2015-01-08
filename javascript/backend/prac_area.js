@@ -61,7 +61,7 @@ module.exports =
 	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
 	        	if (!context.session.Late)
-	        		commons.handleUpdateTitleMsg(title);
+	        		commons.broadcastUpdateTitleMsg(PRAC_AREA, title);
 	        });
 	        
 	        

@@ -108,7 +108,7 @@ function handleUpdateTitle(info) {
 	console.log("UPDATE_TITLE_MSG: ", info);
 	//update title for everyone
 	if(document.getElementById('titleArea')){
-		document.getElementById('titleArea').value = info;
+		document.getElementById('titleArea').value = info.OperationData.title;
 		document.getElementById('enterTitle').value = "Add Title";
 		document.getElementById('enterTitle').style.color="grey";
 	}
@@ -450,12 +450,14 @@ function closeAndStart(){
 }
 
 function saveTitle(){
-	socket.emit('UpdateTitleMsg', document.getElementById('titleArea').value); 
+	var transaction = {ScreenNumber: screenNumber, ObjectID: TITLE, Operation: ADD, OperationData: {"title": document.getElementById('titleArea').value}};
+	socket.emit(UPDATE_TITLE_MSG, transaction); 
 	Popup.hideAll();
 }
 
 function cancelUpdateTitle(){
-	socket.emit('UpdateTitleMsg', originalTitle); 
+	var transaction = {ScreenNumber: screenNumber, ObjectID: TITLE, Operation: ADD, OperationData: {"title": originalTitle}};
+	socket.emit(UPDATE_TITLE_MSG, transaction); 	 
 	Popup.hideAll();
 }
 

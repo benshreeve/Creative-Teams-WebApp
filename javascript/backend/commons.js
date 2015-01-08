@@ -87,11 +87,16 @@ module.exports = function(context)
 			context.db.getActiveUsersCount();			
 		},
 		
-		handleUpdateTitleMsg: function(title) {
-        	context.channel.sendToTeam(context.session.TeamID, UPDATE_TITLE_MSG, title);
+		broadcastUpdateTitleMsg: function(testID, title) {
+        	this.broadcastTransaction(UPDATE_TITLE_MSG, testID, title);
         	context.rdb.clearTextEditingUser(context.session.TeamID);			
 		},
 
+		saveAndBroadcastUpdateTitleMsg: function(testID, title) {
+        	this.saveAndBroadcastTransaction(UPDATE_TITLE_MSG, testID, title);
+        	context.rdb.clearTextEditingUser(context.session.TeamID);			
+		},
+		
 		sendInstructionFile: function(testID) {
 			sendTestInstruction(testID);
 		},		
@@ -162,7 +167,7 @@ module.exports = function(context)
 		context.channel.sendToUser(context.session.AccessCode, END_DATA_MSG);
 	}
     function sendTransactions(rows) {
-    	var messageMap = ["", DRAW_MSG, ERASE_MSG, MOVE_SHAPE_MSG, ROTATE_SHAPE_MSG, "", UNDO_MSG, REDO_MSG];
+    	var messageMap = ["", DRAW_MSG, ERASE_MSG, MOVE_SHAPE_MSG, ROTATE_SHAPE_MSG, UPDATE_TITLE_MSG, UNDO_MSG, REDO_MSG];
     	
         for(var i = 0; i<rows.length; i++) {                 	
             context.channel.sendToUser(context.session.AccessCode, messageMap[rows[i].Operation], 
