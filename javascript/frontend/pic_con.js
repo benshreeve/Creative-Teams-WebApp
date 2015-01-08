@@ -11,7 +11,22 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
-	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	shape.unplug();
+	var svg = paper.toSVG();
+	canvg(document.getElementById('canvasSimple'), svg);
+	console.log(document.getElementById('canvasSimple').toDataURL());
+	var bg = document.getElementById('canvasSimple').toDataURL();
+	socket.emit(GET_RESULTS_RSP, {image: bg, title: "habib"});
+	paper.remove();
+	document.getElementById('canvasSimple').parentNode.removeChild(document.getElementById('canvasSimple'));
+	prepareCanvas();
+	var imageObj = new Image();
+    imageObj.onload = function() {
+        context.drawImage(this, 0, 0);
+      };
+      imageObj.src = bg;
+
+	//socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
 });
 
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
@@ -65,4 +80,16 @@ socket.on(DRAW_MSG, function(dot){
 socket.on(ERASE_MSG, function(dot){	
 	addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
 	redraw();	
+});
+
+socket.on(MOVE_SHAPE_MSG, function(data){
+	var x = "s1p"+data.userID;
+	console.log("MOVE_SHAPE_MSG: ", x, accessID);	
+	if (x != AccessCode) {
+		delete data.userID;
+		console.log("apply what has been received from ", x, ":", data.rotate);
+		shape.attrs.rotate = data.rotate;
+		shape.attrs.translate = data.translate;
+		shape.apply();
+	}
 });

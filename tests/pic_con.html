@@ -13,10 +13,22 @@
         <script type='application/javascript' src='/javascript/PopupWindow.js'></script>
 		<script src="../javascript/backend/constants.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
+		
+		<script src="../templates/PopupWindow.js"></script>
+        <script type='text/javascript' src='../templates/jquery.js'></script>		
+        <script type="text/javascript" src="../javascript/frontend/raphael.js"></script>
+		<script type="text/javascript" src="../javascript/frontend/raphael.free_transform.js"></script>
+		<script type="text/javascript" src="../javascript/frontend/raphael.export.js"></script>
+		<script type="text/javascript" src="../javascript/frontend/rgbcolor.js"></script> 
+		<script type="text/javascript" src="../javascript/frontend/StackBlur.js"></script>
+		<script type="text/javascript" src="../javascript/frontend/canvg.js"></script> 		
+		
 		<script> 
 		var socket = io.connect();
 		var backendReady = false;
 		var testName = 'Picture Construction Test';
+		var shape;
+		var paper;
 		
 		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
 			document.getElementById('instruction').innerHTML = instructions;
@@ -29,11 +41,27 @@
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
 				prepareCanvas();
 				socket.emit(GET_TRANSACTIONS_REQ);
+				setupShape();
 			}	
 		});
 		
 		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
 		
+		function setupShape() {
+			var canvasElement = document.getElementById('canvasSimple');
+			console.log(canvasElement);
+			var canvasLocation = getPosition(canvasElement);			
+			paper = Raphael(canvasLocation.x, canvasLocation.y, canvasElement.width, canvasElement.height); //(0, 0, 1000, 1000);			
+			var rect = paper.rect(200, 100, 220, 220).attr('fill', '#f000');				
+			shape = paper.freeTransform(rect, { keepRatio: true, scale: false }, function(ft, events) {
+        		console.log("event: ", events, "attrs: ", ft.attrs);        		
+        		if (accessID != "s1p2" ) {
+        			console.log(accessID , "sent a message");
+        			socket.emit(MOVE_SHAPE_MSG, ft.attrs);
+        		}
+    		});
+    	}			
+				
         </script>
 		<link rel="stylesheet" type="text/css" href="../public/style.css">
 	</head>

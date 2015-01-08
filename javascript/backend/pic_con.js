@@ -60,7 +60,8 @@ module.exports =
 	        });
 	        
 	        context.socket.on(MOVE_SHAPE_MSG, function(data) {
-	        	commons.saveAndBroadcastTransaction(MOVE_SHAPE_MSG, PIC_CON, data);
+	        	logger.debug("MOVE_SHAPE_MSG: ", data);
+	        	commons.broadcastTransaction(MOVE_SHAPE_MSG, PIC_CON, data);
 	        });
 	        
 	        context.socket.on(ROTATE_SHAPE_MSG, function(data) {
@@ -97,7 +98,7 @@ module.exports =
 	        	results.saveTitle(res.title);
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PIC_COMP));
-	        	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_COMP));
+	        	//channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_COMP));
 	        });
 	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
