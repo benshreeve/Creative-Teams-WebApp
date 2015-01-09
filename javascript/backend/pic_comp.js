@@ -73,20 +73,36 @@ module.exports =
 	        	results.saveTitle(res.title);
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PAR_LINES));
-	        	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PAR_LINES));
+	        //	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PAR_LINES));
 	        });
 	        
 	        context.socket.on(NEXT_SCREEN_MSG, function(res) {
 	        	logger.debug("Next screen message received ...");
 	        	results.saveImage(res.image);
-	        	results.saveTitle(res.title);	        	
+	        	results.saveTitle(res.title);
+	        	context.rdb.setTeam(context.session.TeamID, picCompIncrementScreen, {}, picCompSendChangeScreenMsg);
 	        });	        
+	        
+	        function picCompIncrementScreen(teamInfo) {
+	        	teamInfo.CurrentScreen = parseInt(teamInfo.CurrentScreen) + 1;
+	        	return teamInfo;
+	        }
+	        
+	        function picCompSendChangeScreenMsg(teamInfo) {
+	        	context.channel.sendToTeam(context.session.TeamID, CHANGE_SCREEN_MSG, teamInfo.CurrentScreen);
+	        }
 	        
 	        context.socket.on(PREV_SCREEN_MSG, function(res) {
 	        	logger.debug("Prev screen message received ...");
 	        	results.saveImage(res.image);
 	        	results.saveTitle(res.title);	        	
+	        	context.rdb.setTeam(context.session.TeamID, picCompDecrementScreen, {}, picCompSendChangeScreenMsg);
 	        });	        
+	        
+	        function picCompDecrementScreen(teamInfo) {
+	        	teamInfo.CurrentScreen = parseInt(teamInfo.CurrentScreen) - 1;
+	        	return teamInfo;	        	
+	        }
 	        	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile(PIC_COMP);

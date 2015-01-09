@@ -300,7 +300,7 @@ function addClickSimple(x, y, dragging, strokeradius, colour, owner) {
 	pointsArray.push({"owner":owner, "x":x, "y":y, "drag":dragging, "radius":strokeradius, "colour":colour, "active":"1"});
 }
 
-function clearcanvas() {
+function clearCanvas() {
 	context.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
@@ -364,7 +364,7 @@ function switchBackground(url) {
 
 function resetCache() {
 	lastLength = 0;
-	clearcanvas();
+	clearCanvas();
 	redraw();
 }
 
@@ -499,3 +499,13 @@ function prepareCanvasForSnapshot(bgImagePath, callback, args) {
     };
     bgImage.src = bgImagePath;    	
 }
+
+function changeScreen(bgImagePath) {
+    pointsArray.length = 0;
+    lastLength = 0;
+    clearCanvas();
+    switchBackground(bgImagePath);
+    document.getElementById('titleArea').value = "";
+    socket.emit(GET_TRANSACTIONS_REQ);
+}
+

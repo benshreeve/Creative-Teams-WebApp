@@ -387,6 +387,33 @@ module.exports = function (conn) {
 			});						
 		},
 		
+		setTeam: function(teamID, setter, setter_args, callback, callback_args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						reply = setter(reply, setter_args);						
+						conn.hmset(teamID, reply, function(err, res) {
+							if (err) {
+								done();
+								throw err;
+							}
+							
+							done();
+							
+							if (callback) 
+								callback(reply, callback_args);							
+						});
+					} else					
+						done();
+				});
+			});						
+		},
+		
 		setPicConBGCreator: function(teamID, accessCode, callback, args) {
 			lock(teamID, function(done) {
 				conn.hgetall(teamID, function(err, reply) {
