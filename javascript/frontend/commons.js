@@ -175,7 +175,7 @@ function pushToSocket(type, data) {
 	}	
 }
 
-function prepareCanvas() {
+function prepareCanvas(bgImageUrl) {
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth / 2);
 	canvas.setAttribute('height', (canvasHeight - 400) / 2);
@@ -184,6 +184,12 @@ function prepareCanvas() {
 	canvasDiv.appendChild(canvas);
 	if(typeof G_vmlCanvasManager != 'undefined') canvas = G_vmlCanvasManager.initElement(canvas);
 	context = canvas.getContext("2d");
+	
+	if (bgImageUrl) {
+		switchBackground(bgImageUrl);
+	} else {
+		console.log("no background image");
+	}
 	
 	// Event Handlers:
 	canvasSimple.addEventListener("touchstart", doTouchStart, false);
@@ -207,7 +213,7 @@ function prepareCanvas() {
 	
 	// Ask for Session Details:
 	
-	stateSession();
+	//stateSession();
 	
 	function doTouchStart(e) {
 		var touchX = e.targetTouches[0].pageX - this.offsetLeft;
@@ -345,8 +351,14 @@ function redraw() {
 function switchBackground(url) {
 	if (canvasDiv){
 		console.log("background is: " + url);
-		if(url != " " || url != "") canvasDiv.style.background = 'url(' + url + ') no-repeat center ';
+		if(url != " " || url != "") canvas.style.background = 'url(' + url + ') no-repeat center ';
 		else canvas.style.background = "white";
+/*		var imageObj = new Image();
+	    imageObj.onload = function() {
+	        context.drawImage(this, 0, 0);
+	      };
+	    imageObj.src = "../images/picturecompletion/TTCT_Fig_Parts_Figure_"+screenNumber+".svg";
+	    */		
 	}	 
 }
 
@@ -466,4 +478,24 @@ function sleep(milliseconds) {
       break;
     }
   }
+}
+
+function prepareCanvasForSnapshot(bgImagePath, callback, args) {
+    var w = canvasSimple.width;
+    var h = canvasSimple.height;
+    
+    var data = canvasSimple.toDataURL();
+  
+	var bgImage = new Image();
+    bgImage.onload = function() {
+        context.drawImage(this, w / 2 - bgImage.width / 2,
+                h / 2 - bgImage.height / 2);
+        var drawingImage = new Image();
+        drawingImage.onload = function() {
+        	context.drawImage(drawingImage, 0, 0);
+        	callback(args);
+        }
+        drawingImage.src = data;        
+    };
+    bgImage.src = bgImagePath;    	
 }

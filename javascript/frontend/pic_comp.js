@@ -1,3 +1,5 @@
+var bgImagePath = "../images/picturecompletion/TTCT_Fig_Parts_Figure_";
+
 socket.on(UPDATE_TIME_MSG, function(time){
 	remainingTime = calculateRemainingTime(time);
 	document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
@@ -10,8 +12,12 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
-	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	prepareCanvasForSnapshot(bgImagePath, sendResults);
 });
+
+function sendResults() {
+	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+}
 
 socket.on(GET_SCREEN_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
@@ -21,6 +27,8 @@ socket.on(GET_SCREEN_RESULTS_REQ, function(rsp) {
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
 	console.log("GetTestStateRsp: ", rsp);
 	storeTestState(rsp);
+	bgImagePath = bgImagePath + screenNumber + ".svg";
+	prepareCanvas(bgImagePath);
 });
 
 socket.on(GET_SESSION_STATE_RSP, function(rsp) {
