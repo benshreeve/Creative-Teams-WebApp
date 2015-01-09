@@ -84,7 +84,8 @@ socket.on(ERASE_MSG, function(dot){
 });
 
 function sendRequestToNextScreen() {
-	prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);	
+	if (screenNumber < PIC_COMP_MAX_SCREEN)
+		prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);	
 }
 
 function sendNextScreenMsg() {
@@ -92,7 +93,8 @@ function sendNextScreenMsg() {
 }
 
 function sendRequestToPrevScreen() {
-	prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
+	if (screenNumber > 1)
+		prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
 }
 
 function sendPrevScreenMsg() {
