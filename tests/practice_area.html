@@ -28,7 +28,7 @@
 				clearInterval(backendReadyTimer);
 				backendReady = true;
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
-				prepareCanvas();
+				stateSession();
 			}	
 		});
 		

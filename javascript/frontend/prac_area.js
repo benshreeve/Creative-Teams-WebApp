@@ -18,6 +18,7 @@ socket.on(GET_TEST_STATE_RSP, function(rsp) {
 socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	console.log("GetSessionStateRsp: ", rsp);
 	storeSessionState(rsp);
+	prepareCanvas();
 	
 	//set the header title	
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
