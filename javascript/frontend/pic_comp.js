@@ -19,7 +19,7 @@ socket.on(GET_RESULTS_REQ, function(rsp) {
 });
 
 function sendResults() {
-	socket.emit(GET_RESULTS_RSP, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
 }
 
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
@@ -102,7 +102,7 @@ function sendRequestToNextScreen() {
 }
 
 function sendNextScreenMsg() {
-	socket.emit(NEXT_SCREEN_MSG, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
+	socket.emit(NEXT_SCREEN_MSG, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
 }
 
 function sendRequestToPrevScreen() {
@@ -111,5 +111,5 @@ function sendRequestToPrevScreen() {
 }
 
 function sendPrevScreenMsg() {
-	socket.emit(PREV_SCREEN_MSG, {"image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
+	socket.emit(PREV_SCREEN_MSG, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
 }

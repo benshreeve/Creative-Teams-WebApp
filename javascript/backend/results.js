@@ -5,22 +5,28 @@ module.exports = function (context) {
 	var util = require("./utils.js")();
 	var fs = require('fs');
 	
-	return {			
-		saveImage: function(image) {
-        	var b64string = image.replace(/^data:image\/png;base64,/,"");
-        	var buf = new Buffer(b64string, 'base64');
-        	context.rdb.getTeam(context.session.TeamID, saveResult, {data: buf, ext:".png"});
-		},
-		
-		saveTitle: function(title) {
-        	context.rdb.getTeam(context.session.TeamID, saveResult, {data:title, ext:".txt"});			
-		},
+	return {	
+		savePicCompResults: function(results) {
+			saveImage(PIC_COMP, results.screenNumber, results.image);
+			saveTitle(PIC_COMP, results.screenNumber, results.title);
+		}
 		
 	};
+
+	function saveImage(testID, screenNumber, image) {
+    	var b64string = image.replace(/^data:image\/png;base64,/,"");
+    	var buf = new Buffer(b64string, 'base64');
+    	saveResult(testID, screenNumber, buf, ".png");
+	}
 	
-	function saveResult(teamInfo, args) {
-		context.db.getResultsPath(writeFile, {data: args.data, ext: args.ext, testID: teamInfo.CurrentTest, 
-			screen: teamInfo.CurrentScreen});
+	function saveTitle(testID, screenNumber, title) {
+    	saveResult(testID, screenNumber, title, ".txt");
+    	context.db.savePicCompResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
+	}
+	
+	function saveResult(testID, screenNumber, data, ext) {
+		context.db.getResultsPath(writeFile, {data: data, ext: ext, testID: testID, 
+			screen: screenNumber});
 	}
 	
 	function writeFile(path, args) {		

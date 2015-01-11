@@ -53,32 +53,6 @@ module.exports = function (conn) {
             });			
 		},
 		
-		drawDot: function(dot) {
-			id = dot.owner.match(/[0-9]+/g);
-			teamID = id[0];
-			userID = id[1];
-			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
-					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 1 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ ' ,rad:' + dot.rad + '}"'+', now(6)'+');'
-			
-            query = conn.query(q, post, function(err, result) {
-                if(err) throw err;
-                console.log("Drawing a dot:" + query.sql);
-            });
-		},
-		
-		eraseDot: function(dot) {
-			id = dot.owner.match(/[0-9]+/g);
-			teamID = id[0];
-			userID = id[1];
-			var q = 'INSERT INTO `transactions`(`TeamID`, `TestID`, `UserID`, `ScreenNumber`, `Object`, `Operation`, `OperationData`, `Time`) VALUES ("'+
-					teamID + '","' + 0 + '","'+ userID + '","' + 1 + '","' + 1 + '","' + 2 + '",' + '"{x:' + dot.x + ',y:' + dot.y+ ',rad:' + dot.rad +'}"'+', now(6)'+');'
-			
-			query = conn.query(q, post, function(err, result) {                
-				if(err) throw err;
-                console.log("Erasing a Dot: "+ query.sql);
-            });			
-		},
-		
 		getTransactions: function(teamID, testID, screen, callback, args) {
 			conn.query('select * from transactions where transactions.TeamID = "'+ teamID + 
 							 '" and transactions.TestID = "' + testID +
@@ -131,6 +105,29 @@ module.exports = function (conn) {
 				if (err) throw err;
 				callback(rows[0].ResultsPath, args);
 			});						
+		},
+		
+		savePicCompResults: function(teamID, results) {
+			conn.query('select * from piccompres where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, function(err, rows) {
+				if (err) throw err;
+				if (rows.length == 0) {
+					q = conn.query('insert into piccompres values (' + teamID + ',' + results.screenNumber + ',"' + results.title + '","' + 
+							results.path + '")', 
+							function(err, result) {
+								if (err) {
+									console.log(q.sql);
+									throw error;
+								}
+							}); 
+				} else {
+					post = {Title: results.title, Path:results.path}
+					q = conn.query('update piccompres set ? where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, post, 
+							function(err, result) {
+								console.log(q.sql);
+								if (err) throw err;
+							}); 					
+				}
+			}); 
 		}
 
 	};
