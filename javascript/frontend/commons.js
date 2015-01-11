@@ -159,8 +159,7 @@ function switchIntention(intention) {
 }
 
 function stateSession() {	
-	socket.emit(GET_TEST_STATE_REQ);
-	socket.emit(GET_SESSION_STATE_REQ);	
+	socket.emit(GET_STATE_REQ);	
 }
 
 

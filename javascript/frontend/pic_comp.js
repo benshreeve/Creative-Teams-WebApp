@@ -43,6 +43,17 @@ socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;		
 });
 
+socket.on(GET_STATE_RSP, function(rsp) {
+	console.log("GetStateRsp: ", rsp.testState, rsp.sessionState);
+	storeTestState(rsp.testState);	
+	storeSessionState(rsp.sessionState);
+	prepareCanvas(getBGImageName());
+	socket.emit(GET_TRANSACTIONS_REQ);
+
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;			
+});
+
+
 socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 	handleTitleBeingEdited(rsp);	
 });

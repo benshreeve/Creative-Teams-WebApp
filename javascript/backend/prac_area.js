@@ -17,7 +17,11 @@ module.exports =
 	        context.socket.on(GET_SESSION_STATE_REQ, function() {
 	        	commons.sendSessionStateRsp();
 	        });
-	               
+
+	        context.socket.on(GET_STATE_REQ, function() {
+	        	commons.sendStateRsp();
+	        });
+	        
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_PRACTICE_AREA_PAGE:

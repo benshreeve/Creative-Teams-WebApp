@@ -20,6 +20,10 @@ module.exports =
 	        	commons.sendSessionStateRsp();
 	        });
 	        
+	        context.socket.on(GET_STATE_REQ, function() {
+	        	commons.sendStateRsp();
+	        });
+	        
 	        context.socket.on(GET_TRANSACTIONS_REQ, function() {
 	        	commons.sendTransactions(PIC_CON);
 	        });	        

@@ -33,6 +33,26 @@ socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	}
 });
 
+socket.on(GET_STATE_RSP, function(rsp) {
+	console.log("GetStateRsp: ", rsp.testState, rsp.sessionState);
+	storeTestState(rsp.testState);	
+	storeSessionState(rsp.sessionState);
+	prepareCanvas();
+	
+	//set the header title	
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	
+	if(!rsp.sessionState.Late){		
+		document.getElementById('top-right-button').style.display = "none";
+	}
+	else
+	{		
+		document.getElementById('top-right-button').style.display = "";
+		document.getElementById('top-right-button').value = 'Take me to the test';
+	}
+});
+
+
 socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 	handleTitleBeingEdited(rsp);	
 });

@@ -17,6 +17,10 @@ module.exports = function(context)
 			context.channel.sendToUser(context.session.AccessCode, GET_SESSION_STATE_RSP, context.session);
 		},
 		
+		sendStateRsp: function() {
+			context.rdb.getTeam(context.session.TeamID, sendState);
+		},
+		
 		sendTestComplete: function() {
 	    	context.channel.sendToTeam(context.session.TeamID, TEST_COMPLETE_MSG);
 		},
@@ -114,6 +118,11 @@ module.exports = function(context)
     function sendTestState(teamInfo) {
     	teamInfo.CurrentTime = new Date().getTime();
     	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);
+    }
+    
+    function sendState(teamInfo) {
+    	teamInfo.CurrentTime = new Date().getTime();
+    	context.channel.sendToUser(context.session.AccessCode, GET_STATE_RSP, {testState:teamInfo, sessionState:context.session});    	
     }
 	
 	function setupTime(time, callback, args) {
