@@ -26,6 +26,7 @@ socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	console.log("CHANGE_SCREEN_MSG received ...", newScreen);
 	screenNumber = newScreen;
 	changeScreen(getBGImageName());
+	showScreenNumber(PIC_COMP_MAX_SCREEN);
 });
 
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
@@ -50,7 +51,8 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	prepareCanvas(getBGImageName());
 	socket.emit(GET_TRANSACTIONS_REQ);
 
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;			
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	showScreenNumber(PIC_COMP_MAX_SCREEN);
 });
 
 

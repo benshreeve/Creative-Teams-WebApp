@@ -508,3 +508,6 @@ function changeScreen(bgImagePath) {
     socket.emit(GET_TRANSACTIONS_REQ);
 }
 
+function showScreenNumber(max) {
+	document.getElementById('screenNumber').innerHTML = "&nbsp"+ screenNumber + " / " + max + "&nbsp";
+}
