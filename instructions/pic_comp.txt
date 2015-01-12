@@ -2,13 +2,7 @@
 <br/><br/>
 This test is Insert time variable minutes long.
 <br/><br/>
-The aim of this test is to place the shape, and use it to create a drawing which nobody else will think of. Try to
-add detail to make the story as complete as possible. Give your drawing a title which helps to further elaborate
-the story you are drawing.
-<br/><br/>
-At the start of this test Insert nickname of Partjcjpan11 will be able to move/rotate an egg shape, you must work
-together to place it in the best location for your drawing. Once you are happy with it Insert name Pl must click
-place shape and you can start drawing.
-<br/><br/>
-You can keep drawing, and adding the title until the time limit is up.
+This test consists of 10 incomplete shapes. Work together using the drawing tools and try to turn each shape into 
+a drawing which nobody else would think of. Put as much detail into your drawings as possible in the time limit, 
+and add a title to help describe the drawing.
 <br/><br/>
