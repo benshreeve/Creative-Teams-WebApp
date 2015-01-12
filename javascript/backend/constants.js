@@ -11,6 +11,8 @@ var PAR_LINES = 3;
 var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
+
+var NUM_TESTS = 3;
  
 // Requests and responses
 
