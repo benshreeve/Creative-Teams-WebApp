@@ -85,7 +85,8 @@ module.exports =
 	        
 	        context.socket.on(NEXT_SCREEN_MSG, function(res) {
 	        	logger.debug("Next screen message received ...");
-	        	results.savePicCompResults(res);
+	        	if (res.status == CHANGED)
+	        		results.savePicCompResults(res);
 	        	context.rdb.setTeam(context.session.TeamID, picCompIncrementScreen, {}, picCompSendChangeScreenMsg);
 	        });	        
 	        
@@ -100,7 +101,8 @@ module.exports =
 	        
 	        context.socket.on(PREV_SCREEN_MSG, function(res) {
 	        	logger.debug("Prev screen message received ...");
-	        	results.savePicCompResults(res);
+	        	if (res.status == CHANGED)
+	        		results.savePicCompResults(res);
 	        	context.rdb.setTeam(context.session.TeamID, picCompDecrementScreen, {}, picCompSendChangeScreenMsg);
 	        });	        
 	        

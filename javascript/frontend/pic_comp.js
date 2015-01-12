@@ -1,4 +1,5 @@
 var bgImagePath = "../images/picturecompletion/TTCT_Fig_Parts_Figure_";
+var changed = false;
 
 function getBGImageName() {
 	return bgImagePath + screenNumber + ".svg";
@@ -24,10 +25,11 @@ function sendResults() {
 
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	console.log("CHANGE_SCREEN_MSG received ...", newScreen);
+	changed = false;
 	Popup.hide('WaitDialog');
 	screenNumber = newScreen;
 	changeScreen(getBGImageName());
-	showScreenNumber(PIC_COMP_MAX_SCREEN);
+	showScreenNumber(PIC_COMP_MAX_SCREEN);	
 });
 
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
@@ -62,6 +64,7 @@ socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 });
 
 socket.on(UPDATE_TITLE_MSG, function(rsp) {
+	changed = true;
 	handleUpdateTitle(rsp);
 });
 
@@ -79,23 +82,32 @@ socket.on(PERM_RSP, function(rsp) {
 
 //When received undo
 socket.on(UNDO_MSG, function(rsp) {
+	changed = true;
 	handleUndo(rsp);
 });
 
 //When received redo
 socket.on(REDO_MSG, function(rsp) {
+	changed = true;
 	handleRedo(rsp);
 });
 
 socket.on(DRAW_MSG, function(dot){
+	changed = true;
 	addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, COLOURS[dot.userID], dot.userID);
 	redraw();	
 });
 
-socket.on(ERASE_MSG, function(dot){	
+socket.on(ERASE_MSG, function(dot){
+	changed = true;
 	addClickSimple(dot.OperationData.x, dot.OperationData.y, dot.OperationData.drag, dot.OperationData.rad, "rgba(0,0,0,1)", dot.userID);//rgba(0,0,0,1)
 	redraw();	
 });
+
+socket.on(END_DATA_MSG, function(){
+	changed = false;
+});
+
 
 socket.on(WAIT_MSG, function() {
 	console.log("WAIT_MSG received ...");
@@ -104,22 +116,36 @@ socket.on(WAIT_MSG, function() {
 
 function sendRequestToNextScreen() {
 	if (screenNumber < PIC_COMP_MAX_SCREEN) {
-		sendWaitMsg();
-		prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);
+		if (changed) {
+			sendWaitMsg();
+			prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);
+		} else {
+			sendNextScreenMsg();
+		}
 	}
 }
 
 function sendNextScreenMsg() {
-	socket.emit(NEXT_SCREEN_MSG, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
+	if (changed)
+		socket.emit(NEXT_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	else 
+		socket.emit(NEXT_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});		
 }
 
 function sendRequestToPrevScreen() {
 	if (screenNumber > 1) {
-		sendWaitMsg();
-		prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
-	}	
+		if (changed) {
+			sendWaitMsg();
+			prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
+		} else {
+			sendPrevScreenMsg();
+		} 
+	}
 }
 
 function sendPrevScreenMsg() {
-	socket.emit(PREV_SCREEN_MSG, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});	
+	if (changed) 
+		socket.emit(PREV_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	else
+		socket.emit(PREV_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
 }
