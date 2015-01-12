@@ -69,11 +69,9 @@ var REDO_MSG = "RedoMsg";
 
 // PERM_REQ Operations
 
-var LOAD_PRACTICE_AREA_PAGE = "LoadPracticeAreaPage";
+var LOAD_TEST_PAGE = "LoadTestPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
-var LOAD_PICCON_TEST_PAGE = "LoadPicConTestPage";
-var LOAD_PICCOMP_TEST_PAGE = "LoadPicCompTestPage";
 var CREATE_BACKGROUND = "CreateBackGround";
 
 // objects and operations
@@ -108,3 +106,4 @@ var debug = 1;
 var COLOURS = ["", "purple", "red", "blue", "orange", "green"];
 var BACKEND_READY_MSG_INTERVAL = 2000;
 var PIC_COMP_MAX_SCREEN = 10;
+var PAR_LINES_MAX_SCREEN = 30;

@@ -9,7 +9,13 @@ module.exports = function (context) {
 		savePicCompResults: function(results) {
 			saveImage(PIC_COMP, results.screenNumber, results.image);
 			savePicCompTitle(results.screenNumber, results.title);
+		},
+		
+		saveParLinesResults: function(results) {
+			saveImage(PAR_LINES, results.screenNumber, results.image);
+			saveParLinesTitle(results.screenNumber, results.title);
 		}
+		
 		
 	};
 

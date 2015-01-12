@@ -18,7 +18,7 @@
 		var backendReadyTimer;
 				
         socket.on(PERM_RSP, function(object) {				
-			if(object.decision==GRANTED && object.operation==LOAD_PICCON_TEST_PAGE)		{
+			if(object.decision==GRANTED && object.operation==LOAD_TEST_PAGE)		{
 				document.location='pic_con.html';
 			}
 		});
@@ -56,7 +56,7 @@
         <input name="enterButton" type="button" value="Start this test" style="font-size:25px" id="closeButton" 
         onClick="
         if (backendReady) {
-        	socket.emit(PERM_REQ, LOAD_PICCON_TEST_PAGE);
+        	socket.emit(PERM_REQ, LOAD_TEST_PAGE);
         	document.getElementById('statusDiv').innerHTML='<img src=\'wait.gif\'><br/>When there are 2 or more users online, you will be redirected straight to Practice Page...';
         }
         ">

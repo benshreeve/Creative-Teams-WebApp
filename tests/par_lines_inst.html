@@ -12,48 +12,47 @@
 		<script type='application/javascript' src='/javascript/jquery.nouislider.min.js'></script>		
 		<script src="/socket.io/socket.io.js"></script>        
 		<script src="../javascript/backend/constants.js"></script>
-		<script>
-		
-		var backendReady = false; 
-		var socket = io.connect();
+		<script> 
+		var socket = io.connect(); 
+		var backendReady = false;
 		var backendReadyTimer;
-   
-       	socket.on(PERM_RSP, function(object) {				
-			if(object.decision==GRANTED && object.operation==LOAD_TEST_PAGE) {
-				document.location='practice_area.html';
+		
+        socket.on(PERM_RSP, function(object) {				
+			if(object.decision==GRANTED && object.operation==LOAD_TEST_PAGE)		{
+				document.location='par_lines.html';
 			}
 		});
 		
-		socket.on(GET_INTRODUCTION_RSP, function(intro) {
-			document.getElementById('intro').innerHTML = intro;
+		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
+			document.getElementById('instructions').innerHTML = instructions;
 		});
 		
 		socket.on(IS_BACKEND_READY_RSP, function(response) {
-			if (response == PRAC_AREA) {
+			if (response == PAR_LINES) {
 				clearInterval(backendReadyTimer);
-				socket.emit(GET_INTRODUCTION_REQ);
+				socket.emit(GET_TEST_INSTRUCTION_REQ);
 				backendReady = true;
 			}	
 		});
-
+		
 		$(document).ready(function() {		
 			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
 		});
-		
+				
         </script>
 		
 	</head>
 	<body onload="">	
 		<div id="deadzone-top">	
-			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative teams Introduction</h1>
+			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Parallel Lines Test</h1>
 			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
 		</div>	
 		
 		<div id="simplediv2">
-		<p id="intro"></p>
+		<p id="instructions"></p>
 
         <p id="statusDiv" style="color:#090">
-        <input name="enterButton" type="button" value="Enter pratice area" style="font-size:25px" id="closeButton" 
+        <input name="enterButton" type="button" value="Start this test" style="font-size:25px" id="closeButton" 
         onClick="
         if (backendReady) {
         	socket.emit(PERM_REQ, LOAD_TEST_PAGE);
@@ -62,8 +61,7 @@
         ">
         </p>        
         </div>			
-		<script> $(function() { FastClick.attach(document.body);}); </script>
-		<script src="../javascript/frontend/prac_area.js"></script>
-		<script src="../javascript/frontend/commons.js?v=1"></script>					
+		<script> $(function() { FastClick.attach(document.body);}); </script>		
+		<script async src="../javascript/frontend/commons.js?v=1"></script>
 	</body>
 </html>

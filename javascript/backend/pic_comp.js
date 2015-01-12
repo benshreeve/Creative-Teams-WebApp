@@ -9,9 +9,7 @@ module.exports =
 			var utils = require('./utils')();
 			var logger = require('./logger')(context);
 			var results = require('./results')(context);
-			
-		//	utils.includeConstants('./javascript/backend/constants.js');
-			
+						
 	        context.socket.on(GET_TEST_STATE_REQ, function() {
 	        	commons.sendTestStateRsp();
 	        });
@@ -30,7 +28,7 @@ module.exports =
 	                
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
-	        	case LOAD_PICCOMP_TEST_PAGE:
+	        	case LOAD_TEST_PAGE:
 	        		commons.checkAllReady(op, PIC_COMP, picCompSetupTestTimer);
 	        		break;
 	        	case EDIT_TITLE:
@@ -120,7 +118,6 @@ module.exports =
 	        	commons.sendGetResultsReq();	        	
 	        }
 	          
-	        //setupTestTimer(PIC_CON, testComplete);
 	        logger.debug("Hanlders were installed for picture completion test.");	        
 		}		
 };
