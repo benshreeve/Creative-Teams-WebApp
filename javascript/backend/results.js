@@ -8,7 +8,7 @@ module.exports = function (context) {
 	return {	
 		savePicCompResults: function(results) {
 			saveImage(PIC_COMP, results.screenNumber, results.image);
-			saveTitle(PIC_COMP, results.screenNumber, results.title);
+			savePicCompTitle(results.screenNumber, results.title);
 		}
 		
 	};
@@ -19,9 +19,19 @@ module.exports = function (context) {
     	saveResult(testID, screenNumber, buf, ".png");
 	}
 	
-	function saveTitle(testID, screenNumber, title) {
-    	saveResult(testID, screenNumber, title, ".txt");
+	function savePicCompTitle(screenNumber, title) {
+    	saveResult(PIC_COMP, screenNumber, title, ".txt");
     	context.db.savePicCompResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
+	}
+
+	function saveParLinesTitle(screenNumber, title) {
+    	saveResult(PAR_LINES, screenNumber, title, ".txt");
+    	context.db.saveParLinesResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
+	}
+
+	function saveDesChalTitle(screenNumber, title) {
+    	saveResult(DES_CHAL, screenNumber, title, ".txt");
+    	context.db.saveDesChalResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
 	}
 	
 	function saveResult(testID, screenNumber, data, ext) {

@@ -108,27 +108,43 @@ module.exports = function (conn) {
 		},
 		
 		savePicCompResults: function(teamID, results) {
-			conn.query('select * from piccompres where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, function(err, rows) {
-				if (err) throw err;
-				if (rows.length == 0) {
-					q = conn.query('insert into piccompres values (' + teamID + ',' + results.screenNumber + ',"' + results.title + '","' + 
-							results.path + '")', 
-							function(err, result) {
-								if (err) {
-									console.log(q.sql);
-									throw error;
-								}
-							}); 
-				} else {
-					post = {Title: results.title, Path:results.path}
-					q = conn.query('update piccompres set ? where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, post, 
-							function(err, result) {
-								console.log(q.sql);
-								if (err) throw err;
-							}); 					
-				}
-			}); 
-		}
+			saveResults(teamID, results, 'piccompres');
+		},
 
+		saveParLinesResults: function(teamID, results) {
+			saveResults(teamID, results, 'parlinesres');
+		},
+
+		saveDesChalResults: function(teamID, results) {
+			saveResults(teamID, results, 'deschalres');
+		}
+		
 	};
+	
+	function saveResults(teamID, results, table) {
+		conn.query('select * from '+ table + ' where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, function(err, rows) {
+			if (err) throw err;
+			if (rows.length == 0) {
+				q = conn.query('insert into ' + table + ' values (' + teamID + ',' + results.screenNumber + ',"' + results.title + '","' + 
+						results.path + '")', 
+						function(err, result) {
+							if (err) {
+								logger.log(q.sql);
+								throw error;
+							}
+						}); 
+			} else {
+				post = {Title: results.title, Path:results.path}
+				q = conn.query('update ' + table + ' piccompres set ? where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, post, 
+						function(err, result) {
+							if (err) { 
+								logger.log(q.sql);									
+								throw err;									
+							}
+						}); 					
+			}
+		}); 
+	}
+		
+	
 };
