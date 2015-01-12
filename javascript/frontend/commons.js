@@ -511,3 +511,7 @@ function changeScreen(bgImagePath) {
 function showScreenNumber(max) {
 	document.getElementById('screenNumber').innerHTML = "&nbsp"+ screenNumber + " / " + max + "&nbsp";
 }
+
+function sendWaitMsg() {
+	socket.emit(WAIT_MSG);
+}

@@ -62,6 +62,10 @@ module.exports =
 	        context.socket.on(REDO_MSG, function(object) {
 	        	commons.saveAndBroadcastTransaction(REDO_MSG, PIC_COMP, object);
 	        });
+	        
+	        context.socket.on(WAIT_MSG, function() {
+	        	context.channel.sendToTeam(context.session.TeamID, WAIT_MSG);
+	        });
 	        	             
 	        context.socket.on(DISCONNECT_MSG, function() {
 	        	commons.disconnectUser();

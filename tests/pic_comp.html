@@ -47,7 +47,12 @@
             <h1 id="screenNumber" style="float:right; margin-top:25px;"></h1>
             <input name="button" type="button" value="Prev" style="float:right; margin-top:25px; ; font-size:25px" class="topButton" id="prev-button" onClick="sendRequestToPrevScreen();">
 			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative Teams</h1>			
-		</div>		
+		</div>
+		
+		<div id="WaitDialog"  class="hidden" style="text-align: center; display:none">
+        	<img  src="wait.gif" />
+    	</div>
+				
 		<div id="canvasDiv">
 			<div id="circle"></div>		
 		</div>
@@ -81,7 +86,7 @@
 			<button onclick="switchIntention('redo');" class="tab" id="redobutton"></button>
 			<div class="myslider"></div>
 		</div>
-        
+                        
         <div id="practiceIntro">
 		<p id = "instruction"></p>
         <p>
@@ -98,7 +103,7 @@
         <input name="saveButton" type="button" value="Save Title" style="font-size:25px" id="saveButton" class="topButton" onClick="saveTitle();">
         <input name="cancelButton" type="button" value="Cancel" style="font-size:25px" id="cancelButton" class="topButton" onClick="cancelUpdateTitle();">
         </p>
-        </div>	
+        </div>	        
 		<script> $(function() { FastClick.attach(document.body);}); </script>
 		<script async src="../javascript/frontend/commons.js?v=1"></script>
 		<script src="../javascript/frontend/pic_comp.js"></script>

@@ -24,6 +24,7 @@ function sendResults() {
 
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	console.log("CHANGE_SCREEN_MSG received ...", newScreen);
+	Popup.hide('WaitDialog');
 	screenNumber = newScreen;
 	changeScreen(getBGImageName());
 	showScreenNumber(PIC_COMP_MAX_SCREEN);
@@ -96,9 +97,16 @@ socket.on(ERASE_MSG, function(dot){
 	redraw();	
 });
 
+socket.on(WAIT_MSG, function() {
+	console.log("WAIT_MSG received ...");
+	Popup.show('WaitDialog');
+});
+
 function sendRequestToNextScreen() {
-	if (screenNumber < PIC_COMP_MAX_SCREEN)
-		prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);	
+	if (screenNumber < PIC_COMP_MAX_SCREEN) {
+		sendWaitMsg();
+		prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);
+	}
 }
 
 function sendNextScreenMsg() {
@@ -106,8 +114,10 @@ function sendNextScreenMsg() {
 }
 
 function sendRequestToPrevScreen() {
-	if (screenNumber > 1)
+	if (screenNumber > 1) {
+		sendWaitMsg();
 		prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
+	}	
 }
 
 function sendPrevScreenMsg() {
