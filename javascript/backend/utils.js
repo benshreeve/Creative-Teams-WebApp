@@ -3,15 +3,18 @@
  */
 
 module.exports = function() {
-	var tests = [{name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '', testURL:''},
-	             {name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
-	             {name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
-	             {name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '', testURL:''},
-	             {name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '', testURL:''},
-	             {name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},
-	             {name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '', testURL:''}];
+	runScript("./javascript/backend/constants.js");
+
+	var tests = [{id: PRAC_AREA, name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '', testURL:''},
+	             {id: PIC_CON, name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
+	             {id: PIC_COMP, name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
+	             {id: PAR_LINES, name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/tests/par_lines_inst.html', testURL:'/tests/par_lines.html'},
+	             {id: IDEA_GEN, name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '', testURL:''},
+	             {id: DES_CHAL, name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},
+	             {id: ALT_USES, name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '', testURL:''}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
+	var testsOrder = [PRAC_AREA, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL, ALT_USES, PIC_CON];
 	
 	return {
 		isDup: function(list, item) {
@@ -81,23 +84,32 @@ module.exports = function() {
 		},
 		
 		getTestName: function(testID) {
-			return tests[testID].name;
+			return getTestInfo(testID).name;
 		},
 		
 		getTestScreenLimit: function(testID) {
-			return tests[testID].screenLimit;
+			return getTestInfo(testID).screenLimit;
 		},
 		
 		getTestHandler: function(testID) {
-			return tests[testID].handler;
+			return getTestInfo(testID).handler;
 		},
 
 		getInstructionURL: function(testID) {
-			return tests[testID].instructionURL;
+			return getTestInfo(testID).instructionURL;
 		},
 		
 		getTestURL: function(testID) {
-			return tests[testID].testURL;
+			return getTestInfo(testID).testURL;
+		},
+		
+		getNextTestID: function(testID) {
+			for (i = 0; i < testsOrder.length; i++) {				
+				if (testsOrder[i] == testID) {
+					return testsOrder[i+1];
+				}
+			}
+			return -1;
 		},
 
 		getUserColor: function(userID) {
@@ -105,14 +117,28 @@ module.exports = function() {
 		},
 		
 		includeConstants: function(path) {
-			var fs = require('fs');
-			var vm = require('vm');
-			var includeInThisContext = function(path) {
-				var code = fs.readFileSync(path);
-				vm.runInThisContext(code, path);
-			}.bind(this);
-			includeInThisContext(path);
+			runScript(path);
 		}
 		
 	};
+	
+	function getTestInfo(testID) {		
+		for (i = 0; i < tests.length; i++) {
+			if (tests[i].id == testID) {
+				return tests[i];
+			}
+		}
+		return null;
+	}
+	
+	function runScript(path) {
+		var fs = require('fs');
+		var vm = require('vm');
+		var includeInThisContext = function(path) {
+			var code = fs.readFileSync(path);
+			vm.runInThisContext(code, path);
+		}.bind(this);
+		includeInThisContext(path);
+	}
+	
 };
