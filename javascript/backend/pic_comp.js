@@ -78,7 +78,7 @@ module.exports =
 	        	results.savePicCompResults(res);
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getInstructionURL(utils.getNextTestID(PIC_COMP)));
-	        	commons.moveToNextTest(PIC_COMP);
+	        	results.saveParticipants(PIC_COMP, commons.moveToNextTest, PIC_COMP);
 	        });
 	        
 	        context.socket.on(NEXT_SCREEN_MSG, function(res) {

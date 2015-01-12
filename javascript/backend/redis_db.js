@@ -74,6 +74,24 @@ module.exports = function (conn) {
 				});
 			});
 		},
+
+		getParticipants: function(teamID, callback, args) {
+			lock(teamID, function(done){
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) { 
+						done();
+						throw err;
+					}
+					
+					done();
+					
+					if (reply) {
+						callback(reply.Participants.split(','), args)
+					}
+
+				});
+			});
+		},
 		
 
 		addReadyParticipant: function(teamID, accessCode) {

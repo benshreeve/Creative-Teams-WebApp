@@ -77,6 +77,7 @@ module.exports =
 	        	results.saveParLinesResults(res);
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getInstructionURL(utils.getNextTestID(PAR_LINES)));
+	        	results.saveParticipants(PAR_LINES, commons.moveToNextTest, PAR_LINES);
 	     //   	commons.moveToNextTest(PAR_LINES);
 	        });
 	        

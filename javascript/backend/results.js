@@ -14,6 +14,10 @@ module.exports = function (context) {
 		saveParLinesResults: function(results) {
 			saveImage(PAR_LINES, results.screenNumber, results.image);
 			saveParLinesTitle(results.screenNumber, results.title);
+		},
+		
+		saveParticipants: function(testID, callback, args) {
+			context.rdb.getParticipants(context.session.TeamID, saveTestParticipants, {teamID: context.session.TeamID, testID: testID, callback: callback, args:args});
 		}
 		
 		
@@ -51,5 +55,9 @@ module.exports = function (context) {
 			fs.mkdirSync(path);
 		fs.writeFile(path+"/"+args.screen+args.ext, args.data, 
 				function(err) {if (err) throw err;});
+	}
+	
+	function saveTestParticipants(participants, args) {		
+		context.db.saveParticipants(args.teamID, args.testID, participants, args.callback, args.args);
 	}
 };

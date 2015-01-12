@@ -109,19 +109,23 @@ module.exports = function(context)
 			context.db.getIntroductionFile(sendIntroduction);
 		},
 		
-		redirectToTest: function(testID) {
-			context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(testID));
-		},
+//		redirectToTest: function(testID) {
+//			context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(testID));
+//		},
 		
 		moveToNextTest: function(currentTest) {
     		nextTest = utils.getNextTestID(currentTest);
     		context.rdb.setCurrentTest(context.session.TeamID, nextTest);
     		context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
-    		context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + nextTest + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", this.redirectToTest, nextTest);	        		
+    		context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + nextTest + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", redirectToTest, nextTest);	        		
 		}
 		
 	};
-	
+
+	function redirectToTest(testID) {
+		context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(testID));
+	}
+
     function sendTestState(teamInfo) {
     	teamInfo.CurrentTime = new Date().getTime();
     	context.channel.sendToUser(context.session.AccessCode, GET_TEST_STATE_RSP, teamInfo);

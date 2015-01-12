@@ -117,8 +117,22 @@ module.exports = function (conn) {
 
 		saveDesChalResults: function(teamID, results) {
 			saveResults(teamID, results, 'deschalres');
-		}
+		},
 		
+		saveParticipants: function(teamID, testID, participants, callback, args) {
+			for (i = 0; i < participants.length; i++) {
+				q = conn.query('insert into participation values (' + teamID + ',' + utils.getUserID(participants[i]) + ',' + testID + ')',
+						function(err, result) {
+							if (err) {
+								console.error(q.sql)
+								throw err;
+							}
+					});
+			}
+			
+			callback(args);
+		}
+			
 	};
 	
 	function saveResults(teamID, results, table) {
@@ -133,9 +147,9 @@ module.exports = function (conn) {
 								throw error;
 							}
 						}); 
-			} else {
-				post = {Title: results.title, Path:results.path}
-				q = conn.query('update ' + table + ' piccompres set ? where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, post, 
+			} else {		
+				post = {title: results.title, path:results.path};
+				q = conn.query('update ' + table + ' set ? where TeamID=' + teamID + " and ScreenNumber=" + results.screenNumber, post, 
 						function(err, result) {
 							if (err) { 
 								logger.log(q.sql);									
