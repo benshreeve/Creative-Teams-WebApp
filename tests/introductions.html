@@ -13,10 +13,13 @@
 		<script src="/socket.io/socket.io.js"></script>        
 		<script src="../javascript/backend/constants.js"></script>
 		<script>
+		
 		var backendReady = false; 
-		var socket = io.connect(); 
-        socket.on(PERM_RSP, function(object) {				
-			if(object.decision==GRANTED && object.operation==LOAD_PRACTICE_AREA_PAGE)		{
+		var socket = io.connect();
+		var backendReadyTimer;
+   
+       	socket.on(PERM_RSP, function(object) {				
+			if(object.decision==GRANTED && object.operation==LOAD_PRACTICE_AREA_PAGE) {
 				document.location='practice_area.html';
 			}
 		});
@@ -32,8 +35,10 @@
 				backendReady = true;
 			}	
 		});
-		
-		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+
+		$(document).ready(function() {		
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		});
 		
         </script>
 		
@@ -57,8 +62,8 @@
         ">
         </p>        
         </div>			
-		<script> $(function() { FastClick.attach(document.body);}); </script>		
-		<script async src="../javascript/frontend/commons.js?v=1"></script>
+		<script> $(function() { FastClick.attach(document.body);}); </script>
 		<script src="../javascript/frontend/prac_area.js"></script>
+		<script src="../javascript/frontend/commons.js?v=1"></script>					
 	</body>
 </html>

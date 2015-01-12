@@ -5,7 +5,7 @@
 module.exports = function() {
 	runScript("./javascript/backend/constants.js");
 
-	var tests = [{id: PRAC_AREA, name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '', testURL:''},
+	var tests = [{id: PRAC_AREA, name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/tests/introduction.html', testURL:'/tests/practice_area.html'},
 	             {id: PIC_CON, name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
 	             {id: PIC_COMP, name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
 	             {id: PAR_LINES, name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/tests/par_lines_inst.html', testURL:'/tests/par_lines.html'},

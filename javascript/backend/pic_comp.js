@@ -81,7 +81,6 @@ module.exports =
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getInstructionURL(utils.getNextTestID(PIC_COMP)));
 	        	commons.moveToNextTest(PIC_COMP);
-	        //	channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(getNextTestID(PIC_COMP)));
 	        });
 	        
 	        context.socket.on(NEXT_SCREEN_MSG, function(res) {

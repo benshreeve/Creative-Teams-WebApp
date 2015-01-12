@@ -17,6 +17,7 @@
 		var socket = io.connect();
 		var backendReady = false;
 		var testName = 'Practice Area';
+		var backendReadyTimer;
 		
 		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
 			document.getElementById('instruction').innerHTML = instructions;
@@ -32,7 +33,9 @@
 			}	
 		});
 		
-		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		$(document).ready(function() {		
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		});
 		
         </script>
 		<link rel="stylesheet" type="text/css" href="../public/style.css">

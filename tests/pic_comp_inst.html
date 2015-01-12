@@ -15,6 +15,7 @@
 		<script> 
 		var socket = io.connect(); 
 		var backendReady = false;
+		var backendReadyTimer;
 		
         socket.on(PERM_RSP, function(object) {				
 			if(object.decision==GRANTED && object.operation==LOAD_PICCOMP_TEST_PAGE)		{
@@ -34,7 +35,9 @@
 			}	
 		});
 		
-		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		$(document).ready(function() {		
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		});
 				
         </script>
 		

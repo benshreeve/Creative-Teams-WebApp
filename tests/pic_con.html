@@ -29,6 +29,7 @@
 		var testName = 'Picture Construction Test';
 		var shape;
 		var paper;
+		var backendReadyTimer;
 		
 		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
 			document.getElementById('instruction').innerHTML = instructions;
@@ -45,7 +46,10 @@
 			}	
 		});
 		
-		var backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		$(document).ready(function() {		
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		});
+
 		
 		function setupShape() {
 			var canvasElement = document.getElementById('canvasSimple');
