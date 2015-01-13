@@ -444,7 +444,7 @@ function showInstructions(testName){
 }
 
 function sendRequestToNextTest(){	
-	document.getElementById('top-right-button').value = 'Waiting for server responses...';    
+	document.getElementById('top-right-button').value = 'Waiting for other participants ...';    
 	socket.emit(PERM_REQ, START_TEST);  
 }
 
