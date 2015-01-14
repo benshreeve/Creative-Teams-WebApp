@@ -18,7 +18,9 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						reply.Participants = utils.addItemUnique(reply.Participants, accessCode);
-						conn.hmset(teamID, reply);
+						conn.hmset(teamID, reply, function(err, result) {
+							done();
+						});
 					}
 					else {
 						logger.debug("no record for team " + teamID + ". create one ...");
@@ -31,9 +33,10 @@ module.exports = function (conn) {
 									   "Participants", accessCode,
 									   "ReadyToStart", '',
 									   "PicConBGCreator", '',
-									   "PicConBGCreated", false);
+									   "PicConBGCreated", false, function(err, result) {
+											done();
+						});
 					}
-					done();
 				});
 			});
 		},
@@ -48,11 +51,13 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						reply.Participants = utils.delItem(reply.Participants, accessCode);
-						conn.hmset(teamID, reply);
+						conn.hmset(teamID, reply, function (err, result) {
+							done();
+						});
 					} else {
 						logger.debug("no record for team ", teamID);
-					}
-					done();
+						done();
+					}					
 				});
 			});
 		},
@@ -265,8 +270,9 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						var id = reply.IdeaId ++;
-						conn.hmset(teamID, reply);
-						done();
+						conn.hmset(teamID, reply, function(err, result) {
+							done();
+						});
 						callback(id, args);
 					} else 
 						done();

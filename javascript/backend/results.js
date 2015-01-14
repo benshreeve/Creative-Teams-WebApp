@@ -18,6 +18,10 @@ module.exports = function (context) {
 		
 		saveParticipants: function(testID, callback, args) {
 			context.rdb.getParticipants(context.session.TeamID, saveTestParticipants, {teamID: context.session.TeamID, testID: testID, callback: callback, args:args});
+		},
+		
+		saveIdeaGenResults: function(results) {
+			context.db.saveIdeaGenResults(context.session.TeamID, results);
 		}
 		
 		

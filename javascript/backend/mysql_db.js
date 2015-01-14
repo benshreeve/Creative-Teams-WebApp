@@ -131,6 +131,19 @@ module.exports = function (conn) {
 			}
 			
 			callback(args);
+		},
+		
+		saveIdeaGenResults: function(teamID, results) {
+			for (i = 0; i < results.length; i++) {
+				q = conn.query('insert into ideagenres values ('+ teamID + ',' + results[i].userID + ',"' +
+						results[i].title + '","' + results[i].description + '",' + results[i].ideaNo + ')',
+						function(err, result) {
+							if (err) {
+								console.error(q.sql)
+								throw err;
+							}					
+				});
+			}
 		}
 			
 	};

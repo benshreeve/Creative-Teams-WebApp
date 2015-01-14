@@ -81,12 +81,11 @@ module.exports = function(context)
 		},
 				
 		disconnectUser: function () {
-        	logger.debug('Got a disconnet message.');
-			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
-			context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
-			context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
 			context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
 			context.channel.disconnect(context.session.AccessCode);
+			context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
+			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
+			context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
 			
 			context.db.getActiveUsersCount();			
 		},
@@ -188,7 +187,7 @@ module.exports = function(context)
     	var messageMap = ["", DRAW_MSG, ERASE_MSG, MOVE_SHAPE_MSG, ROTATE_SHAPE_MSG, UPDATE_TITLE_MSG, UNDO_MSG, REDO_MSG];
     	
         for(var i = 0; i<rows.length; i++) {                 	
-            context.channel.sendToUser(context.session.AccessCode, messageMap[rows[i].Operation], 
+            context.channel.sendToUser(context.session.AccessCode, utils.getMessage(rows[i].Object, rows[i].Operation), 
             		{userID: rows[i].UserID, screenNumber: rows[i].ScreenNumber, ObjectID: rows[i].Object, 
             		 Operation: rows[i].Operation, OperationData: eval("(" + rows[i].OperationData + ")")}
             );

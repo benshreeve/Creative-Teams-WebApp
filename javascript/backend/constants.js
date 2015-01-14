@@ -12,7 +12,7 @@ var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
 
-var NUM_TESTS = 3;
+var NUM_TESTS = 4;
  
 // Requests and responses
 
@@ -84,6 +84,7 @@ var TITLE = 3;
 var NOTE = 4;
 var IDEA = 5;
 var OBJECT = 6;
+var NUM_OBJECTS = 6;
 
 var DRAW = 1;
 var ERASE = 2;
@@ -92,6 +93,9 @@ var ROTATE = 4;
 var ADD = 5;
 var UNDO = 6;
 var REDO = 7;
+var DEL = 8;
+var UPDATE = 9;
+var NUM_OPERATIONS = 9;
 
 
 // more values

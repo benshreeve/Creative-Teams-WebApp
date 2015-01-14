@@ -21,6 +21,7 @@ var screenNumber = 1;
 var myColour = "black";
 var accessID;
 var groupNumber;
+var userID;
 
 var totalTestTime = 0;
 var startTime = 0;
@@ -46,7 +47,7 @@ function calculateRemainingTime(currentTime) {
 	return {min: 0, sec:0};
 }
 
-function updateTimer(){
+function updateTimer(){	
 	if(remainTime >= 0) {
 		remainTime = remainTime-1;	
 		remainMin = parseInt(remainTime/60);
@@ -57,22 +58,26 @@ function updateTimer(){
 		document.getElementById('timeRemained').innerHTML = remainMin + ":" + remainSec + " remaining";		
 	}
 	else{
-		document.getElementById('timeRemained').innerHTML = "Time is up!";	
-		if (document.getElementById('top-right-button'))
-			document.getElementById('top-right-button').style.display = "";
+		if (document.getElementById('timeRemained')) {
+			document.getElementById('timeRemained').innerHTML = "Time is up!";	
+			if (document.getElementById('top-right-button'))
+				document.getElementById('top-right-button').style.display = "";
+		}
 	}
 	checkAddEditTitle();	
 }
 
 function checkAddEditTitle(){
-	if(document.getElementById('titleArea').value != ""){
-		if(document.getElementById('enterTitle').style.color!="red")
-			document.getElementById('enterTitle').value = "Edit Title";
+	if (document.getElementById('titleArea')) {
+		if(document.getElementById('titleArea').value != ""){
+			if(document.getElementById('enterTitle').style.color!="red")
+				document.getElementById('enterTitle').value = "Edit Title";
+		}
+		else{
+			if(document.getElementById('enterTitle').style.color!="red")
+				document.getElementById('enterTitle').value = "Add Title";
+		}
 	}
-	else{
-		if(document.getElementById('enterTitle').style.color!="red")
-			document.getElementById('enterTitle').value = "Add Title";
-	}	
 }
 
 function storeTestState(testState) {
@@ -91,7 +96,8 @@ function storeSessionState(sessionState) {
 	groupNumber = sessionState.TeamID;
 	accessID = sessionState.AccessCode;	
 	Name = sessionState.Name;
-	AccessCode = sessionState.AccessCode;	
+	AccessCode = sessionState.AccessCode;
+	userID = sessionState.UserID;
 }
 
 function handleTitleBeingEdited(info) {
