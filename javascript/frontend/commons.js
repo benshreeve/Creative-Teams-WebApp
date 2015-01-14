@@ -507,6 +507,7 @@ function prepareCanvasForSnapshot(bgImagePath, callback, args) {
 
 function changeScreen(bgImagePath) {
     pointsArray.length = 0;
+    undoArray.length = 0;
     lastLength = 0;
     clearCanvas();
     switchBackground(bgImagePath);
