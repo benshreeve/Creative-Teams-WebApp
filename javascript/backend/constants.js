@@ -12,7 +12,7 @@ var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
 
-var NUM_TESTS = 4;
+var NUM_TESTS = 1;
  
 // Requests and responses
 
@@ -65,10 +65,10 @@ var END_DATA_MSG = "EndDataMsg";
 var BACKEND_READY_MSG = "BackendReadyMsg";
 var DISCONNECT_MSG = "disconnect";
 var TITLE_BEING_EDITED_MSG = "TitleBeingEditedMsg";
-var PICCON_BG_CREATED_MSG = "PicConBGCreatedMsg";
+var BG_CREATED_MSG = "BGCreatedMsg";
 var UNDO_MSG = "UndoMsg";
 var REDO_MSG = "RedoMsg";
-
+var PLACE_SHAPE_MSG = "PlaceShapeMsg";
 // PERM_REQ Operations
 
 var LOAD_TEST_PAGE = "LoadTestPage";

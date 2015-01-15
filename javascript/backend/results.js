@@ -16,15 +16,18 @@ module.exports = function (context) {
 			saveParLinesTitle(results.screenNumber, results.title);
 		},
 		
+		savePicConResults: function(results) {
+			saveImage(PIC_CON, results.screenNumber, results.image);
+			savePicConTitle(results.screenNumber, results.title);
+		},		
+		
 		saveParticipants: function(testID, callback, args) {
 			context.rdb.getParticipants(context.session.TeamID, saveTestParticipants, {teamID: context.session.TeamID, testID: testID, callback: callback, args:args});
 		},
 		
 		saveIdeaGenResults: function(results) {
 			context.db.saveIdeaGenResults(context.session.TeamID, results);
-		}
-		
-		
+		},				
 	};
 
 	function saveImage(testID, screenNumber, image) {
@@ -38,6 +41,12 @@ module.exports = function (context) {
     	context.db.savePicCompResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
 	}
 
+	function savePicConTitle(screenNumber, title) {
+    	saveResult(PIC_CON, screenNumber, title, ".txt");
+    	context.db.savePicConResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});
+	}
+	
+	
 	function saveParLinesTitle(screenNumber, title) {
     	saveResult(PAR_LINES, screenNumber, title, ".txt");
     	context.db.saveParLinesResults(context.session.TeamID, {screenNumber: screenNumber, title:title, path: ""});

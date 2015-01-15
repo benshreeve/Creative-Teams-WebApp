@@ -107,6 +107,17 @@ module.exports = function (conn) {
 			});						
 		},
 		
+		savePicConResults: function(teamID, results) {
+			q = conn.query('insert into picconres values (' + teamID + ',"' + results.title + '","' + 
+					results.path + '")', 
+					function(err, result) {
+						if (err) {
+							logger.log(q.sql);
+							throw error;
+						}
+					}); 
+		},
+		
 		savePicCompResults: function(teamID, results) {
 			saveResults(teamID, results, 'piccompres');
 		},

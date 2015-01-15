@@ -30,7 +30,7 @@ module.exports =
 	                
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
-	        	case LOAD_PICCON_TEST_PAGE:
+	        	case LOAD_TEST_PAGE:
 	        		commons.checkAllReady(op, PIC_CON, picConSetupTestTimer);
 	        		break;
 	        	case CREATE_BACKGROUND:
@@ -48,23 +48,24 @@ module.exports =
 	        
 	        function picConSendCreateBGRsp(creator) {
 	        	if (creator == context.session.AccessCode) {
-	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {decision:GRANTED});	        		
+	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {decision:GRANTED, operation:CREATE_BACKGROUND});	        		
 	        	} else {
-	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {decision:DECLINED, info:creator});
+	        		context.channel.sendToUser(context.session.AccessCode, PERM_RSP, {decision:DECLINED, operation: CREATE_BACKGROUND, info:creator});
 	        	}
 	        }
 	                	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
-	        	commons.handleUpdateTitleMsg(title);
+	        	commons.saveAndBroadcastUpdateTitleMsg(PIC_CON, title);
 	        });
 	        
-	        context.socket.on(PICCON_BG_CREATED_MSG, function(location) {
-	        	context.rdb.setBGCreated(context.session.TeamID, true);
-	        	context.channel.sendToTeam(context.session.TeamID, PICCON_BG_CREATED_MSG, location);	        	
+	        context.socket.on(BG_CREATED_MSG, function(bgImage) {
+	        	var fileName = new Date().getTime();	        
+	        	context.rdb.setPicConBGImage(context.session.TeamID, fileName);
+	        	require('fs').writeFileSync("images/pictureconstruction/"+fileName+".svg", bgImage);
+	        	context.channel.sendToTeam(context.session.TeamID, BG_CREATED_MSG, fileName)
 	        });
 	        
 	        context.socket.on(MOVE_SHAPE_MSG, function(data) {
-	        	logger.debug("MOVE_SHAPE_MSG: ", data);
 	        	commons.broadcastTransaction(MOVE_SHAPE_MSG, PIC_CON, data);
 	        });
 	        
@@ -98,11 +99,10 @@ module.exports =
 
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
 	        	logger.debug("Results received ...");
-	        	results.saveImage(res.image);
-	        	results.saveTitle(res.title);
+	        	results.savePicConResults(res);
 	        	
-	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getTestName(PIC_COMP));
-	        	//channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(PIC_COMP));
+	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getInstructionURL(utils.getNextTestID(PIC_CON)));
+	        	results.saveParticipants(PIC_CON, commons.moveToNextTest, PIC_CON);
 	        });
 	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
