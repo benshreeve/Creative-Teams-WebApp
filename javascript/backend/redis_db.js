@@ -507,21 +507,16 @@ module.exports = function (conn) {
 						done();
 						throw err;
 					}
-					
-					var fs = require('fs');
-					if (fs.)
-				
+					if (reply) {
+						var fs = require('fs');
+						if (fs.existsSync(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage)) {
+							fs.unlink(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage);
+						}
+						conn.del(teamID);
+					}
+
 					done();
-					
-					var func = new Function('reply', "return " + condition);
-					
-					callback(func(reply), args);					
 				});
-			});									
-			
-			lock(teamID, function(done) {
-				conn.del(teamID);
-				done();
 			});
 		},
 		
