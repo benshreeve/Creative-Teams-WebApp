@@ -509,7 +509,7 @@ module.exports = function (conn) {
 					}
 					if (reply) {
 						var fs = require('fs');
-						if (fs.existsSync(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage)) {
+						if (reply.PicConBGImage != '' && fs.existsSync(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage)) {
 							fs.unlink(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage);
 						}
 						conn.del(teamID);

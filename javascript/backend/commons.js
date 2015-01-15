@@ -109,7 +109,7 @@ module.exports = function(context)
 		},
 			
 		moveToNextTest: function(currentTest) {
-			if (currentTest < NUM_TESTS) {
+			if (currentTest < LAST_TEST) {
     			nextTest = utils.getNextTestID(currentTest);
     			context.rdb.setCurrentTest(context.session.TeamID, nextTest);
     			context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
