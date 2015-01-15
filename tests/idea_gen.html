@@ -51,10 +51,22 @@
 						class="topButton" id="top-left-button"
 						onClick="showInstructions(testName);">
 				</div>
-				<div class="form-group">
-					<label for="idea-title-textfield" style="font-size: 25px">Title: </label> 
+				<div>
+					<h1 id="supertitle" style="margin-top: 25px; text-align: center;">Creative
+						Teams</h1>
+				</div>
+				
+				<div style = "float: left; margin-top: 40px; font-size: 25px;">
+					<label for="idea-title-textfield" style="font-size: 25px;">Title: </label><br/>
 					<input name="idea-title-textfield" type="text" id="idea-title-textfield"
 						value="" style="font-size: 25px; width: 400px;"> 
+				</div>
+				<div style = "float: left; margin-top: 40px; font-size: 25px">
+					<label for="idea-description-textfield" style="font-size: 25px">Description: </label> <br/>
+					<textarea name="idea-description-textfield"
+						id="idea-description-textfield" style="width: 800px;font-size: 25px"></textarea>
+				</div>
+				<div style="text-align: center; margin-top: 180px; font-size: 25px">
 					<input type="submit" name="button" id="submit-button" class="topButton" value="Add"
 						onClick="sendAddUpdateIdea();"> 
 					<input type="button" name="buttonDelete"
@@ -62,16 +74,7 @@
 						style="display: none" onClick="sendDelIdea()"> 
 					<input
 						type="submit" name="button" id="cancel-button" class="topButton"
-						value="Cancel" style="display: none" onClick="cancelChange()">
-				</div>
-				<div class="form-group">
-					<label for="idea-description-textfield" style="font-size: 25px">Description: </label>
-					<textarea name="idea-description-textfield"
-						id="idea-description-textfield" style="width: 500px;font-size: 25px"></textarea>
-				</div>
-				<div>
-					<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative
-						Teams</h1>
+						value="Cancel" style="display: none" onClick="cancelChange()">				
 				</div>
 			</div>
 		</div>
@@ -79,12 +82,12 @@
 		
 		<!-- BEGIN: Page Content -->
 		<div id="container">
-			<div id="mainIdeaDiv-bottomBox">
+			<div id="mainIdeaDiv-bottomBox" style="font-size: 25px">
 				<table id="ideaTable" width="100%" border="1" cellspacing="0"
 					cellpadding="5">
 					<tr>
-						<td bgcolor="#999999" width="30%"><strong>Idea title</strong></td>
-						<td bgcolor="#999999" width="70%"><strong>Description</strong></td>
+						<td bgcolor="#999999" width="30%"><strong>Idea Title</strong></td>
+						<td bgcolor="#999999" width="70%"><strong>Idea Description</strong></td>
 					</tr>
 				</table>
 			</div>

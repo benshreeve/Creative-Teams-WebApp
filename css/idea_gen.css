@@ -2,11 +2,11 @@
 body { margin:0; padding:0; }
  
 /* Make Header Sticky */
-#header_container { background:#a9a9a9; border:1px solid #666; height:230px; left:0; position:fixed; width:100%; top:0; }
+#header_container { background:#a9a9a9; border:1px solid #666; height:300px; left:0; position:fixed; width:100%; top:0; }
 #header{ line-height:60px; margin:0 auto; width:940px; text-align:center; }
  
 /* CSS for the content of page. I am giving top and bottom padding of 80px to make sure the header and footer do not overlap the content.*/
-#container { margin:0 auto; overflow:auto; padding:250px 0; width:100%; }
+#container { margin:0 auto; overflow:auto; padding:310px 0; width:100%; }
 #content{}
  
 /* Make Footer Sticky */
