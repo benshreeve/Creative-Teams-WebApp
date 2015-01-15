@@ -502,14 +502,29 @@ module.exports = function (conn) {
 		
 		delTeam: function(teamID) {
 			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+					
+					var fs = require('fs');
+					if (fs.)
+				
+					done();
+					
+					var func = new Function('reply', "return " + condition);
+					
+					callback(func(reply), args);					
+				});
+			});									
+			
+			lock(teamID, function(done) {
 				conn.del(teamID);
 				done();
 			});
 		},
 		
-		updateTimes: function() {
-			lock()
-		}
 	};
 
 	function waitForCondition(teamID, condition, callback, args) {

@@ -1,11 +1,10 @@
-var bgImagePath = "../images/pictureconstruction/";
 var bgImage;
 var shape;
 var paper;
 var rect;
 
 function getBGImageName(bgImageName) {
-	return bgImagePath +  bgImageName + ".svg";
+	return "../" + PIC_CON_BGIMAGE_PATH +  bgImageName;
 }
 	
 socket.on(UPDATE_TIME_MSG, function(time){
@@ -88,6 +87,7 @@ socket.on(PERM_RSP, function(rsp) {
 			shape = paper.freeTransform(rect, { keepRatio: true, scale: false }, function(ft, events) {        		
 				socket.emit(MOVE_SHAPE_MSG, ft.attrs);
 			});
+			shape.setOpts({ size: 20 });
 			document.getElementById('place-shape-button').style.display = "";
 		} else {
 			shape = paper.freeTransform(rect, { keepRatio: true, scale: false });
@@ -140,7 +140,7 @@ function setupShape() {
 	console.log(canvasElement);
 	var canvasLocation = getPosition(canvasElement);			
 	paper = Raphael(canvasLocation.x, canvasLocation.y, canvasElement.width, canvasElement.height); //(0, 0, 1000, 1000);			
-	rect = paper.rect(200, 100, 220, 220).attr('fill', '#feffff');
+	rect = paper.ellipse(500, 500, 200, 100).attr('fill', '#feffff');
 }
 
 

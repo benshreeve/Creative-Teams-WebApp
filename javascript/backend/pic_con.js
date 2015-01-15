@@ -59,9 +59,9 @@ module.exports =
 	        });
 	        
 	        context.socket.on(BG_CREATED_MSG, function(bgImage) {
-	        	var fileName = new Date().getTime();	        
+	        	var fileName = utils.randomFileName(context.session.TeamID, "svg");	        
 	        	context.rdb.setPicConBGImage(context.session.TeamID, fileName);
-	        	require('fs').writeFileSync("images/pictureconstruction/"+fileName+".svg", bgImage);
+	        	require('fs').writeFileSync(PIC_CON_BGIMAGE_PATH+fileName, bgImage);
 	        	context.channel.sendToTeam(context.session.TeamID, BG_CREATED_MSG, fileName)
 	        });
 	        

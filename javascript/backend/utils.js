@@ -125,7 +125,11 @@ module.exports = function() {
 		
 		getMessage: function(object, operation) {
 			return messageMap[object][operation];
-		}		
+		},
+		
+		randomFileName: function(prefix, extension) {
+			return  prefix + "-" + new Date().getTime() + "." + extension;
+		}
 		
 	};
 	

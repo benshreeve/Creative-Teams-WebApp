@@ -113,3 +113,4 @@ var COLOURS = ["", "purple", "red", "blue", "orange", "green"];
 var BACKEND_READY_MSG_INTERVAL = 2000;
 var PIC_COMP_MAX_SCREEN = 10;
 var PAR_LINES_MAX_SCREEN = 30;
+var PIC_CON_BGIMAGE_PATH = "images/pictureconstruction/";
