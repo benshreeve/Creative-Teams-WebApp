@@ -203,13 +203,19 @@ module.exports = function(context)
     	context.db.getIntroductionFile(sendFile, {msg:GET_INTRODUCTION_RSP});
     }
     
-    function sendFile(fileName, args) {
+    function sendFile(fileName, timeLimit, args) {
     	var fs = require('fs');
     	
     	fs.readFile(fileName, function (err, data) {
     		if (err) throw err;
-    		
-    		context.channel.sendToUser(context.session.AccessCode, args.msg, data.toString());
+
+    		var plates = require('plates');
+    		var tags = { "testtime": parseInt(timeLimit/60), 
+    					 "usercolour": utils.getUserColor(context.session.UserID)};
+    		var map = plates.Map();
+    		map.where('color').has(/#/).insert('usercolour');
+    		map.class('time').to('testtime');    		
+    		context.channel.sendToUser(context.session.AccessCode, args.msg, plates.bind(data.toString(), tags, map));
     	});
     }
     

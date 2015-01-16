@@ -1,8 +1,8 @@
 <h1>Picture Completion Test</h1>
 <br/><br/>
-This test is Insert time variable minutes long.
+This test is <tag class="time"></tag> minutes long.
 <br/><br/>
 This test consists of 10 incomplete shapes. Work together using the drawing tools and try to turn each shape into 
-a drawing which nobody else would think of. Put as much detail into your drawings as possible in the time limit, 
+a drawing which <u>nobody else would think of</u>. Put as much <u>detail</u> into your drawings as possible in the time limit, 
 and add a title to help describe the drawing.
 <br/><br/>

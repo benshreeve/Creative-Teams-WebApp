@@ -87,16 +87,16 @@ module.exports = function (conn) {
 		
 		getTestInstructionFile: function(testID, callback, args) {
 			var name = utils.getTestName(testID);
-			conn.query('select ' + name + 'InstructionFile from config', function(err, rows) {
+			conn.query('select * from config', function(err, rows) {
 				if (err) throw err;
-				callback(eval("rows[0]."+name+"InstructionFile"), args);
+				callback(eval("rows[0]."+name+"InstructionFile"), eval("rows[0]."+name+"TimeLimit"), args);
 			});			
 		},
 
 		getIntroductionFile: function(callback, args) {			
 			conn.query('select IntroductionFile from config', function(err, rows) {
 				if (err) throw err;
-				callback(eval("rows[0].IntroductionFile"), args);
+				callback(eval("rows[0].IntroductionFile"), 0, args);
 			});			
 		},
 		

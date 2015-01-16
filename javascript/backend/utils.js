@@ -14,7 +14,7 @@ module.exports = function() {
 	             {id: ALT_USES, name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/tests/alt_uses_inst.html', testURL:'/tests/alt_uses.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
-	var testsOrder = [PRAC_AREA, ALT_USES, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL];
+	var testsOrder = [PRAC_AREA, PIC_CON, PAR_LINES, ALT_USES, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL];
 	var messageMap=[[]];
 	fillMessageMap();
 	

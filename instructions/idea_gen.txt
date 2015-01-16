@@ -1,6 +1,6 @@
 <h1>Idea Generation Test</h1>
 <br/><br/>
-This test is Insert time variable minutes long.
+This test is <tag class="time"></tag> minutes long.
 <br/><br/>
 No instructions for this test yet.<br/><br/>
 <br/><br/>

@@ -1,8 +1,8 @@
 <h1>Parallel Lines Test</h1>
 <br/><br/>
-This test is Insert time variable minutes long.
+This test is <tag class="time"></tag> minutes long.
 <br/><br/>
 This test consists of 30 identical shapes. Work together using the drawing tools and try to create as many different drawings 
-as you can. Again, try to imagine things which nobody else would think of. Try to get as much detail into your pictures as possible 
+as you can. Again, try to imagine things which <u>nobody else would think of</u>. Try to get as much <u>detail</u> into your pictures as possible 
 in the time limit, and give each an interesting title.<br/><br/>
 <br/><br/>

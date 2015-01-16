@@ -12,7 +12,7 @@ var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
 
-var LAST_TEST = ALT_USES;
+var LAST_TEST = PIC_CON;
  
 // Requests and responses
 
