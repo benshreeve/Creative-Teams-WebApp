@@ -155,8 +155,21 @@ module.exports = function (conn) {
 							}					
 				});
 			}
+		},
+
+		saveAltUsesResults: function(teamID, results) {
+			for (i = 0; i < results.length; i++) {
+				q = conn.query('insert into altusesres values ('+ teamID + ',' + results[i].userID + ',"' +
+						results[i].use + '",' + results[i].useNo + ')',
+						function(err, result) {
+							if (err) {
+								console.error(q.sql)
+								throw err;
+							}					
+				});
+			}
 		}
-			
+		
 	};
 	
 	function saveResults(teamID, results, table) {

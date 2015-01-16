@@ -11,10 +11,10 @@ module.exports = function() {
 	             {id: PAR_LINES, name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/tests/par_lines_inst.html', testURL:'/tests/par_lines.html'},
 	             {id: IDEA_GEN, name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/tests/idea_gen_inst.html', testURL:'/tests/idea_gen.html'},
 	             {id: DES_CHAL, name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},
-	             {id: ALT_USES, name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '', testURL:''}];
+	             {id: ALT_USES, name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/tests/alt_uses_inst.html', testURL:'/tests/alt_uses.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
-	var testsOrder = [PRAC_AREA, IDEA_GEN, PIC_CON, PIC_COMP, PAR_LINES, DES_CHAL, ALT_USES];
+	var testsOrder = [PRAC_AREA, ALT_USES, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL];
 	var messageMap=[[]];
 	fillMessageMap();
 	
@@ -169,6 +169,9 @@ module.exports = function() {
 		messageMap[IDEA][ADD] = ADD_IDEA_MSG;
 		messageMap[IDEA][DEL] = DEL_IDEA_MSG;
 		messageMap[IDEA][UPDATE] = UPDATE_IDEA_MSG;
+		messageMap[USE][ADD] = ADD_USE_MSG;
+		messageMap[USE][DEL] = DEL_USE_MSG;
+		messageMap[USE][UPDATE] = UPDATE_USE_MSG;		
 	}
 	
 	

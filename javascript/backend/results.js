@@ -27,7 +27,12 @@ module.exports = function (context) {
 		
 		saveIdeaGenResults: function(results) {
 			context.db.saveIdeaGenResults(context.session.TeamID, results);
+		},
+		
+		saveAltUsesResults: function(results) {
+			context.db.saveAltUsesResults(context.session.TeamID, results);
 		},				
+		
 	};
 
 	function saveImage(testID, screenNumber, image) {

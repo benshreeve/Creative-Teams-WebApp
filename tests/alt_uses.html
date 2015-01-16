@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<title>Creative Teams</title>
+		<script src="/javascript/jquery.js" type="text/javascript"></script>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?v=1">
+		<meta name="viewport" content="user-scalable=no, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, width=device-width, target-densitydpi=device-dpi">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">		
+		<script type='application/javascript' src='/javascript/fastclick.js'></script>
+		<link rel="stylesheet" type="text/css" href="/css/jquery.nouislider.css">		
+		<script type='application/javascript' src='/javascript/jquery.nouislider.min.js'></script>
+        <script type='application/javascript' src='/javascript/PopupWindow.js'></script>
+		<script src="../javascript/backend/constants.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="../public/style.css">
+		<link rel="stylesheet" type="text/css" href="../css/idea_gen.css">
+		<link rel="stylesheet" type="text/css" href="../css/alt_uses.css">
+		
+		<script type="text/javascript">
+			var socket = io.connect();
+			var backendReady = false;
+			var testName = 'Alternative Uses Test';
+			var backendReadyTimer;
+			
+			socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
+				document.getElementById('instruction').innerHTML = instructions;
+			});
+			
+			socket.on(IS_BACKEND_READY_RSP, function(response) {
+				if (response == ALT_USES) {
+					clearInterval(backendReadyTimer);
+					backendReady = true;
+					socket.emit(GET_TEST_INSTRUCTION_REQ);
+					stateSession();
+				}	
+			});
+			
+			$(document).ready(function() {		
+				backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+			});
+		
+		</script>
+
+		<div id="header_container">
+			<div id="mainIdeaDiv-topBox">
+				<div>
+					<input name="button" type="button" value="Instructions"
+						style="float: left; margin-top: 25px; font-size: 25px"
+						class="topButton" id="top-left-button"
+						onClick="showInstructions(testName);">
+				</div>
+				<div>
+					<h1 id="supertitle" style="margin-top: 25px; text-align: center;">Creative
+						Teams</h1>
+				</div>
+				
+				<div style = "float: left; margin-top: 40px; font-size: 25px;">
+					<label for="use-textfield" style="font-size: 25px;">Alternative Use: </label><br/>
+					<input name="use-textfield" type="text" id="use-textfield"
+						value="" style="font-size: 25px; width: 800px;"> 
+				</div>
+				<div style="text-align: center; margin-top: 140px; font-size: 25px">
+					<input type="submit" name="button" id="submit-button" class="topButton" value="Add"
+						onClick="sendAddUpdateUse();"> 
+					<input type="button" name="buttonDelete"
+						id="delete-button" value="Delete" class="topButton"
+						style="display: none" onClick="sendDelUse()"> 
+					<input
+						type="submit" name="button" id="cancel-button" class="topButton"
+						value="Cancel" style="display: none" onClick="cancelChange()">				
+				</div>
+			</div>
+		</div>
+		<!-- END: Sticky Header -->
+		
+		<!-- BEGIN: Page Content -->
+		<div id="container">
+			<div id="mainIdeaDiv-bottomBox" style="font-size: 25px">
+				<table id="useTable" width="100%" border="1" cellspacing="0"
+					cellpadding="5">
+					<tr>
+						<td bgcolor="#999999" width="30%" style="text-align: center"><strong>Alternative Uses</strong></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- END: Page Content -->
+		
+		<!-- BEGIN: Sticky Footer -->
+		<div id="footer_container">
+			<div id="footer">
+				<div id="mainIdeaDiv-bottomBox">
+					<h1 id="timeRemained" style="position: absolute; left: 10px;">4:49
+						remaining</h1>
+				</div>
+			</div>
+		</div>
+		<!-- END: Sticky Footer -->
+		
+		<div id="practiceIntro" style="display:none">
+			<p id="instruction"></p>
+			<p>
+				<input name="enterButton" type="button" value="Close"
+					style="font-size: 25px" id="closeButton" onClick="closeAndStart();">
+			</p>
+		</div>
+		<!-- END: Sticky Footer -->
+		<script> $(function() { FastClick.attach(document.body);}); </script>
+		<script async src="../javascript/frontend/commons.js?v=1"></script>
+		<script src="../javascript/frontend/alt_uses.js"></script>
+</body>
+</html>
