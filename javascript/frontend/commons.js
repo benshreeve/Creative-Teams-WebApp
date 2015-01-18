@@ -48,7 +48,7 @@ function calculateRemainingTime(currentTime) {
 }
 
 function updateTimer(){	
-	if(remainTime >= 0) {
+	if(remainTime > 0) {
 		remainTime = remainTime-1;	
 		remainMin = parseInt(remainTime/60);
 		remainSec =  parseInt(remainTime%60);
