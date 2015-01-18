@@ -196,28 +196,30 @@ module.exports = function(context)
     }
 
     function sendTestInstruction(currentTest) {
-		context.db.getTestInstructionFile(currentTest, sendFile, {msg:GET_TEST_INSTRUCTION_RSP});
+		context.db.getTestInstructionFile(currentTest, sendInstructionsFile, {msg:GET_TEST_INSTRUCTION_RSP});
     }
     
     function sendIntroduction() {
-    	context.db.getIntroductionFile(sendFile, {msg:GET_INTRODUCTION_RSP});
+    	context.db.getIntroductionFile(sendInstructionsFile, {msg:GET_INTRODUCTION_RSP});
     }
     
-    function sendFile(fileName, timeLimit, args) {
+    function instructionsFormatter(data, timeLimit) {
+		var plates = require('plates');
+		var tags = { "testtime": parseInt(timeLimit/60), 
+					 "usercolour": utils.getUserColor(context.session.UserID)};
+		var map = plates.Map();
+		map.where('color').has(/uc/).insert('usercolour');
+		map.class('time').to('testtime');    		
+		return plates.bind(data.toString(), tags, map)
+    }
+    
+    function sendInstructionsFile(fileName, timeLimit, args) {
     	var fs = require('fs');
     	
     	fs.readFile(fileName, function (err, data) {
     		if (err) throw err;
 
-    		var plates = require('plates');
-    		var tags = { "testtime": parseInt(timeLimit/60), 
-    					 "usercolour": utils.getUserColor(context.session.UserID)};
-    		var map = plates.Map();
-    		map.where('color').has(/#/).insert('usercolour');
-    		map.class('time').to('testtime');    		
-    		context.channel.sendToUser(context.session.AccessCode, args.msg, plates.bind(data.toString(), tags, map));
+    		context.channel.sendToUser(context.session.AccessCode, args.msg, instructionsFormatter(data, timeLimit));
     	});
-    }
-    
-
+    }    
 };
