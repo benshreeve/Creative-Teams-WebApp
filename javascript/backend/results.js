@@ -68,7 +68,7 @@ module.exports = function (context) {
 	}
 	
 	function writeFile(path, args) {		
-		var path = path+"/"+context.session.TeamID+"/"+args.testID;
+		var path = path+"/"+context.session.TeamID+"/"+utils.getTestLongName(args.testID);
 		if (!fs.existsSync(path))
 			fs.mkdirSync(path);
 		fs.writeFile(path+"/"+args.screen+args.ext, args.data, 
