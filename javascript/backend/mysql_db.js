@@ -89,14 +89,14 @@ module.exports = function (conn) {
 			var name = utils.getTestName(testID);
 			conn.query('select * from config', function(err, rows) {
 				if (err) throw err;
-				callback(eval("rows[0]."+name+"InstructionFile"), eval("rows[0]."+name+"TimeLimit"), args);
+				callback(eval("rows[0].InstructionsPath")+"/"+name+".html", eval("rows[0]."+name+"TimeLimit"), args);
 			});			
 		},
 
 		getIntroductionFile: function(callback, args) {			
-			conn.query('select IntroductionFile from config', function(err, rows) {
+			conn.query('select * from config', function(err, rows) {
 				if (err) throw err;
-				callback(eval("rows[0].IntroductionFile"), 0, args);
+				callback(eval("rows[0].InstructionsPath")+"/Introduction.html", 0, args);
 			});			
 		},
 		
