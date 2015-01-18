@@ -1,7 +1,7 @@
 var bgImage;
 var shape;
 var paper;
-var rect;
+var bgShape;
 
 function getBGImageName(bgImageName) {
 	return "../" + PIC_CON_BGIMAGE_PATH +  bgImageName;
@@ -84,13 +84,13 @@ socket.on(PERM_RSP, function(rsp) {
 		break;
 	case CREATE_BACKGROUND:
 		if (rsp.decision == GRANTED) {
-			shape = paper.freeTransform(rect, { keepRatio: true, scale: false }, function(ft, events) {        		
+			shape = paper.freeTransform(bgShape, { keepRatio: true, scale: false }, function(ft, events) {        		
 				socket.emit(MOVE_SHAPE_MSG, ft.attrs);
 			});
 			shape.setOpts({ size: 20 });
 			document.getElementById('place-shape-button').style.display = "";
 		} else {
-			shape = paper.freeTransform(rect, { keepRatio: true, scale: false });
+			shape = paper.freeTransform(bgShape, { keepRatio: true, scale: false });
 			shape.hideHandles();
 		}
 			
@@ -139,8 +139,13 @@ function setupShape() {
 	var canvasElement = document.getElementById('canvasSimple');
 	console.log(canvasElement);
 	var canvasLocation = getPosition(canvasElement);			
-	paper = Raphael(canvasLocation.x, canvasLocation.y, canvasElement.width, canvasElement.height); //(0, 0, 1000, 1000);			
-	rect = paper.ellipse(500, 500, 200, 100).attr('fill', '#feffff');
+	paper = Raphael(canvasLocation.x, canvasLocation.y, canvasElement.width, canvasElement.height); 			
+	//bgShape = paper.ellipse(500, 500, 200, 100).attr('fill', '#feffff');
+	bgShape = paper.path('M885.876,736.466c195.036,101.701,279.431-88.832,281.525-94.823c27.907-79.771-17.837-176.462-139.145-212.076c-155.815-45.744-292.534-30.512-318.265,8.974C627.812,564.651,885.876,736.466,885.876,736.466');
+	bgShape.attr('fill', '#feffff');
+	bgShape.attr('stroke', '#010101');
+	bgShape.attr('stroke-width', '6');
+	bgShape.attr('stroke-miterlimit', '10');
 }
 
 
@@ -148,6 +153,8 @@ function sendPlaceShapeMsg() {
 	document.getElementById('place-shape-button').style.display = "none";
 	shape.unplug();
 	svg = paper.toSVG();
+	socket.emit(BG_CREATED_MSG, svg);
+	
 	/*
 	canvg(document.getElementById('canvasSimple'), svg);
 	dataUrl = document.getElementById('canvasSimple').toDataURL();
@@ -163,6 +170,5 @@ function sendPlaceShapeMsg() {
 
 	socket.emit(BG_CREATED_MSG, canvasSimple.toDataURL('image/png'));
 	*/
-	socket.emit(BG_CREATED_MSG, svg);
 }
 
