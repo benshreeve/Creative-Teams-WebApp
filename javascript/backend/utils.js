@@ -10,11 +10,11 @@ module.exports = function() {
 	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
 	             {id: PAR_LINES, longName: "ParallelLines", name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/tests/par_lines_inst.html', testURL:'/tests/par_lines.html'},
 	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/tests/idea_gen_inst.html', testURL:'/tests/idea_gen.html'},
-	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '', testURL:''},
+	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/tests/des_chal_inst.html', testURL:'/tests/des_chal.html'},
 	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/tests/alt_uses_inst.html', testURL:'/tests/alt_uses.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
-	var testsOrder = [PRAC_AREA, PIC_CON, PAR_LINES, ALT_USES, PIC_COMP, IDEA_GEN, DES_CHAL];
+	var testsOrder = [PRAC_AREA, DES_CHAL, PIC_CON, PAR_LINES, ALT_USES, PIC_COMP, IDEA_GEN, DES_CHAL];
 	var messageMap=[[]];
 	fillMessageMap();
 	

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+	<head>
+		<title>Creative Teams</title>
+		<script src="/javascript/jquery.js" type="text/javascript"></script>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?v=1">
+		<meta name="viewport" content="user-scalable=no, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, width=device-width, target-densitydpi=device-dpi">		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">		
+		<script type='application/javascript' src='/javascript/fastclick.js'></script>
+		<link rel="stylesheet" type="text/css" href="/css/jquery.nouislider.css">		
+		<script type='application/javascript' src='/javascript/jquery.nouislider.min.js'></script>		
+		<script src="/socket.io/socket.io.js"></script>        
+		<script src="../javascript/backend/constants.js"></script>
+		<script> 
+		var socket = io.connect(); 
+		var backendReady = false;
+		var backendReadyTimer;
+		
+        socket.on(PERM_RSP, function(object) {				
+			if(object.decision==GRANTED && object.operation==LOAD_TEST_PAGE)		{
+				document.location='des_chal.html';
+			}
+		});
+		
+		socket.on(GET_TEST_INSTRUCTION_RSP, function(instructions) {
+			document.getElementById('instructions').innerHTML = instructions;
+		});
+		
+		socket.on(IS_BACKEND_READY_RSP, function(response) {
+			if (response == DES_CHAL) {
+				clearInterval(backendReadyTimer);
+				socket.emit(GET_TEST_INSTRUCTION_REQ);
+				backendReady = true;
+			}	
+		});
+		
+		$(document).ready(function() {		
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+		});
+				
+        </script>
+		
+	</head>
+	<body onload="">	
+		<div id="deadzone-top">	
+			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Design Challenge Test</h1>
+			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
+		</div>	
+		
+		<div id="simplediv2">
+		<p id="instructions"></p>
+
+        <p id="statusDiv" style="color:#090">
+        <input name="enterButton" type="button" value="Start this test" style="font-size:25px" id="closeButton" 
+        onClick="
+        if (backendReady) {
+        	socket.emit(PERM_REQ, LOAD_TEST_PAGE);
+        	document.getElementById('statusDiv').innerHTML='<img src=\'wait.gif\'><br/>Wait for other participants to join. At least 2 participants are required...';
+        }
+        ">
+        </p>        
+        </div>			
+		<script> $(function() { FastClick.attach(document.body);}); </script>		
+		<script async src="../javascript/frontend/commons.js?v=1"></script>
+	</body>
+</html>

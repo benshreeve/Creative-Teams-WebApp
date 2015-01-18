@@ -12,7 +12,7 @@ var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
 
-var LAST_TEST = PIC_CON;
+var LAST_TEST = DES_CHAL;
  
 // Requests and responses
 
@@ -116,4 +116,5 @@ var COLOURS = ["", "purple", "red", "blue", "orange", "green"];
 var BACKEND_READY_MSG_INTERVAL = 2000;
 var PIC_COMP_MAX_SCREEN = 10;
 var PAR_LINES_MAX_SCREEN = 30;
+var DES_CHAL_MAX_SCREEN = 100;
 var PIC_CON_BGIMAGE_PATH = "images/pictureconstruction/";

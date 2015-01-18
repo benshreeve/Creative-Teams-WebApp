@@ -31,7 +31,13 @@ module.exports = function (context) {
 		
 		saveAltUsesResults: function(results) {
 			context.db.saveAltUsesResults(context.session.TeamID, results);
-		},				
+		},
+		
+		saveDesChalResults: function(results) {
+			saveImage(DES_CHAL, results.screenNumber, results.image);
+			saveDesChalTitle(results.screenNumber, results.title);
+		},
+		
 		
 	};
 

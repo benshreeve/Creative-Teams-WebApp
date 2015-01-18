@@ -190,7 +190,7 @@ function prepareCanvas(bgImageUrl) {
 	if(typeof G_vmlCanvasManager != 'undefined') canvas = G_vmlCanvasManager.initElement(canvas);
 	context = canvas.getContext("2d");
 	
-	if (bgImageUrl) {
+	if (bgImageUrl != undefined) {
 		switchBackground(bgImageUrl);
 	} else {
 		console.log("no background image");
@@ -510,7 +510,8 @@ function changeScreen(bgImagePath) {
     undoArray.length = 0;
     lastLength = 0;
     clearCanvas();
-    switchBackground(bgImagePath);
+    if (bgImagePath != undefined)
+    	switchBackground(bgImagePath);
     document.getElementById('titleArea').value = "";
     socket.emit(GET_TRANSACTIONS_REQ);
 }
