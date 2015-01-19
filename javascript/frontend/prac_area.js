@@ -1,7 +1,9 @@
 socket.on(UPDATE_TIME_MSG, function(time){
-	remainingTime = calculateRemainingTime(time);
-	if (document.getElementById('timeRemained'))
-		document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
+	if (calculateRemainingTime) {
+		remainingTime = calculateRemainingTime(time);	
+		if (document.getElementById('timeRemained'))
+			document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
+	}
 });
 
 
