@@ -44,6 +44,7 @@
 	padding:20px;	
 	text-align: justify;	
 	font-size:30px;
+	overflow-y:scroll;
 }
 #addTitle{
 	background-color:white;
