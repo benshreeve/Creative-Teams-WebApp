@@ -53,13 +53,30 @@ module.exports =
 	        function pracAreaJoinLateParticipant(currentTest) {
 	        	context.session.Late = false;
 	        	context.session.save();
-	        	context.rdb.getCurrentScreen(context.session.TeamID, pracAreaSendTestURL, {currentTest: currentTest});
+//	        	context.rdb.getCurrentScreen(context.session.TeamID, pracAreaSendTestURL, {currentTest: currentTest});
+	        	context.rdb.getTeam(context.session.TeamID, pracAreaSendTestURL);
 	        }
-	        
+	        /*
 	        function pracAreaSendTestURL(currentScreen, args) {
 	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
 	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
 	        }
+	        */
+	        
+	        function pracAreaSendTestURL(teamInfo) {	        	
+	        	if (teamInfo.CurrentScreen == INSTRUCTION_SCREEN)
+		        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, utils.getInstructionURL(teamInfo.CurrentTest));
+	        	else {	        		
+	        		currentTime = new Date().getTime();
+	        		if (currentTime >= parseInt(teamInfo.StartTime) + parseInt(teamInfo.TestTime)) {
+	        			context.channel.joinTeam(context.session.AccessCode, context.session.TeamID);
+	        			commons.moveToNextTest(parseInt(teamInfo.CurrentTest)); 
+	        		} else {
+	        			context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, utils.getTestURL(teamInfo.CurrentTest));
+	        		}
+	        	}	        		        			        	
+	        }
+	        
 	        
 	        context.socket.on(UPDATE_TITLE_MSG, function(title) {
 	        	if (!context.session.Late)
