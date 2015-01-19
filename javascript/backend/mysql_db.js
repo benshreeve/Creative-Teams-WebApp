@@ -99,6 +99,13 @@ module.exports = function (conn) {
 				callback(eval("rows[0].InstructionsPath")+"/Introduction.html", 0, args);
 			});			
 		},
+
+		getEndPageFile: function(callback, args) {			
+			conn.query('select * from config', function(err, rows) {
+				if (err) throw err;
+				callback(eval("rows[0].InstructionsPath")+"/End.html", 0, args);
+			});			
+		},
 		
 		getResultsPath: function(callback, args) {
 			conn.query('select ResultsPath from config', function(err, rows) {

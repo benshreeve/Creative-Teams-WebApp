@@ -11,8 +11,9 @@ var PAR_LINES = 3;
 var IDEA_GEN = 4;
 var DES_CHAL = 5;
 var ALT_USES = 6;
+var END_TEST = 7;
 
-var LAST_TEST = DES_CHAL;
+var LAST_TEST = END_TEST;
  
 // Requests and responses
 
@@ -37,6 +38,8 @@ var GET_INTRODUCTION_REQ = "GetIntroductionReq";
 var GET_INTRODUCTION_RSP = "GetIntroductionRsp";
 var GET_SCREEN_RESULTS_REQ = "GetScreenResultsReq";
 var GET_SCREEN_RESULTS_RSP = "GetScreenResultsRsp";
+var GET_END_PAGE_REQ = "GetEndPageReq";
+var GET_END_PAGE_RSP = "GetEndPageRsp";
 
 
 // Messages

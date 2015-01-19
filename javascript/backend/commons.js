@@ -107,6 +107,10 @@ module.exports = function(context)
 		sendIntroduction: function() {
 			context.db.getIntroductionFile(sendIntroduction);
 		},
+		
+		sendEndPage: function() {
+			context.db.getIntroductionFile(sendEndPage);
+		},
 			
 		moveToNextTest: function(currentTest) {
 			if (currentTest != LAST_TEST) {
@@ -134,7 +138,7 @@ module.exports = function(context)
     }
 	
 	function setupTime(time, callback, args) {
-	    time = 30;
+	    time = 45;
 		logger.debug("time for this test is: ", time, " sec");
 		context.rdb.setTime(context.session.TeamID, time*1000);
         setTimeout(function() {
@@ -201,6 +205,10 @@ module.exports = function(context)
     
     function sendIntroduction() {
     	context.db.getIntroductionFile(sendInstructionsFile, {msg:GET_INTRODUCTION_RSP});
+    }
+
+    function sendEndPage() {
+    	context.db.getEndPageFile(sendInstructionsFile, {msg:GET_END_PAGE_RSP});
     }
     
     function instructionsFormatter(data, timeLimit) {
