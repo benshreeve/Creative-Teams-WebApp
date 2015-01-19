@@ -22,7 +22,10 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
-	prepareCanvasForSnapshot(getBGImageName(bgImage), sendResults);
+	if (bgImage != undefined)
+		prepareCanvasForSnapshot(getBGImageName(bgImage), sendResults);
+	else
+		sendResults();
 });
 
 function sendResults() {
