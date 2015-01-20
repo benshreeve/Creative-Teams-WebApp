@@ -155,8 +155,11 @@ module.exports = function(context)
 		if (context.session.Late || (args.testID == PRAC_AREA && currentScreen > INSTRUCTION_SCREEN && args.op != START_TEST)) {
 			context.channel.sendToUser(context.session.AccessCode, PERM_RSP, 
 					{decision:GRANTED, operation:args.op});
-			if (args.callback)
+			if (args.callback) {
+				if (args.args)
+					args.args.startTimer = false;
 				args.callback(args.args);
+			}
 		} else {
 			context.rdb.addReadyParticipant(context.session.TeamID, context.session.AccessCode);
 			context.rdb.checkReadyParticipants(context.session.TeamID, checkOtherParticipants, args);

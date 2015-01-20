@@ -25,7 +25,7 @@ module.exports =
 	        context.socket.on(PERM_REQ, function(op) {
 	        	switch (op) {
 	        	case LOAD_TEST_PAGE:
-	        		commons.checkAllReady(op, PRAC_AREA, !context.session.Late ? pracAreaSetupTestTimer: undefined);
+	        		commons.checkAllReady(op, PRAC_AREA, !context.session.Late ? pracAreaSetupTestTimer: undefined, {startTimer: true});
 	        		break;
 	        	case START_TEST:
 	        		commons.checkAllReady(op, PRAC_AREA, pracAreaStartTest);
@@ -38,7 +38,8 @@ module.exports =
 	        	}
 	        });
 	        
-	        function pracAreaSetupTestTimer() {
+	        function pracAreaSetupTestTimer(args) {
+	        	if (args.startTimer)
 	    	        commons.setupTestTime(PRAC_AREA, pracAreaTestComplete);
 	        }
 	        
