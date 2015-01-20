@@ -51,6 +51,7 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						reply.Participants = utils.delItem(reply.Participants, accessCode);
+						reply.ReadyToStart = utils.delItem(reply.ReadyToStart, accessCode);
 						conn.hmset(teamID, reply, function (err, result) {
 							done();
 						});
@@ -109,6 +110,7 @@ module.exports = function (conn) {
 				
 					if (reply) {
 						reply.ReadyToStart = utils.addItemUnique(reply.ReadyToStart, accessCode);
+						reply.Participants = utils.addItemUnique(reply.Participants, accessCode);
 						conn.hmset(teamID, reply);
 					}
 					done();
