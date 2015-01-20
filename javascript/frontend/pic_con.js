@@ -2,6 +2,7 @@ var bgImage;
 var shape;
 var paper;
 var bgShape;
+var buttons=["top-left-button", "place-shape-button", "enterTitle"];
 
 function getBGImageName(bgImageName) {
 	return "../" + PIC_CON_BGIMAGE_PATH +  bgImageName;
@@ -18,6 +19,8 @@ socket.on(UPDATE_TIME_MSG, function(time){
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
+	Popup.show('WaitDialog');
+	disableElements(button);	
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
