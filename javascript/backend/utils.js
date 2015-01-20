@@ -15,7 +15,7 @@ module.exports = function() {
 	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: '/tests/end.html', testURL:'/tests/end.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
-	var testsOrder = [PRAC_AREA, END_TEST]; //, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL, ALT_USES];
+	var testsOrder = [PRAC_AREA, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL, ALT_USES, END_TEST];
 	var messageMap=[[]];
 	fillMessageMap();
 	
