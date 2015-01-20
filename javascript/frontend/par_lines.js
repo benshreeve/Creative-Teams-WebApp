@@ -1,5 +1,9 @@
 var bgImagePath = "../images/parallellines/Parallel_lines.svg";
 var changed = false;
+var changeScreenInProgress = false;
+var getResultsReqReceived = false;
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle"];
+var testComplete = false;
 
 function getBGImageName() {
 	return bgImagePath;
@@ -15,11 +19,18 @@ socket.on(UPDATE_TIME_MSG, function(time){
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
+	testComplete = true;
+	Popup.show('WaitDialog');
+	disableElements(buttons);	
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
-	prepareCanvasForSnapshot(getBGImageName(), sendResults);
+	if (!changeScreenInProgress)
+		prepareCanvasForSnapshot(getBGImageName(), sendResults);
+	else {
+		getResultsReqReceived = true;
+	}
 });
 
 function sendResults() {
@@ -27,12 +38,13 @@ function sendResults() {
 }
 
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
+	changeScreenInProgress = true;
 	console.log("CHANGE_SCREEN_MSG received ...", newScreen);
-	changed = false;
 	Popup.hide('WaitDialog');
 	screenNumber = newScreen;
 	changeScreen(getBGImageName());
-	showScreenNumber(PAR_LINES_MAX_SCREEN);	
+	showScreenNumber(PAR_LINES_MAX_SCREEN);
+	changed = false;	
 });
 
 socket.on(GET_TEST_STATE_RSP, function(rsp) {
@@ -108,6 +120,14 @@ socket.on(ERASE_MSG, function(dot){
 });
 
 socket.on(END_DATA_MSG, function(){
+	if (getResultsReqReceived) {
+		prepareCanvasForSnapshot(getBGImageName(), sendResults);
+		getResultsReqReceived = false;
+	} else if (!testComplete){
+		Popup.hide('WaitDialog');
+		enableElements(buttons);
+		changeScreenInProgress = false;		
+	}	
 	changed = false;
 });
 
@@ -115,12 +135,16 @@ socket.on(END_DATA_MSG, function(){
 socket.on(WAIT_MSG, function() {
 	console.log("WAIT_MSG received ...");
 	Popup.show('WaitDialog');
+	disableElements(buttons);
 });
 
 function sendRequestToNextScreen() {
 	if (screenNumber < PAR_LINES_MAX_SCREEN) {
+		changeScreenInProgress = true;
+		disableElements(buttons);		
+		sendWaitMsg();
+		Popup.show('WaitDialog');		
 		if (changed) {
-			sendWaitMsg();
 			prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);
 		} else {
 			sendNextScreenMsg();
@@ -137,8 +161,11 @@ function sendNextScreenMsg() {
 
 function sendRequestToPrevScreen() {
 	if (screenNumber > 1) {
+		changeScreenInProgress = true;
+		disableElements(buttons);		
+		sendWaitMsg();
+		Popup.show('WaitDialog');				
 		if (changed) {
-			sendWaitMsg();
 			prepareCanvasForSnapshot(getBGImageName(), sendPrevScreenMsg);
 		} else {
 			sendPrevScreenMsg();

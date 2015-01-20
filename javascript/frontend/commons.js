@@ -535,3 +535,21 @@ function getPosition(element) {
     }
     return { x: xPosition, y: yPosition };
 }
+
+function disableElements(elements) {
+	for (i = 0; i < elements.length; i++) {
+		element = document.getElementById(elements[i]);
+		if (element) {
+			element.disabled = true;
+		}
+	}
+}
+
+function enableElements(elements) {
+	for (i = 0; i < elements.length; i++) {
+		element = document.getElementById(elements[i]);
+		if (element) {
+			element.disabled = false;
+		}
+	}
+}
