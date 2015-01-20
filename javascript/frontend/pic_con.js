@@ -20,7 +20,7 @@ socket.on(UPDATE_TIME_MSG, function(time){
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	Popup.show('WaitDialog');
-	disableElements(button);	
+	disableElements(buttons);	
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
