@@ -9,7 +9,7 @@ function getBGImageName(bgImageName) {
 }
 	
 socket.on(UPDATE_TIME_MSG, function(time){
-	if (calculateRemainingTime) {
+	if (calculateRemainingTime != undefined) {
 		remainingTime = calculateRemainingTime(time);	
 		if (document.getElementById('timeRemained'))
 			document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
@@ -150,7 +150,7 @@ function setupShape() {
 	paper = Raphael(canvasLocation.x, canvasLocation.y, canvasElement.width, canvasElement.height); 			
 	//bgShape = paper.ellipse(500, 500, 200, 100).attr('fill', '#feffff');
 	bgShape = paper.path('M885.876,736.466c195.036,101.701,279.431-88.832,281.525-94.823c27.907-79.771-17.837-176.462-139.145-212.076c-155.815-45.744-292.534-30.512-318.265,8.974C627.812,564.651,885.876,736.466,885.876,736.466');
-	bgShape.attr('fill', '#feffff');
+	//bgShape.attr('fill', '#feffff');
 	bgShape.attr('stroke', '#010101');
 	bgShape.attr('stroke-width', '6');
 	bgShape.attr('stroke-miterlimit', '10');

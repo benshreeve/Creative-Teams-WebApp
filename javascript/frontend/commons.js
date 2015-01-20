@@ -493,6 +493,8 @@ function prepareCanvasForSnapshot(bgImagePath, callback, args) {
   
 	var bgImage = new Image();
     bgImage.onload = function() {
+    	context.fillStyle = "#FFFFFF";
+    	context.fillRect(0,0,w,h);    	
         context.drawImage(this, w / 2 - bgImage.width / 2,
                 h / 2 - bgImage.height / 2);
         var drawingImage = new Image();
