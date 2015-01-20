@@ -2,13 +2,14 @@ module.exports = function (conn) {
 	var utils = require('./utils.js')();
 	var logger = require('./logger.js')()
 	return {
-		getActiveUsersCount: function(callback, args) {
+		getActiveUsersCount: function(msg, callback, args) {
 			conn.query('select * from users where users.Active = "1"', function(err, rows){
 	            if(err) throw err;
 	            if (callback)
 	            	callback(rows.length, args);
-	            else
-	            	logger.log("Total Number of users: ", rows.length);
+	            else {
+	            	logger.log(msg+"Total Number of users: ", rows.length);
+	            }
 	        });
 		},
 		
