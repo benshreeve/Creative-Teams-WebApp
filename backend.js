@@ -48,6 +48,13 @@ function startBackend() {
     sessionSockets.on('connection', function(err, socket, session){
     	if (err) throw err;
     	
+    	if (session.refCount > 0) {
+			rdb.delReadyParticipant(session.TeamID, session.AccessCode);
+			session.refCount = 0;
+    	}    	
+    	session.refCount ++;
+    	session.save();
+    	    	
     	channel = require('./javascript/backend/channel.js')(io);
     	
         // Store identification:
@@ -65,7 +72,7 @@ function startBackend() {
 		rdb.addParticipant(session.TeamID, session.AccessCode);
         db.activateUser(session.TeamID, session.UserID);
         
-		db.getActiveUsersCount();
+		db.getActiveUsersCount("connect: ");
     }); 
 }
 
@@ -172,12 +179,17 @@ app.post("/public/*", function(req, res) {
 
 function processNewUser(userRow, args) {
 	if (userRow) {
+		if (args.req.session && args.req.session.refCount > 0) {
+			userRow.Active = 0;
+		}
+		
 		if (userRow.Active == 0) {
 			db.setUserName(userRow.TeamID, userRow.UserID, args.req.body.nickname);
 			args.req.session.AccessCode = args.req.body.accesscode;
 			args.req.session.Name = args.req.body.nickname;
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
+			args.req.session.refCount = 0;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
 			db.getResultsPath(createTeamFolder, {teamID: userRow.TeamID});			
 			args.res.redirect("/tests/introductions.html");

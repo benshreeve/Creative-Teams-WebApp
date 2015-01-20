@@ -81,13 +81,18 @@ module.exports = function(context)
 		},
 				
 		disconnectUser: function () {
-			context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
-			context.channel.disconnect(context.session.AccessCode);
-			context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
-			context.db.deactivateUser(context.session.TeamID, context.session.UserID);
-			context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
+			context.session.refCount --;
+			context.session.save();
+			if (context.session.refCount == 0) { 			
+				//	context.channel.leaveTeam(context.session.AccessCode, context.session.TeamID);
+				context.channel.disconnect(context.session.AccessCode);
+				context.rdb.delParticipant(context.session.TeamID, context.session.AccessCode);
+				context.db.deactivateUser(context.session.TeamID, context.session.UserID);
+				//	context.rdb.delReadyParticipant(context.session.TeamID, context.session.AccessCode);
+			} else
+				console.error(context.session.AccessCode +":DISconnect:refCount:", context.session.refCount);
 			
-			context.db.getActiveUsersCount();			
+			context.db.getActiveUsersCount("disconnect: ");			
 		},
 		
 		broadcastUpdateTitleMsg: function(testID, title) {
