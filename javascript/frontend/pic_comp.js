@@ -9,7 +9,7 @@ function getBGImageName() {
 	return bgImagePath + screenNumber + ".svg";
 }
 socket.on(UPDATE_TIME_MSG, function(time){
-	if (calculateRemainingTime) {
+	if (calculateRemainingTime != undefined) {
 		remainingTime = calculateRemainingTime(time);	
 		if (document.getElementById('timeRemained'))
 			document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
