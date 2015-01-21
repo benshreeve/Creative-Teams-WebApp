@@ -522,6 +522,39 @@ module.exports = function (conn) {
 			});
 		},
 		
+		getDemoStopTimer: function(teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					done();
+					
+					callback(reply.DemoStopTimer, args);					
+				});
+			});									
+		},
+		
+		setDemoStopTimer: function(teamID, value) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					if (reply) {
+						reply.DemoStopTimer = value;
+						conn.hmset(teamID, reply);
+					}
+					
+					done();
+				});
+			});			
+		},		
+		
 	};
 
 	function waitForCondition(teamID, condition, callback, args) {

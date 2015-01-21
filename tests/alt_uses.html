@@ -45,6 +45,7 @@
 	 				}
 				}
 				backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+				demoSetupButton();
 			});
 		
 		</script>
@@ -56,6 +57,7 @@
 						style="float: left; margin-top: 25px; font-size: 25px"
 						class="topButton" id="top-left-button"
 						onClick="showInstructions(testName);">
+					<input name="button" type="button" value="Stop Timer" style="float:right; margin-top:25px; font-size:25px" class="topButton" id="demo-button" onClick="demoSendMsg();">
 				</div>
 				<div>
 					<h1 id="supertitle" style="margin-top: 25px; text-align: center;">Creative

@@ -90,6 +90,8 @@ function storeTestState(testState) {
 		updateTimer() ;
 	}, 1000);
 	screenNumber = testState.CurrentScreen;
+	if (DEMO && testState.DemoStopTimer == DEMO_TIMER_INACTIVE)
+		document.getElementById('demo-button').value = 'Next Test';
 }
 
 function storeSessionState(sessionState) {
@@ -553,5 +555,20 @@ function enableElements(elements) {
 		if (element) {
 			element.disabled = false;
 		}
+	}
+}
+
+function demoSetupButton() {
+	if (DEMO) {
+		document.getElementById('demo-button').style.display = "";
+	}
+}
+
+function demoSendMsg() {
+	if (document.getElementById('demo-button').value == 'Stop Timer') {
+		socket.emit(DEMO_STOP_TIMER);
+		document.getElementById('demo-button').value = 'Next Test';
+	} else {
+		socket.emit(DEMO_NEXT_TEST);
 	}
 }

@@ -64,7 +64,7 @@ function startBackend() {
 			channel.setup(socket, session.AccessCode);
 				
 			if (session.Late)
-				installHandlers("0", {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
+				installHandlers(PRAC_AREA, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 			else {
 				channel.joinTeam(session.AccessCode, session.TeamID);
 				rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});

@@ -69,7 +69,7 @@ module.exports =
 		        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, utils.getInstructionURL(teamInfo.CurrentTest));
 	        	else {	        		
 	        		currentTime = new Date().getTime();
-	        		if (currentTime >= parseInt(teamInfo.StartTime) + parseInt(teamInfo.TestTime)) {
+	        		if ((currentTime >= parseInt(teamInfo.StartTime) + parseInt(teamInfo.TestTime)) && (teamInfo.DemoStopTimer == DEMO_TIMER_ACTIVE)) {
 	        			context.channel.joinTeam(context.session.AccessCode, context.session.TeamID);
 	        			commons.moveToNextTest(parseInt(teamInfo.CurrentTest)); 
 	        		} else {

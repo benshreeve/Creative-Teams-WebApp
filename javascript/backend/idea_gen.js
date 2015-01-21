@@ -75,9 +75,31 @@ module.exports =
 	        });	        
 	        	        	       	              
 	        function ideaGenTestComplete() {
-	        	commons.sendTestComplete();
-	        	commons.sendGetResultsReq();	        	
+	        	if (DEMO) {
+	        		context.rdb.getDemoStopTimer(context.session.TeamID, demoIdeaGenTestComplete)
+	        	} else {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();
+	        	}	        		
 	        }
+	        
+	        function demoIdeaGenTestComplete(timerStatus) {
+	        	if (timerStatus == DEMO_TIMER_ACTIVE) {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();	        		
+	        	}
+	        }
+	        
+	        context.socket.on(DEMO_STOP_TIMER, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_INACTIVE);
+	        	commons.broadcastTransaction(DEMO_STOP_TIMER, IDEA_GEN, {});
+	        });
+	        
+	        context.socket.on(DEMO_NEXT_TEST, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_ACTIVE);
+        		commons.sendTestComplete();
+        		commons.sendGetResultsReq();	        		
+	        });
 	          
 	        logger.debug("Hanlders were installed for idea generation test.");	        
 		}		

@@ -72,6 +72,12 @@ var BG_CREATED_MSG = "BGCreatedMsg";
 var UNDO_MSG = "UndoMsg";
 var REDO_MSG = "RedoMsg";
 var PLACE_SHAPE_MSG = "PlaceShapeMsg";
+
+    // messages in demo mode.
+var DEMO_NEXT_TEST = "DemoNextTest";
+var DEMO_STOP_TIMER = "DemoStopTimer";
+
+
 // PERM_REQ Operations
 
 var LOAD_TEST_PAGE = "LoadTestPage";
@@ -121,3 +127,8 @@ var PIC_COMP_MAX_SCREEN = 10;
 var PAR_LINES_MAX_SCREEN = 30;
 var DES_CHAL_MAX_SCREEN = 100;
 var PIC_CON_BGIMAGE_PATH = "images/pictureconstruction/";
+var DEMO_TIMER_ACTIVE = 1;
+var DEMO_TIMER_INACTIVE = 0;
+
+
+var DEMO = true;

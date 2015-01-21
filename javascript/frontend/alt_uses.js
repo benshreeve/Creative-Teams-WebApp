@@ -71,6 +71,11 @@ socket.on(UPDATE_USE_MSG, function(use) {
 	updateUse(use);
 });
 
+socket.on(DEMO_STOP_TIMER, function() {
+	document.getElementById('demo-button').value = 'Next Test';
+});
+
+
 function sendAddUse() {
 	useText = document.getElementById("use-textfield").value.trim();
 

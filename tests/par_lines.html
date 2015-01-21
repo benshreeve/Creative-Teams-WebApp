@@ -30,6 +30,7 @@
 				backendReady = true;
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
 				stateSession();
+				demoSetupButton();
 			}	
 		});
 		
@@ -50,6 +51,8 @@
             <input name="button" type="button" value="Next" style="float:right; margin-top:25px; font-size:25px" class="topButton" id="next-button" onClick="sendRequestToNextScreen();">
             <h1 id="screenNumber" style="float:right; margin-top:25px;"></h1>
             <input name="button" type="button" value="Prev" style="float:right; margin-top:25px; ; font-size:25px" class="topButton" id="prev-button" onClick="sendRequestToPrevScreen();">
+            <input name="button" type="button" value="Stop Timer" style="float:right; margin-top:25px; font-size:25px; display:none" class="topButton" id="demo-button" onClick="demoSendMsg();">
+            
 			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Creative Teams</h1>			
 		</div>
 		

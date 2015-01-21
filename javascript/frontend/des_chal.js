@@ -132,6 +132,10 @@ socket.on(WAIT_MSG, function() {
 	Popup.show('WaitDialog');
 });
 
+socket.on(DEMO_STOP_TIMER, function() {
+	document.getElementById('demo-button').value = 'Next Test';
+});
+
 function sendRequestToNextScreen() {
 	if (screenNumber < DES_CHAL_MAX_SCREEN) {
 		changeScreenInProgress = true;

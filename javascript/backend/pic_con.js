@@ -110,11 +110,33 @@ module.exports =
 	        });	        
 	        	        	       	              
 	        function picConTestComplete() {
-	        	commons.sendTestComplete();
-	        	commons.sendGetResultsReq();
+	        	if (DEMO) {
+	        		context.rdb.getDemoStopTimer(context.session.TeamID, demoPicConTestComplete)
+	        	} else {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();
+	        	}	        		
 	        }
+	        
+	        function demoPicConTestComplete(timerStatus) {
+	        	if (timerStatus == DEMO_TIMER_ACTIVE) {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();	        		
+	        	}
+	        }
+	        
+	        context.socket.on(DEMO_STOP_TIMER, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_INACTIVE);
+	        	commons.broadcastTransaction(DEMO_STOP_TIMER, PIC_CON, {});
+	        });
+	        
+	        context.socket.on(DEMO_NEXT_TEST, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_ACTIVE);
+        		commons.sendTestComplete();
+        		commons.sendGetResultsReq();	        		
+	        });
+	        
 	          
-	        //setupTestTimer(PIC_CON, testComplete);
 	        logger.debug("Hanlders were installed for picture construction test.");	        
 		}		
 };

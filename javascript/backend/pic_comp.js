@@ -112,38 +112,32 @@ module.exports =
 	        });	        
 	        	        	       	              
 	        function picCompTestComplete() {
-	        	commons.sendTestComplete();
-	        	commons.sendGetResultsReq();	        	
+	        	if (DEMO) {
+	        		context.rdb.getDemoStopTimer(context.session.TeamID, demoPicCompTestComplete)
+	        	} else {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();
+	        	}	        		
 	        }
+	        
+	        function demoPicCompTestComplete(timerStatus) {
+	        	if (timerStatus == DEMO_TIMER_ACTIVE) {
+	        		commons.sendTestComplete();
+	        		commons.sendGetResultsReq();	        		
+	        	}
+	        }
+	        
+	        context.socket.on(DEMO_STOP_TIMER, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_INACTIVE);
+	        	commons.broadcastTransaction(DEMO_STOP_TIMER, PIC_COMP, {});
+	        });
+	        
+	        context.socket.on(DEMO_NEXT_TEST, function() {
+	        	context.rdb.setDemoStopTimer(context.session.TeamID, DEMO_TIMER_ACTIVE);
+        		commons.sendTestComplete();
+        		commons.sendGetResultsReq();	        		
+	        });
 	          
 	        logger.debug("Hanlders were installed for picture completion test.");	        
 		}		
 };
-
-
-
-			/*
-			function readState(screenNumber, limit1, limit2){
-				var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'" limit '+limit1+', '+limit2, function(err, rows){
-	                if(err) throw err;
-	                for(var i = 0; i<rows.length; i++) {
-	                    socket.emit('mousedot', {x:rows[i].xpoint, y:rows[i].ypoint, drag:rows[i].drag, rad:rows[i].radius, colour:rows[i].colour, owner:rows[i].owner, group:session.sessionGroup, screen:rows[i].screen});
-	                }
-	            });	
-			}
-
-	        function sendState(screenNumber) {
-	            // connect to the database.
-	            // emit each row element as a draw to specific socket - use socket.id.
-				var rowNumber = 0;
-				var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'"', function(err, rows)
-				//var stuff = connection.query('select * from transactions where transactions.screen = "'+ screenNumber +'" and transactions.group = "'+session.sessionGroup+'" limit 1000', function(err, rows)
-				{
-	                rowNumber = rows.length;
-					console.log("row number = " + rowNumber);
-					for(var i = 0; i<rowNumber; i=i+10) {
-						setTimeout(readState(screenNumber, i, 10), 20*i);
-					}
-	            });	            
-	        }
-	        */	       	       

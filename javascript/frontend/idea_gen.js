@@ -79,6 +79,11 @@ socket.on(UPDATE_IDEA_MSG, function(idea) {
 	updateIdea(idea);
 });
 
+socket.on(DEMO_STOP_TIMER, function() {
+	document.getElementById('demo-button').value = 'Next Test';
+});
+
+
 function sendAddIdea() {
 	ideaText = document.getElementById("idea-title-textfield").value.trim();
 	descriptionText = document.getElementById("idea-description-textfield").value.trim();

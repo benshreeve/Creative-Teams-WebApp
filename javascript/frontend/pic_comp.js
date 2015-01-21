@@ -138,6 +138,10 @@ socket.on(WAIT_MSG, function() {
 	disableElements(buttons);
 });
 
+socket.on(DEMO_STOP_TIMER, function() {
+	document.getElementById('demo-button').value = 'Next Test';
+});
+
 function sendRequestToNextScreen() {
 	if (screenNumber < PIC_COMP_MAX_SCREEN) {
 		changeScreenInProgress = true;

@@ -142,6 +142,9 @@ socket.on(BG_CREATED_MSG, function(bgImageName) {
 	bgImage = bgImageName;
 });
 
+socket.on(DEMO_STOP_TIMER, function() {
+	document.getElementById('demo-button').value = 'Next Test';
+});
 
 function setupShape() {
 	var canvasElement = document.getElementById('canvasSimple');
