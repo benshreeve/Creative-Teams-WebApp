@@ -80,11 +80,13 @@ socket.on(UPDATE_IDEA_MSG, function(idea) {
 });
 
 function sendAddIdea() {
-	ideaText = document.getElementById("idea-title-textfield").value;
-	descriptionText = document.getElementById("idea-description-textfield").value;
-
-	ideaTransaction = {ScreenNumber: 1, ObjectID: IDEA, Operation: ADD, OperationData: {title: ideaText, description:descriptionText, id:0}};
-	socket.emit(ADD_IDEA_MSG, ideaTransaction);
+	ideaText = document.getElementById("idea-title-textfield").value.trim();
+	descriptionText = document.getElementById("idea-description-textfield").value.trim();
+	
+	if (ideaText != "" && descriptionText != "") {
+		ideaTransaction = {ScreenNumber: 1, ObjectID: IDEA, Operation: ADD, OperationData: {title: ideaText, description:descriptionText, id:0}};
+		socket.emit(ADD_IDEA_MSG, ideaTransaction);
+	}
 }
 
 function addIdea(idea) {
@@ -126,12 +128,14 @@ function delIdea(idea) {
 }
 
 function sendUpdateIdea() {
-	ideaText = document.getElementById("idea-title-textfield").value;
-	descriptionText = document.getElementById("idea-description-textfield").value;
+	ideaText = document.getElementById("idea-title-textfield").value.trim();
+	descriptionText = document.getElementById("idea-description-textfield").value.trim();
 
-	ideaTransaction = {ScreenNumber: 1, ObjectID: IDEA, Operation: UPDATE, OperationData: {title: ideaText, description:descriptionText, id:currentSelection}};
-	socket.emit(UPDATE_IDEA_MSG, ideaTransaction);
-	gotoAddMode();
+	if (ideaText != "" && descriptionText != "") {
+		ideaTransaction = {ScreenNumber: 1, ObjectID: IDEA, Operation: UPDATE, OperationData: {title: ideaText, description:descriptionText, id:currentSelection}};
+		socket.emit(UPDATE_IDEA_MSG, ideaTransaction);
+		gotoAddMode();
+	}
 }
 
 function updateIdea(idea) {	

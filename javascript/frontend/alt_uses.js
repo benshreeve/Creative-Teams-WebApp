@@ -72,10 +72,12 @@ socket.on(UPDATE_USE_MSG, function(use) {
 });
 
 function sendAddUse() {
-	useText = document.getElementById("use-textfield").value;
+	useText = document.getElementById("use-textfield").value.trim();
 
-	useTransaction = {ScreenNumber: 1, ObjectID: USE, Operation: ADD, OperationData: {use: useText, id:0}};
-	socket.emit(ADD_USE_MSG, useTransaction);
+	if (useText != "") {
+		useTransaction = {ScreenNumber: 1, ObjectID: USE, Operation: ADD, OperationData: {use: useText, id:0}};
+		socket.emit(ADD_USE_MSG, useTransaction);
+	}
 }
 
 function addUse(use) {
@@ -115,11 +117,13 @@ function delUse(use) {
 }
 
 function sendUpdateUse() {
-	useText = document.getElementById("use-textfield").value;
+	useText = document.getElementById("use-textfield").value.trim();
 
-	useTransaction = {ScreenNumber: 1, ObjectID: USE, Operation: UPDATE, OperationData: {use: useText, id:currentSelection}};
-	socket.emit(UPDATE_USE_MSG, useTransaction);
-	gotoAddMode();
+	if (useText != "") {
+		useTransaction = {ScreenNumber: 1, ObjectID: USE, Operation: UPDATE, OperationData: {use: useText, id:currentSelection}};
+		socket.emit(UPDATE_USE_MSG, useTransaction);
+		gotoAddMode();
+	}
 }
 
 function updateUse(use) {	

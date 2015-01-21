@@ -38,6 +38,11 @@
 			});
 			
 			$(document).ready(function() {		
+				if (!String.prototype.trim) {
+	 				String.prototype.trim = function() {
+	  					return this.replace(/^\s+|\s+$/g,'');
+	 				}
+				}			
 				backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
 			});
 		
