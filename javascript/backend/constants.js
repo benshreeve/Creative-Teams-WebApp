@@ -130,5 +130,14 @@ var PIC_CON_BGIMAGE_PATH = "images/pictureconstruction/";
 var DEMO_TIMER_ACTIVE = 1;
 var DEMO_TIMER_INACTIVE = 0;
 
+var MYSQL_HOST = 'localhost';
+var MYSQL_USER = 'b935b086008866';
+var MYSQL_PASSWORD = '1b01c493';
+var MYSQL_DB = 'creativeteams'
+var REDIS_HOST = '130.216.38.216';
+var REDIS_PASSWORD = 'apple';
+var REDIS_PORT = '13163';
+	
+
 
 var DEMO = true;

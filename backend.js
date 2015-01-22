@@ -34,7 +34,7 @@ async.parallel([startBackend(), setupDBs(), setupTimer()]);
 function startBackend() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
-    var sessionStore = new RedisStore({host: "130.216.38.216", port:13163, pass: "apple"});
+    var sessionStore = new RedisStore({host: REDIS_HOST, port:REDIS_PORT, pass: REDIS_PASSWORD});
 
 	app.use(compression());
 	
@@ -85,7 +85,7 @@ function installHandlers(currentTest, context) {
 }
 
 function setupDBs() {
-    connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
+    connection =  database.createConnection({ host : MYSQL_HOST, user : MYSQL_USER, password: MYSQL_PASSWORD, database: MYSQL_DB});
     db = require('./javascript/backend/mysql_db.js')(connection);
     
     // Reset all users active flags to inactive, in case of crash:
@@ -94,7 +94,7 @@ function setupDBs() {
     connection.on('error', function(err) {
         logger.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-            connection =  database.createConnection({ host : '130.216.38.45', user : 'b935b086008866', password: '1b01c493', database: 'creativeteams'});
+            connection =  database.createConnection({ host : MYQL_HOST, user : MYSQL_USER, password: MYSQL_PASSWORD, database: MYSQL_DB});
             db = require('./javascript/backend/mysql_db.js')(connection);
 			logger.log("DB Connection ok ");
         } else {                                      // connnection idle timeout (the wait_timeout
@@ -102,7 +102,7 @@ function setupDBs() {
         }
     });
 
-    var teamStore = redis.createClient(13163, '130.216.38.216', {auth_pass:'apple'});
+    var teamStore = redis.createClient(REDIS_PORT, REDIS_HOST, {auth_pass:REDIS_PASSWORD});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
     rdb.delTeam(1);
     rdb.delTeam(2);
