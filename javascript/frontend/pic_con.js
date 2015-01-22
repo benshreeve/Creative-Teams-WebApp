@@ -86,7 +86,7 @@ socket.on(PERM_RSP, function(rsp) {
 			shape = paper.freeTransform(bgShape, { keepRatio: true, scale: false }, function(ft, events) {        		
 				socket.emit(MOVE_SHAPE_MSG, ft.attrs);
 			});
-			shape.setOpts({ size: 20 });
+			shape.setOpts({ size: 40 });
 			document.getElementById('place-shape-button').style.display = "";
 		} else {
 			shape = paper.freeTransform(bgShape, { keepRatio: true, scale: false });
