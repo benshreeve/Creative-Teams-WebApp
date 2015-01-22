@@ -85,12 +85,13 @@ function storeTestState(testState) {
 	currentTime = testState.CurrentTime		
 	totalTestTime = testState.TestTime/1000;
 	remainTime =  parseInt(totalTestTime - (currentTime-startTime)/1000);
-	document.getElementById('timeRemained').innerHTML = "Contact server";
+	if (document.getElementById('timeRemained'))
+		document.getElementById('timeRemained').innerHTML = "Contact server";
 	var myVar = setInterval(function(){ 
 		updateTimer() ;
 	}, 1000);
 	screenNumber = testState.CurrentScreen;
-	if (DEMO && testState.DemoStopTimer == DEMO_TIMER_INACTIVE)
+	if (DEMO && testState.DemoStopTimer == DEMO_TIMER_INACTIVE && document.getElementById('demo-button'))
 		document.getElementById('demo-button').value = 'Next Test';
 }
 
