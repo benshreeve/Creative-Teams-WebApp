@@ -31,8 +31,13 @@
 			if (response == PAR_LINES) {
 				clearInterval(backendReadyTimer);
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
+				socket.emit(GET_STATE_REQ);
 				backendReady = true;
 			}	
+		});
+		
+		socket.on(GET_STATE_RSP, function(response){
+			document.getElementById('supertitle').innerHTML = response.sessionState.Name  + " / " + response.sessionState.AccessCode;		
 		});
 		
 		$(document).ready(function() {		
@@ -44,7 +49,7 @@
 	</head>
 	<body onload="">	
 		<div id="deadzone-top">	
-			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Parallel Lines Test</h1>
+			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Parallel Lines Test</h1>			
 			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
 		</div>	
 		

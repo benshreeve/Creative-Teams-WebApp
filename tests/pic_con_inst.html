@@ -31,9 +31,15 @@
 			if (response == PIC_CON) {
 				clearInterval(backendReadyTimer);
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
+				socket.emit(GET_STATE_REQ);				
 				backendReady = true;
 			}	
 		});
+		
+		socket.on(GET_STATE_RSP, function(response){
+			document.getElementById('supertitle').innerHTML = response.sessionState.Name  + " / " + response.sessionState.AccessCode;		
+		});
+		
 		
 		$(document).ready(function() {		
 			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
@@ -45,7 +51,8 @@
 	</head>
 	<body onload="">	
 		<div id="deadzone-top">	
-			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Picture Construction Test</h1>
+			<h1 id="supertitle" style="margin-top: 36px; text-align: center;">Picture Construction Test</h1>			
+			
 			<!-- <button onclick="switchBackground()" class="floatbutton">Egg</button> -->
 		</div>	
 		
