@@ -93,8 +93,8 @@ module.exports = function (conn) {
 					
 					done();
 					
-					if (reply) {
-						callback(reply.Participants.split(','), args)
+					if (reply) { 
+						callback(reply.Participants == ''? [] : reply.Participants.split(','), args)
 					}
 
 				});
