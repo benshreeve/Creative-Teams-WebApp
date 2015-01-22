@@ -1,12 +1,3 @@
-socket.on(UPDATE_TIME_MSG, function(time){
-	if (calculateRemainingTime != undefined) {
-		remainingTime = calculateRemainingTime(time);	
-		if (document.getElementById('timeRemained'))
-			document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
-	}
-});
-
-
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	document.getElementById('top-right-button').style.display = "";

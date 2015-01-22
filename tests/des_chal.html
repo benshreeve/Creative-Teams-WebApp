@@ -35,8 +35,14 @@
 		});
 		
 		$(document).ready(function() {		
-			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
-			demoSetupButton()
+			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);			
+			demoSetupButton();
+			
+			socket.on(UPDATE_TIME_MSG, function(time) {			
+				remainingTime = calculateRemainingTime(time);				
+				document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
+			});
+			
 		});
 							
         </script>

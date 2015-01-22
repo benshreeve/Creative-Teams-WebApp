@@ -4,15 +4,6 @@ var getResultsReqReceived = false;
 var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle"];
 var testComplete = false;
 
-socket.on(UPDATE_TIME_MSG, function(time){
-	if (calculateRemainingTime != undefined) {
-		remainingTime = calculateRemainingTime(time);	
-		if (document.getElementById('timeRemained'))
-			document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
-	}
-});
-
-
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	testComplete = true;
