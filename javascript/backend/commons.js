@@ -122,11 +122,16 @@ module.exports = function(context)
     			nextTest = utils.getNextTestID(currentTest);
     			context.rdb.setCurrentTest(context.session.TeamID, nextTest);
     			context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
-    			context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + nextTest + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", redirectToTest, nextTest);
+    			//context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + nextTest + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", redirectToTest, nextTest);
+    			context.rdb.waitFor2(context.session.TeamID, checkTestAndScreenID, {testID: nextTest, screen: INSTRUCTION_SCREEN}, redirectToTest, nextTest);
 			}
 		}
 		
 	};
+	
+	function checkTestAndScreenID(teamInfo, args) {
+		return teamInfo.CurrentTest == args.testID && teamInfo.CurrentScreen == args.screen;
+	}
 
 	function redirectToTest(testID) {
 		context.channel.sendToTeam(context.session.TeamID, GOTO_MSG, utils.getInstructionURL(testID));

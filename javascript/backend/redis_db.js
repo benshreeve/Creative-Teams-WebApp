@@ -503,6 +503,10 @@ module.exports = function (conn) {
 		waitFor: function(teamID, condition, callback, args) {
 			waitForCondition(teamID, condition, callback, args);
 		},
+
+		waitFor2: function(teamID, verifier, verifierArgs, callback, callbackArgs) {
+			waitForCondition2(teamID, verifier, verifierArgs, callback, callbackArgs);
+		},
 		
 		delTeam: function(teamID) {
 			lock(teamID, function(done) {
@@ -575,7 +579,28 @@ module.exports = function (conn) {
 				}
 				else {
 					setTimeout(
-					verifyCondition(teamID, condition, callback, args), 1000);
+					waitForCondition(teamID, condition, callback, args), 1000);
+				}
+			});
+		});
+	}
+
+	function waitForCondition2(teamID, verifier, verifierArgs, callback, callbackArgs) {
+		lock(teamID, function(done) {
+			conn.hgetall(teamID, function(err, reply) {
+				if (err) {
+					done();
+					throw err;
+				}
+		
+				done();
+		
+				if (verifier(reply, verifierArgs)) {
+					callback(callbackArgs);		
+				}
+				else {
+					setTimeout(
+					waitForCondition2(teamID, verifier, verifierArgs, callback, callbackArgs), 1000);
 				}
 			});
 		});
