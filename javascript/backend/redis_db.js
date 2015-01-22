@@ -33,7 +33,9 @@ module.exports = function (conn) {
 									   "Participants", accessCode,
 									   "ReadyToStart", '',
 									   "PicConBGCreator", '',
-									   "PicConBGImage", '', function(err, result) {
+									   "PicConBGImage", '', 
+									   "DemoStopTimer", DEMO_TIMER_ACTIVE,
+									   function(err, result) {
 											done();
 						});
 					}
