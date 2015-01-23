@@ -35,6 +35,7 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	
 	//set the header title	
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 	
 	if(!rsp.sessionState.Late){		
 		document.getElementById('top-right-button').style.display = "none";

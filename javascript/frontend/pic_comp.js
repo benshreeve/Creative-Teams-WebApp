@@ -51,7 +51,8 @@ socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	storeSessionState(rsp);
 	
 	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;		
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 });
 
 socket.on(GET_STATE_RSP, function(rsp) {
@@ -62,6 +63,7 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	socket.emit(GET_TRANSACTIONS_REQ);
 
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 	showScreenNumber(PIC_COMP_MAX_SCREEN);
 });
 

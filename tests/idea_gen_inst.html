@@ -37,7 +37,8 @@
 		});
 		
 		socket.on(GET_STATE_RSP, function(response){
-			document.getElementById('supertitle').innerHTML = response.sessionState.Name  + " / " + response.sessionState.AccessCode;		
+			document.getElementById('supertitle').innerHTML = response.sessionState.Name  + " / " + response.sessionState.AccessCode;	
+			document.getElementById('supertitle').style.color = COLOURS[response.sessionState.UserID];	
 		});
 		
 		$(document).ready(function() {		

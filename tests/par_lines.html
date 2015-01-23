@@ -30,12 +30,12 @@
 				backendReady = true;
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
 				stateSession();
-				demoSetupButton();
 			}	
 		});
 		
 		$(document).ready(function() {		
 			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+			demoSetupButton();
 			
 			socket.on(UPDATE_TIME_MSG, function(time) {			
 				remainingTime = calculateRemainingTime(time);				
@@ -119,7 +119,7 @@
         </p>
         </div>	        
 		<script> $(function() { FastClick.attach(document.body);}); </script>
-		<script async src="../javascript/frontend/commons.js?v=1"></script>
+		<script src="../javascript/frontend/commons.js?v=1"></script>
 		<script src="../javascript/frontend/par_lines.js"></script>
 	</body>
 </html>

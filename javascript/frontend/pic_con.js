@@ -36,7 +36,8 @@ socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	storeSessionState(rsp);
 	
 	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;		
+	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
+	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 });
 
 socket.on(GET_STATE_RSP, function(rsp) {
@@ -46,6 +47,7 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	
 	//set the header title	
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;
+	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 	if (rsp.testState.PicConBGImage != "") {
 		prepareCanvas(getBGImageName(rsp.testState.PicConBGImage));
 		socket.emit(GET_TRANSACTIONS_REQ);

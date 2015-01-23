@@ -29,8 +29,7 @@
 				clearInterval(backendReadyTimer);
 				backendReady = true;
 				socket.emit(GET_TEST_INSTRUCTION_REQ);
-				stateSession();
-				demoSetupButton();				
+				stateSession();				
 			}	
 		});
 		
@@ -41,6 +40,8 @@
 				remainingTime = calculateRemainingTime(time);				
 				document.getElementById('timeRemained').innerHTML = remainingTime.min + ":" + remainingTime.sec + " remaining";
 			});
+			
+			demoSetupButton();
 			
 		});
 							
@@ -119,7 +120,7 @@
         </p>
         </div>	        
 		<script> $(function() { FastClick.attach(document.body);}); </script>
-		<script async src="../javascript/frontend/commons.js?v=1"></script>
+		<script src="../javascript/frontend/commons.js?v=1"></script>
 		<script src="../javascript/frontend/pic_comp.js"></script>
 	</body>
 </html>
