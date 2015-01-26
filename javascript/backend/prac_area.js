@@ -124,15 +124,15 @@ module.exports =
 	        context.socket.on(GET_INTRODUCTION_REQ, function() {
 	        	commons.sendIntroduction();
 	        });
+	                
+	        function pracAreaTestComplete() {
+	        	commons.sendTestComplete();
+	        }
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(PRAC_AREA);
 	        });
-	        
-	        function pracAreaTestComplete() {
-	        	commons.sendTestComplete();
-	        }
-	                       
+	        	                       
 	        logger.debug("Hanlders were installed for practice area.");
 	        
 		}		

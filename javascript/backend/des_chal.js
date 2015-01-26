@@ -69,10 +69,6 @@ module.exports =
 	        	commons.disconnectUser();
 	        });	
 	        
-	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(DES_CHAL);
-	        });
-
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
 	        	results.saveDesChalResults(res);
 	        	
@@ -136,6 +132,11 @@ module.exports =
         		commons.sendTestComplete();
         		commons.sendGetResultsReq();	        		
 	        });
+	        
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	commons.sendIsBackendReadyRsp(DES_CHAL);
+	        });
+	        
 	          
 	        logger.debug("Hanlders were installed for design challenge test.");	        
 		}		

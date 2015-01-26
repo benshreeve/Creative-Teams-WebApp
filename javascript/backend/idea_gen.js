@@ -58,10 +58,6 @@ module.exports =
 	        context.socket.on(DISCONNECT_MSG, function() {
 	        	commons.disconnectUser();
 	        });	
-	        
-	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(IDEA_GEN);
-	        });
 
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
 	        	results.saveIdeaGenResults(res);
@@ -100,7 +96,11 @@ module.exports =
         		commons.sendTestComplete();
         		commons.sendGetResultsReq();	        		
 	        });
-	          
+	        
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	commons.sendIsBackendReadyRsp(IDEA_GEN);
+	        });
+	        	          
 	        logger.debug("Hanlders were installed for idea generation test.");	        
 		}		
 };

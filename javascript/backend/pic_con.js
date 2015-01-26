@@ -93,10 +93,6 @@ module.exports =
 	        	commons.disconnectUser();
 	        });	
 	        
-	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(PIC_CON);
-	        });
-
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
 	        	logger.debug("Results received ...");
 	        	results.savePicConResults(res);
@@ -135,6 +131,10 @@ module.exports =
         		commons.sendTestComplete();
         		commons.sendGetResultsReq();	        		
 	        });
+	        
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	commons.sendIsBackendReadyRsp(PIC_CON);
+	        });	        
 	        
 	          
 	        logger.debug("Hanlders were installed for picture construction test.");	        

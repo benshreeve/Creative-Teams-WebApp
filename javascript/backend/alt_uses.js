@@ -59,10 +59,6 @@ module.exports =
 	        	commons.disconnectUser();
 	        });	
 	        
-	        context.socket.on(IS_BACKEND_READY_REQ, function() {
-	        	commons.sendIsBackendReadyRsp(ALT_USES);
-	        });
-
 	        context.socket.on(GET_RESULTS_RSP, function(res) {
 	        	results.saveAltUsesResults(res);
 	        	
@@ -100,7 +96,11 @@ module.exports =
         		commons.sendTestComplete();
         		commons.sendGetResultsReq();	        		
 	        });
-	          
+	        
+	        context.socket.on(IS_BACKEND_READY_REQ, function() {
+	        	commons.sendIsBackendReadyRsp(ALT_USES);
+	        });
+	        	          
 	        logger.debug("Hanlders were installed for alternative uses test.");	        
 		}		
 };
