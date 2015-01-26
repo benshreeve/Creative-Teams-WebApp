@@ -207,7 +207,7 @@ function processNewUser(userRow, args) {
 }
 
 function setLate(teamCurrentTest, args) {
-	args.userSession.Late = teamCurrentTest > 0 ? true : false;
+	args.userSession.Late = teamCurrentTest > PRAC_AREA ? true : false;
 	args.userSession.save();		
 }
 
