@@ -137,6 +137,7 @@ var MYSQL_DB = 'creativeteams'
 var REDIS_HOST = '130.216.38.216';
 var REDIS_PASSWORD = 'apple';
 var REDIS_PORT = '13163';
+var REDIS_TTL = 30*24*60*60;
 	
 
 

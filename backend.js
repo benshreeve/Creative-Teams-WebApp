@@ -34,7 +34,7 @@ async.parallel([startBackend(), setupDBs(), setupTimer()]);
 function startBackend() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
-    var sessionStore = new RedisStore({host: REDIS_HOST, port:REDIS_PORT, pass: REDIS_PASSWORD});
+    var sessionStore = new RedisStore({host: REDIS_HOST, port:REDIS_PORT, pass: REDIS_PASSWORD, ttl:REDIS_TTL});
 
 	app.use(compression());
 	
