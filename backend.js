@@ -94,7 +94,7 @@ function setupDBs() {
     connection.on('error', function(err) {
         logger.log('db error', err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-            connection =  database.createConnection({ host : MYQL_HOST, user : MYSQL_USER, password: MYSQL_PASSWORD, database: MYSQL_DB});
+            connection =  database.createConnection({ host : MYSQL_HOST, user : MYSQL_USER, password: MYSQL_PASSWORD, database: MYSQL_DB});
             db = require('./javascript/backend/mysql_db.js')(connection);
 			logger.log("DB Connection ok ");
         } else {                                      // connnection idle timeout (the wait_timeout
@@ -104,8 +104,8 @@ function setupDBs() {
 
     var teamStore = redis.createClient(REDIS_PORT, REDIS_HOST, {auth_pass:REDIS_PASSWORD});
     rdb = require('./javascript/backend/redis_db.js')(teamStore);
-    rdb.delTeam(1);
-    rdb.delTeam(2);
+//    rdb.delTeam(1);
+//    rdb.delTeam(2);
 }
 
 function setupTimer() {	
