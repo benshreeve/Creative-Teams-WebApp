@@ -1,4 +1,4 @@
-var bgImagePath = "../images/parallellines/Parallel_lines.svg";
+var bgImagePath = "../images/parallellines/Parallel_Lines.svg";
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
