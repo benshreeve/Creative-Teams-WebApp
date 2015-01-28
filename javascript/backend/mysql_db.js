@@ -116,8 +116,7 @@ module.exports = function (conn) {
 		},
 		
 		savePicConResults: function(teamID, results) {
-			q = conn.query('insert into picconres values (' + teamID + ',"' + results.title + '","' + 
-					results.path + '")', 
+			q = conn.query('insert into picconres values (' + teamID + ',"' + results.title + '")', 
 					function(err, result) {
 						if (err) {
 							logger.log(q.sql);
@@ -184,8 +183,7 @@ module.exports = function (conn) {
 		conn.query('select * from '+ table + ' where TeamID=' + teamID + " and screenNumber=" + results.screenNumber, function(err, rows) {
 			if (err) throw err;
 			if (rows.length == 0) {
-				q = conn.query('insert into ' + table + ' values (' + teamID + ',' + results.screenNumber + ',"' + results.title + '","' + 
-						results.path + '")', 
+				q = conn.query('insert into ' + table + ' values (' + teamID + ',' + results.screenNumber + ',"' + results.title + '")', 
 						function(err, result) {
 							if (err) {
 								logger.log(q.sql);
@@ -193,7 +191,7 @@ module.exports = function (conn) {
 							}
 						}); 
 			} else {		
-				post = {title: results.title, path:results.path};
+				post = {title: results.title};
 				q = conn.query('update ' + table + ' set ? where TeamID=' + teamID + " and ScreenNumber=" + results.screenNumber, post, 
 						function(err, result) {
 							if (err) { 
