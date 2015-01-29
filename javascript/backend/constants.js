@@ -142,3 +142,4 @@ var REDIS_TTL = 30*24*60*60;
 
 
 var DEMO = true;
+var DEMO_TEST_TIME = 60;

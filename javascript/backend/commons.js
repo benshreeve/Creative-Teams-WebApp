@@ -148,7 +148,8 @@ module.exports = function(context)
     }
 	
 	function setupTime(time, callback, args) {
-	    time = 45;
+		if (DEMO)
+			time = DEMO_TEST_TIME;
 		logger.debug("time for this test is: ", time, " sec");
 		context.rdb.setTime(context.session.TeamID, time*1000);
         setTimeout(function() {
