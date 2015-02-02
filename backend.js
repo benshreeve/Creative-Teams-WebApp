@@ -43,6 +43,7 @@ function startBackend() {
     app.use(cookieParser("gZB8fSdS"));
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
+    io.set('heartbeat timeout', 9999);
    
     
     sessionSockets.on('connection', function(err, socket, session){
