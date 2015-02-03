@@ -442,6 +442,34 @@ module.exports = function (conn) {
 			});						
 		},
 		
+		resetTeam: function(teamID) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					logger.debug("resetting record for team " + teamID);
+					conn.hmset(teamID, "CurrentTest", PRAC_AREA, 
+									   "CurrentScreen", INSTRUCTION_SCREEN,
+									   "TextEditingUser", '',
+									   "StartTime", 9999,
+									   "TestTime", 0,
+									   "IdeaId", 1,
+									   "Participants", '',
+									   "ReadyToStart", '',
+									   "PicConBGCreator", '',
+									   "PicConBGImage", '', 
+									   "DemoStopTimer", DEMO_TIMER_ACTIVE,
+									   function(err, result) {
+											done();
+					});					
+				});
+			});						
+		},
+		
+		
 		setPicConBGCreator: function(teamID, accessCode, callback, args) {
 			lock(teamID, function(done) {
 				conn.hgetall(teamID, function(err, reply) {

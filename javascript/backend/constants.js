@@ -76,6 +76,7 @@ var PLACE_SHAPE_MSG = "PlaceShapeMsg";
     // messages in demo mode.
 var DEMO_NEXT_TEST = "DemoNextTest";
 var DEMO_STOP_TIMER = "DemoStopTimer";
+var DEMO_RESET_TEAM_STATUS = "DemoResetTeamStatus";
 
 
 // PERM_REQ Operations

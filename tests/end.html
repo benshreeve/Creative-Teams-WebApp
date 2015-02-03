@@ -37,6 +37,8 @@
 		
 		$(document).ready(function() {		
 			backendReadyTimer = setInterval(function() {socket.emit(IS_BACKEND_READY_REQ);}, 1000);
+			if (DEMO)
+				document.getElementById('resetTeamButton').style.display = '';
 		});
 				
         </script>
@@ -52,6 +54,12 @@
 		<p id="instructions" style="text-align:left;"></p>
 
         <p id="statusDiv" style="color:#090">
+        <input name="enterButton" type="button" value="Reset Team Status" style="font-size:25px; display:none" id="resetTeamButton" 
+        onClick="
+        if (backendReady) {
+        	socket.emit(DEMO_RESET_TEAM_STATUS);
+        }
+        ">        
         </p>        
         </div>			
 		<script> $(function() { FastClick.attach(document.body);}); </script>		
