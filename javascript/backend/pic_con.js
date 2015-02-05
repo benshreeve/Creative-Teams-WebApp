@@ -6,7 +6,7 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
-			var utils = require('./utils')();
+			var utils = require('./utils')(context);
 			var logger = require('./logger')(context);
 			var results = require('./results')(context);
 			

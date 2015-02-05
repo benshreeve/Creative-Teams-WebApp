@@ -2,7 +2,7 @@
  * New node file
  */
 module.exports = function (context) {
-	var util = require("./utils.js")();
+	var util = require("./utils.js")(context);
 	var fs = require('fs');
 	
 	return {	

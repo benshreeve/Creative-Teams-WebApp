@@ -6,7 +6,7 @@ module.exports =
 {
 		installHandlers: function(context) {
 			var commons = require('./commons.js')(context);
-			var utils = require('./utils')();
+			var utils = require('./utils')(context);
 			var logger = require('./logger')(context);
 			var results = require('./results')(context);
 					        
@@ -24,15 +24,12 @@ module.exports =
 
 	        context.socket.on(DEMO_RESET_TEAM_STATUS, function() {
 	        	context.rdb.resetTeam(context.session.TeamID);
+	        	context.db.delTeamInfo(context.session.TeamID);
 	        });
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(END_TEST);
 	        });
-	        
-	        
-	        
-
 	        
 	        logger.debug("Hanlders were installed for end page.");	        
 		}		

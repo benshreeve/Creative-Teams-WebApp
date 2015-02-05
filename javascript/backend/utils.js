@@ -2,9 +2,9 @@
  * New node file
  */
 
-module.exports = function() {
+module.exports = function(context) {
 	runScript("./javascript/backend/constants.js");
-
+	var logger = require('./logger.js')();
 	var tests = [{id: PRAC_AREA, longName: "PracticeArea", name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/tests/introduction.html', testURL:'/tests/practice_area.html'},
 	             {id: PIC_CON, longName: "PictureConstruction", name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
 	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
@@ -18,7 +18,11 @@ module.exports = function() {
 	var testsOrder = [PRAC_AREA, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL, ALT_USES, END_TEST];
 	var messageMap=[[]];
 	fillMessageMap();
+	String.prototype.trim = String.prototype.trim || function () {
+	    return this.replace(/^\s+|\s+$/g, "");
+	};
 	
+	loadTestsOrder();
 	
 	return {
 		isDup: function(list, item) {
@@ -112,14 +116,14 @@ module.exports = function() {
 		},
 		
 		getNextTestID: function(testID) {
-			for (i = 0; i < testsOrder.length; i++) {				
+			for (var i = 0; i < testsOrder.length; i++) {				
 				if (testsOrder[i] == testID) {
 					return testsOrder[i+1];
 				}
 			}
 			return -1;
 		},
-
+		
 		getUserColor: function(userID) {
 			return colours[userID];
 		},
@@ -134,17 +138,40 @@ module.exports = function() {
 		
 		randomFileName: function(prefix, extension) {
 			return  prefix + "-" + new Date().getTime() + "." + extension;
-		}
-		
+		},
+			
 	};
 	
+	function isDuplicate(list, item, len) {
+		for (var i = 0; i < len; i++)
+			if (list[i] == item)
+				return true;
+		return false;
+	}
 	function getTestInfo(testID) {		
-		for (i = 0; i < tests.length; i++) {
+		for (var i = 0; i < tests.length; i++) {
 			if (tests[i].id == testID) {
 				return tests[i];
 			}
 		}
 		return null;
+	}
+
+	function getTestInfoByName(testName) {		
+		for (var i = 0; i < tests.length; i++) {			
+			if (tests[i].name == testName.trim()) {
+				return tests[i];
+			}
+		}
+		return null;
+	}
+
+	function getTestIdByName(name) {
+		info = getTestInfoByName(name);
+		if (!info) {
+			throw new Error('Unknown item in tests order in the database: '+name);
+		}
+		return info.id; 
 	}
 	
 	function runScript(path) {
@@ -178,6 +205,22 @@ module.exports = function() {
 		messageMap[USE][DEL] = DEL_USE_MSG;
 		messageMap[USE][UPDATE] = UPDATE_USE_MSG;		
 	}
+	
+	function loadTestsOrder() {
+		if (context != undefined)
+			context.db.getTestsOrder(setTestsOrder);
+	}
+
+	function setTestsOrder(order) {		
+		testsOrder[0] = PRAC_AREA;
+		for (var i = 0; i < order.length; i++) {
+			testsOrder[i+1] = getTestIdByName(order[i]);
+			if (isDuplicate(testsOrder, testsOrder[i+1], i+1))
+				throw Error('Duplicate items in tests order: '+order[i]);
+		}
+		testsOrder[i+1] = END_TEST;
+	}
+	
 	
 	
 };

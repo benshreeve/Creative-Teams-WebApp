@@ -5,7 +5,7 @@
 module.exports = function(context)
 {
 	var logger = require('./logger.js')(context);
-	var utils = require('./utils.js')();
+	var utils = require('./utils.js')(context);
 	utils.includeConstants('./javascript/backend/constants.js');
 	
 	return {

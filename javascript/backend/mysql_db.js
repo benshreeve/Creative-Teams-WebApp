@@ -175,6 +175,41 @@ module.exports = function (conn) {
 							}					
 				});
 			}
+		},
+		
+		getTestsOrder: function(callback, args) {
+			conn.query('select * from config', function(err, rows) {
+				if (err) throw err;
+				callback(eval("rows[0].TestsOrder").split(','), args);
+			});			
+			
+		},
+		
+		delTeamInfo: function(teamID, callback, args) {
+			conn.query('delete from altusesres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});
+			conn.query('delete from deschalres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});						
+			conn.query('delete from ideagenres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});						
+			conn.query('delete from parlinesres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});						
+			conn.query('delete from piccompres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});						
+			conn.query('delete from picconres where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});						
+			conn.query('delete from transactions where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});
+			conn.query('delete from participation where TeamID='+teamID, function(err, rows) {
+				if (err) throw err;
+			});												
 		}
 		
 	};
