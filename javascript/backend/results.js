@@ -38,8 +38,19 @@ module.exports = function (context) {
 			saveDesChalTitle(results.screenNumber, results.title);
 		},
 		
+		removeResults: function() {
+			context.db.getResultsPath(rmResultsFolder);
+		}
+		
 		
 	};
+	
+	function rmResultsFolder(resultsPath) {
+		require('rimraf')(resultsPath+"/"+context.session.TeamID, function(err){
+			if (err)
+				throw err;
+		});
+	}
 
 	function saveImage(testID, screenNumber, image) {
     	var b64string = image.replace(/^data:image\/png;base64,/,"");

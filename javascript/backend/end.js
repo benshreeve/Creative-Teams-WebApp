@@ -25,6 +25,7 @@ module.exports =
 	        context.socket.on(DEMO_RESET_TEAM_STATUS, function() {
 	        	context.rdb.resetTeam(context.session.TeamID);
 	        	context.db.delTeamInfo(context.session.TeamID);
+	        	results.removeResults();
 	        });
 	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
