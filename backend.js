@@ -47,33 +47,31 @@ function startBackend() {
    
     
     sessionSockets.on('connection', function(err, socket, session){
-    	if (err) throw err;
- 
-    	if (session.TeamID != undefined) {
+    	if (!err) {
 	    	if (session.refCount > 0) {
 				rdb.delReadyParticipant(session.TeamID, session.AccessCode);
 				session.refCount = 0;
 	    	}    	
 	    	session.refCount ++;
 	    	session.save();
-	    	    	
+		    	    	
 	    	channel = require('./javascript/backend/channel.js')(io);
-	    	
+		    	
 	        // Store identification:
 	        logger.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
-			
-			channel.setup(socket, session.AccessCode);
 				
+			channel.setup(socket, session.AccessCode);
+					
 			if (session.Late)
 				installHandlers(PRAC_AREA, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 			else {
 				channel.joinTeam(session.AccessCode, session.TeamID);
 				rdb.getCurrentTest(session.TeamID, installHandlers, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 			}
-			
+				
 			rdb.addParticipant(session.TeamID, session.AccessCode);
 	        db.activateUser(session.TeamID, session.UserID);
-	        
+		        
 			db.getActiveUsersCount("connect: ");
     	} else {
     		console.error("session got expired. user needs to login again...");
