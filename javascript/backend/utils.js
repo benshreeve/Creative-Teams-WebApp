@@ -88,7 +88,7 @@ module.exports = function(context) {
 		},
 		
 		checkAccessCode: function(accessCode) {
-			return /^s[0-9]+p[0-9]+$/.test(accessCode);
+			return /^[sS][0-9]+[pP][0-9]+$/.test(accessCode);
 		},
 		
 		getTestName: function(testID) {
