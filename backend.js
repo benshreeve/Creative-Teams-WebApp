@@ -188,7 +188,7 @@ function processNewUser(userRow, args) {
 		
 		if (userRow.Active == 0) {
 			db.setUserName(userRow.TeamID, userRow.UserID, args.req.body.nickname);
-			args.req.session.AccessCode = args.req.body.accesscode;
+			args.req.session.AccessCode = args.req.body.accesscode.toLowerCase();
 			args.req.session.Name = args.req.body.nickname;
 			args.req.session.TeamID = userRow.TeamID;
 			args.req.session.UserID = userRow.UserID;
