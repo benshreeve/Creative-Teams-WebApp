@@ -451,6 +451,12 @@ module.exports = function (conn) {
 					}
 				
 					logger.debug("resetting record for team " + teamID);
+					
+					var fs = require('fs');					
+					if (reply.PicConBGImage != '' && fs.existsSync(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage)) {
+						fs.unlink(PIC_CON_BGIMAGE_PATH+reply.PicConBGImage);
+					}
+					
 					conn.hmset(teamID, "CurrentTest", PRAC_AREA, 
 									   "CurrentScreen", INSTRUCTION_SCREEN,
 									   "TextEditingUser", '',
