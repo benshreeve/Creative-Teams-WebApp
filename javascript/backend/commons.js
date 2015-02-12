@@ -124,6 +124,7 @@ module.exports = function(context)
     			context.rdb.setCurrentScreen(context.session.TeamID, INSTRUCTION_SCREEN);
     			//context.rdb.waitFor(context.session.TeamID, "reply.CurrentTest == '" + nextTest + "' && reply.CurrentScreen == '" + INSTRUCTION_SCREEN + "'", redirectToTest, nextTest);
     			context.rdb.waitFor2(context.session.TeamID, checkTestAndScreenID, {testID: nextTest, screen: INSTRUCTION_SCREEN}, redirectToTest, nextTest);
+    			context.rdb.clearTextEditingUser(context.session.TeamID);
 			}
 		}
 		
