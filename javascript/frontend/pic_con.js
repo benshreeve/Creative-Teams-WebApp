@@ -3,6 +3,7 @@ var shape;
 var paper;
 var bgShape;
 var buttons=["top-left-button", "place-shape-button", "enterTitle"];
+var changed = false;
 
 function getBGImageName(bgImageName) {
 	return "../" + PIC_CON_BGIMAGE_PATH +  bgImageName;
@@ -16,11 +17,18 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
+	if (isTitleEmpty()) {
+		askForTitle("sendGetResultsRsp()");
+	} else
+		sendGetResultsRsp();
+});
+
+function sendGetResultsRsp() {
 	if (bgImage != undefined)
 		prepareCanvasForSnapshot(getBGImageName(bgImage), sendResults);
 	else
-		sendResults();
-});
+		sendResults();	
+}
 
 function sendResults() {
 	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
@@ -133,6 +141,14 @@ socket.on(BG_CREATED_MSG, function(bgImageName) {
 	document.getElementById('canvasSimple').parentNode.removeChild(document.getElementById('canvasSimple'));
 	prepareCanvas(getBGImageName(bgImageName));
 	bgImage = bgImageName;
+});
+
+socket.on(NOTIFY_TEAM_MSG, function(msg){
+	switch (msg.message) {
+	case WAIT_FOR_TITLE:
+		Popup.hide('addTitle');
+		document.getElementById("WaitMessage").innerHTML = "Help " + msg.data.name + "(" + msg.data.accessCode + ") by suggesting a title for your drawing";
+	}
 });
 
 socket.on(DEMO_STOP_TIMER, function() {

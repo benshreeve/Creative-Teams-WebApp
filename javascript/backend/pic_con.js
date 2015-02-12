@@ -88,7 +88,7 @@ module.exports =
 	        context.socket.on(REDO_MSG, function(object) {
 	        	commons.saveAndBroadcastTransaction(REDO_MSG, PIC_CON, object);
 	        });
-	        	             
+	        	        	        	             
 	        context.socket.on(DISCONNECT_MSG, function() {
 	        	commons.disconnectUser();
 	        });	
@@ -103,6 +103,14 @@ module.exports =
 	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile(PIC_CON);
+	        });
+	        
+	        context.socket.on(NOTIFY_TEAM_MSG, function(msg) {
+	        	commons.broadcastTransaction(NOTIFY_TEAM_MSG, PIC_CON, msg);	        	
+	        });
+	        
+	        context.socket.on(WAIT_MSG, function() {
+	        	commons.broadcastTransaction(WAIT_MSG, PIC_CON, {});
 	        });	        
 	        	        	       	              
 	        function picConTestComplete() {
@@ -131,7 +139,7 @@ module.exports =
         		commons.sendTestComplete();
         		commons.sendGetResultsReq();	        		
 	        });
-	        
+	        	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(PIC_CON);
 	        });	        

@@ -115,7 +115,10 @@ function handleUpdateTitle(info) {
 	console.log("UPDATE_TITLE_MSG: ", info);
 	//update title for everyone
 	if(document.getElementById('titleArea')){
-		document.getElementById('titleArea').value = info.OperationData.title;
+		if (document.getElementById('titleArea').value != info.OperationData.title) {
+			document.getElementById('titleArea').value = info.OperationData.title;
+			changed = true;
+		}
 		document.getElementById('enterTitle').value = "Add Title";
 		document.getElementById('enterTitle').style.color="grey";
 	}
@@ -471,6 +474,7 @@ function saveTitle(){
 	var transaction = {ScreenNumber: screenNumber, ObjectID: TITLE, Operation: ADD, OperationData: {"title": document.getElementById('titleArea').value}};
 	socket.emit(UPDATE_TITLE_MSG, transaction); 
 	Popup.hideAll();
+	changed = true;
 }
 
 function cancelUpdateTitle(){
@@ -571,5 +575,48 @@ function demoSendMsg() {
 		document.getElementById('demo-button').value = 'Next Test';
 	} else {
 		socket.emit(DEMO_NEXT_TEST);
+	}
+}
+
+function isTitleEmpty() {
+	return document.getElementById('titleArea').value == "";
+}
+
+function saveTitleAndSendResults() {
+	document.getElementById('titleArea').value = document.getElementById('titleArea2').value; 
+	if (!isTitleEmpty()) {
+		Popup.hideAll();
+		changed = true;
+		saveTitle();
+		eval(document.getElementById('titleArea2').ctCallBack);
+	}
+}
+
+function askForTitle(callback) {
+	Popup.hideAll();
+	document.getElementById('titleArea2').ctCallBack = callback;
+	Popup.show('askForTitle');
+	socket.emit(NOTIFY_TEAM_MSG, {message: WAIT_FOR_TITLE, data:{accessCode: AccessCode, name: Name}});			
+}
+
+function sendNextScreenMsg() {
+	if (isTitleEmpty() && changed) {
+		askForTitle("sendNextScreenMsg()");
+	} else {
+		if (changed)
+			socket.emit(NEXT_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+		else 
+			socket.emit(NEXT_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
+	}
+}
+
+function sendPrevScreenMsg() {
+	if (isTitleEmpty() && changed) {
+		askForTitle("sendPrevScreenMsg()");
+	} else {
+		if (changed) 
+			socket.emit(PREV_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+		else
+			socket.emit(PREV_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
 	}
 }

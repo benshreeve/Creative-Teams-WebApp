@@ -62,7 +62,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on(WAIT_MSG, function() {
-	        	context.channel.sendToTeam(context.session.TeamID, WAIT_MSG);
+	        	commons.broadcastTransaction(WAIT_MSG, PIC_COMP, {});
 	        });
 	        	             
 	        context.socket.on(DISCONNECT_MSG, function() {
@@ -105,6 +105,10 @@ module.exports =
 	        	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile(PIC_COMP);
+	        });	        
+	        
+	        context.socket.on(NOTIFY_TEAM_MSG, function(msg) {
+	        	commons.broadcastTransaction(NOTIFY_TEAM_MSG, PIC_COMP, msg);	        	
 	        });	        
 	        	        	       	              
 	        function picCompTestComplete() {

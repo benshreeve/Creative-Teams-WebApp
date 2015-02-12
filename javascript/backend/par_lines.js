@@ -62,7 +62,7 @@ module.exports =
 	        });
 	        
 	        context.socket.on(WAIT_MSG, function() {
-	        	context.channel.sendToTeam(context.session.TeamID, WAIT_MSG);
+	        	commons.broadcastTransaction(WAIT_MSG, PAR_LINES, {});
 	        });
 	        	             
 	        context.socket.on(DISCONNECT_MSG, function() {
@@ -105,8 +105,12 @@ module.exports =
 	        	        
 	        context.socket.on(GET_TEST_INSTRUCTION_REQ, function() {
 	        	commons.sendInstructionFile(PAR_LINES);
+	        });	
+	                
+	        context.socket.on(NOTIFY_TEAM_MSG, function(msg) {
+	        	commons.broadcastTransaction(NOTIFY_TEAM_MSG, PAR_LINES, msg);	        	
 	        });	        
-	        	        	       	              
+	        	        	       	              	        	        	        	       	              
 	        function parLinesTestComplete() {
 	        	if (DEMO) {
 	        		context.rdb.getDemoStopTimer(context.session.TeamID, demoParLinesTestComplete)

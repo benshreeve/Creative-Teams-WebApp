@@ -12,19 +12,29 @@ function getBGImageName() {
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	testComplete = true;
-	Popup.show('WaitDialog');
+	//Popup.show('WaitDialog');
+	//Popup.hideAll();
 	disableElements(buttons);
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
+	sendGetResultsRsp();	
+});
+
+function sendGetResultsRsp() {
 	if (!changeScreenInProgress)
-		prepareCanvasForSnapshot(getBGImageName(), sendResults);
+		if (isTitleEmpty() && changed) 
+			askForTitle("sendGetResultsRsp()");
+		else {
+			Popup.show('waitDialog');
+			sendWaitMsg();
+			prepareCanvasForSnapshot(getBGImageName(), sendResults);
+		}
 	else {
 		getResultsReqReceived = true;
-	}
-		
-});
+	}	
+}
 
 function sendResults() {
 	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
@@ -73,7 +83,7 @@ socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 });
 
 socket.on(UPDATE_TITLE_MSG, function(rsp) {
-	changed = true;
+//	changed = true;
 	handleUpdateTitle(rsp);
 });
 
@@ -113,23 +123,38 @@ socket.on(ERASE_MSG, function(dot){
 	redraw();	
 });
 
-socket.on(END_DATA_MSG, function(){
+socket.on(END_DATA_MSG, function() {
+	changeScreenInProgress = false;	
 	if (getResultsReqReceived) {
-		prepareCanvasForSnapshot(getBGImageName(), sendResults);
 		getResultsReqReceived = false;
+		sendGetResultsRsp();
 	} else if (!testComplete){
 		Popup.hide('WaitDialog');
-		enableElements(buttons);
-		changeScreenInProgress = false;		
+		enableElements(buttons);		
 	}
 	changed = false;
 });
 
 
-socket.on(WAIT_MSG, function() {
+socket.on(WAIT_MSG, function(data) {
 	console.log("WAIT_MSG received ...");
-	Popup.show('WaitDialog');
+	if (data.userID != userID)
+		Popup.show('WaitDialog');
 	disableElements(buttons);
+});
+
+socket.on(NOTIFY_TEAM_MSG, function(msg){
+	console.log("NOTIFY_TEAM_MSG received ...", msg);
+	switch (msg.message) {
+	case WAIT_FOR_TITLE:
+		Popup.hide('addTitle');
+		if (msg.userID != userID) {
+			Popup.hide('askForTitle');			
+			document.getElementById("WaitMessage").innerHTML = "Help " + msg.data.name + "(" + msg.data.accessCode + ") by suggesting a title for your drawing";
+			Popup.show('WaitDialog');
+		}
+		break;
+	}
 });
 
 socket.on(DEMO_STOP_TIMER, function() {
@@ -141,20 +166,13 @@ function sendRequestToNextScreen() {
 		changeScreenInProgress = true;
 		disableElements(buttons);		
 		sendWaitMsg();
-		Popup.show('WaitDialog');
-		if (changed) {
+		Popup.show('WaitDialog');		
+		if (changed) {			
 			prepareCanvasForSnapshot(getBGImageName(), sendNextScreenMsg);
 		} else {
 			sendNextScreenMsg();
 		}
 	}
-}
-
-function sendNextScreenMsg() {
-	if (changed)
-		socket.emit(NEXT_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
-	else 
-		socket.emit(NEXT_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});		
 }
 
 function sendRequestToPrevScreen() {
@@ -169,11 +187,4 @@ function sendRequestToPrevScreen() {
 			sendPrevScreenMsg();
 		} 
 	}
-}
-
-function sendPrevScreenMsg() {
-	if (changed) 
-		socket.emit(PREV_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
-	else
-		socket.emit(PREV_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
 }

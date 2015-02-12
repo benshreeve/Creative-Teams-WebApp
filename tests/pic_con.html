@@ -121,7 +121,18 @@
         <input name="saveButton" type="button" value="Save Title" style="font-size:25px" id="saveButton" class="topButton" onClick="saveTitle();">
         <input name="cancelButton" type="button" value="Cancel" style="font-size:25px" id="cancelButton" class="topButton" onClick="cancelUpdateTitle();">
         </p>
+        </div>
+        
+        <div id="askForTitle">
+        <h1>Give your drawing a title:</h1>
+        <br/><br/>        
+        <textarea name="add Title" id="titleArea2" cols="55" rows="10" style="font-size:25px;"></textarea>        
+        <br/><br/>       
+        <p>
+        <input name="saveButton" type="button" value="Save Title" style="font-size:25px" id="saveButton" class="topButton" onClick="saveTitleAndSendResults();">
+        </p>
         </div>	
+        	
 		<script> $(function() { FastClick.attach(document.body);}); </script>
 		<script src="../javascript/frontend/commons.js?v=1"></script>
 		<script src="../javascript/frontend/pic_con.js"></script>

@@ -12,18 +12,28 @@ function getBGImageName() {
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	testComplete = true;
-	Popup.show('WaitDialog');
+//	Popup.show('WaitDialog');
 	disableElements(buttons);	
 });
 
 socket.on(GET_RESULTS_REQ, function(rsp) {
 	console.log("GetResultsReq received ...");
+	sendGetResultsRsp();	
+});
+
+function sendGetResultsRsp() {
 	if (!changeScreenInProgress)
-		prepareCanvasForSnapshot(getBGImageName(), sendResults);
+		if (isTitleEmpty() && changed) 
+			askForTitle("sendGetResultsRsp()");
+		else {
+			Popup.show('waitDialog');
+			sendWaitMsg();
+			prepareCanvasForSnapshot(getBGImageName(), sendResults);
+		}
 	else {
 		getResultsReqReceived = true;
-	}
-});
+	}	
+}
 
 function sendResults() {
 	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
@@ -32,7 +42,6 @@ function sendResults() {
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	changeScreenInProgress = true;
 	console.log("CHANGE_SCREEN_MSG received ...", newScreen);
-	Popup.hide('WaitDialog');
 	screenNumber = newScreen;
 	changeScreen(getBGImageName());
 	showScreenNumber(PAR_LINES_MAX_SCREEN);
@@ -73,7 +82,7 @@ socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 });
 
 socket.on(UPDATE_TITLE_MSG, function(rsp) {
-	changed = true;
+//	changed = true;
 	handleUpdateTitle(rsp);
 });
 
@@ -113,29 +122,42 @@ socket.on(ERASE_MSG, function(dot){
 	redraw();	
 });
 
-socket.on(END_DATA_MSG, function(){
+socket.on(END_DATA_MSG, function() {
+	changeScreenInProgress = false;	
 	if (getResultsReqReceived) {
-		prepareCanvasForSnapshot(getBGImageName(), sendResults);
 		getResultsReqReceived = false;
+		sendGetResultsRsp();
 	} else if (!testComplete){
 		Popup.hide('WaitDialog');
-		enableElements(buttons);
-		changeScreenInProgress = false;		
-	}	
+		enableElements(buttons);		
+	}
 	changed = false;
 });
 
 
-socket.on(WAIT_MSG, function() {
+socket.on(WAIT_MSG, function(data) {
 	console.log("WAIT_MSG received ...");
-	Popup.show('WaitDialog');
+	if (data.userID != userID)
+		Popup.show('WaitDialog');
 	disableElements(buttons);
+});
+
+socket.on(NOTIFY_TEAM_MSG, function(msg){
+	switch (msg.message) {
+	case WAIT_FOR_TITLE:
+		Popup.hide('addTitle');
+		if (msg.userID != userID) {
+			Popup.hide('askForTitle');			
+			document.getElementById("WaitMessage").innerHTML = "Help " + msg.data.name + "(" + msg.data.accessCode + ") by suggesting a title for your drawing";
+			Popup.show('WaitDialog');
+		}
+		break;
+	}
 });
 
 socket.on(DEMO_STOP_TIMER, function() {
 	document.getElementById('demo-button').value = 'Next Test';
 });
-
 
 function sendRequestToNextScreen() {
 	if (screenNumber < PAR_LINES_MAX_SCREEN) {
@@ -151,12 +173,6 @@ function sendRequestToNextScreen() {
 	}
 }
 
-function sendNextScreenMsg() {
-	if (changed)
-		socket.emit(NEXT_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
-	else 
-		socket.emit(NEXT_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});		
-}
 
 function sendRequestToPrevScreen() {
 	if (screenNumber > 1) {
@@ -170,11 +186,4 @@ function sendRequestToPrevScreen() {
 			sendPrevScreenMsg();
 		} 
 	}
-}
-
-function sendPrevScreenMsg() {
-	if (changed) 
-		socket.emit(PREV_SCREEN_MSG, {"status": CHANGED, "screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
-	else
-		socket.emit(PREV_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
 }

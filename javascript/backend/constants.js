@@ -72,6 +72,7 @@ var BG_CREATED_MSG = "BGCreatedMsg";
 var UNDO_MSG = "UndoMsg";
 var REDO_MSG = "RedoMsg";
 var PLACE_SHAPE_MSG = "PlaceShapeMsg";
+var NOTIFY_TEAM_MSG = "NotifyTeamMsg";
 
     // messages in demo mode.
 var DEMO_NEXT_TEST = "DemoNextTest";
@@ -85,6 +86,10 @@ var LOAD_TEST_PAGE = "LoadTestPage";
 var EDIT_TITLE = "EditTitle";
 var START_TEST = "StartTest";
 var CREATE_BACKGROUND = "CreateBackGround";
+
+// NOTIFY_TEAM message
+
+var WAIT_FOR_TITLE = "WaitForTitle";
 
 // objects and operations
 
