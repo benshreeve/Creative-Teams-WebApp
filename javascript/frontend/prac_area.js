@@ -1,6 +1,7 @@
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	document.getElementById('top-right-button').style.display = "";
+	setInterval(function() {blink('top-right-button');}, 500);	
 });
 
 
@@ -24,6 +25,7 @@ socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	{		
 		document.getElementById('top-right-button').style.display = "";
 		document.getElementById('top-right-button').value = 'Take me to the test';
+		setInterval(function() {blink('top-right-button');}, 500);
 	}
 });
 
@@ -37,13 +39,19 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
 	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 	
-	if(!rsp.sessionState.Late){		
-		document.getElementById('top-right-button').style.display = "none";
+	if(!rsp.sessionState.Late){
+		if (parseInt(remainTime) > 0)
+			document.getElementById('top-right-button').style.display = "none";
+		else {
+			console.log("here again ...", remainTime);
+			setInterval(function() {blink('top-right-button');}, 500);
+		}
 	}
 	else
 	{		
 		document.getElementById('top-right-button').style.display = "";
 		document.getElementById('top-right-button').value = 'Take me to the test';
+		setInterval(function() {blink('top-right-button');}, 500);
 	}
 });
 

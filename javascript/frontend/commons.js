@@ -620,3 +620,8 @@ function sendPrevScreenMsg() {
 			socket.emit(PREV_SCREEN_MSG, {"status": UNCHANGED, "screenNumber": screenNumber});
 	}
 }
+
+function blink(id) {
+    var elm = document.getElementById(id);
+    elm.style.color = elm.style.color == 'white'? 'black': 'white';
+}
