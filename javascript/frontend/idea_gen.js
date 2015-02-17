@@ -84,6 +84,8 @@ function sendAddIdea() {
 	if (ideaText != "" && descriptionText != "") {
 		ideaTransaction = {ScreenNumber: 1, ObjectID: IDEA, Operation: ADD, OperationData: {title: ideaText, description:descriptionText, id:0}};
 		socket.emit(ADD_IDEA_MSG, ideaTransaction);
+		document.getElementById("idea-title-textfield").value = "";
+		document.getElementById("idea-description-textfield").value = "";		
 	}
 }
 

@@ -74,6 +74,7 @@ function sendAddUse() {
 	if (useText != "") {
 		useTransaction = {ScreenNumber: 1, ObjectID: USE, Operation: ADD, OperationData: {use: useText, id:0}};
 		socket.emit(ADD_USE_MSG, useTransaction);
+		document.getElementById("use-textfield").value = "";
 	}
 }
 
