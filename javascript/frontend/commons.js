@@ -589,6 +589,7 @@ function saveTitleAndSendResults() {
 		changed = true;
 		saveTitle();
 		eval(document.getElementById('titleArea2').ctCallBack);
+		document.getElementById('titleArea2').value = "";
 	}
 }
 
