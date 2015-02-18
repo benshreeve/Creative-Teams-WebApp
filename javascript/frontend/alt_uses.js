@@ -1,5 +1,5 @@
 var currentSelection = 0;
-var buttons = ["submit-button", "cancel-button", "delete-button", "top-left-button", "demo_button"];
+var buttons = ["submit-button", "cancel-button", "delete-button", "top-left-button", "demo-button"];
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
