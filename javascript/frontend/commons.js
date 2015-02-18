@@ -186,6 +186,88 @@ function pushToSocket(type, data) {
 	}	
 }
 
+/* canvas event listeners */
+
+function doTouchStart(e) {
+	var touchX = e.targetTouches[0].pageX - this.offsetLeft;
+	var touchY = e.targetTouches[0].pageY - this.offsetTop;
+
+	if(!isErasing && !painting) {	
+		painting = true;
+		pushToSocket("draw", { x: touchX, y: touchY, drag: false, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
+	}
+	else {
+		circleDiv.style.top = (touchY - 50) + "px";
+		circleDiv.style.left = (touchX - 50) + "px";
+		$("#circle").stop(true, true).fadeIn();
+		eraseLite(touchX, touchY, false);
+	}
+};
+
+function doMouseDown(e) {
+	var mouseX = e.pageX - this.offsetLeft;
+	var mouseY = e.pageY - this.offsetTop;
+	
+	if(!isErasing) {
+		painting = true;
+		pushToSocket("draw", { x: mouseX, y: mouseY, drag: false, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
+	}
+	else {
+		isMouseDown = true;
+		circleDiv.style.top = (mouseY - 50) + "px";
+		circleDiv.style.left = (mouseX - 50) + "px";
+		eraseLite(mouseX, mouseY, false);
+		$("#circle").stop(true, true).fadeIn();
+	}
+};
+
+function doTouchMove(e) {
+	event.preventDefault();
+	var touchX = e.targetTouches[0].pageX - this.offsetLeft;
+	var touchY = e.targetTouches[0].pageY - this.offsetTop;
+	
+	if(!isErasing) {
+		if(!painting) {
+			addClickSimple(touchX, touchY, false, radius,  myColour, accessID);	
+			painting = true;
+		}
+		else pushToSocket("draw", { x: (e.targetTouches[0].pageX - this.offsetLeft), y: (e.targetTouches[0].pageY - this.offsetTop), drag: true, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
+	}
+	else eraseLite(touchX, touchY, true);
+};
+
+function doMouseMove(e) {
+	if(painting){		
+		isMouseDown = true;
+		pushToSocket("draw", { x: (e.pageX - this.offsetLeft), y: (e.pageY - this.offsetTop), drag: true, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
+	}
+	else if(isMouseDown) eraseLite(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true); 
+};
+
+function doTouchEnd() {
+	painting = false;
+	$("#circle").fadeOut();
+};
+
+function doMouseUp(e) {
+	painting = false;
+	isMouseDown = false;
+	if(isErasing) $("#circle").fadeOut();
+};
+
+function doMouseLeave(e) {
+	if(isMouseDown) painting = true;
+	else painting = false;
+};
+
+function doMouseOver(e) {
+	if(isMouseDown == true && isErasing == false) painting = true;
+	else { 
+		painting = false; 
+		if(isMouseDown == true) isErasing = false;
+	}
+};
+
 function prepareCanvas(bgImageUrl) {
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth / 2);
@@ -203,14 +285,7 @@ function prepareCanvas(bgImageUrl) {
 	}
 	
 	// Event Handlers:
-	canvasSimple.addEventListener("touchstart", doTouchStart, false);
-    canvasSimple.addEventListener("touchmove", doTouchMove, true);
-    canvasSimple.addEventListener("touchend", doTouchEnd, false);
-	canvasSimple.addEventListener("mousedown", doMouseDown, false);
-	canvasSimple.addEventListener("mousemove", doMouseMove, false);
-	canvasSimple.addEventListener("mouseup", doMouseUp, false);
-	canvasSimple.addEventListener("mouseleave", doMouseLeave, false);	
-	canvasSimple.addEventListener("mouseover", doMouseOver, false);
+	enableCanvas();
 	
 	
 	
@@ -224,87 +299,7 @@ function prepareCanvas(bgImageUrl) {
 	
 	// Ask for Session Details:
 	
-	//stateSession();
-	
-	function doTouchStart(e) {
-		var touchX = e.targetTouches[0].pageX - this.offsetLeft;
-		var touchY = e.targetTouches[0].pageY - this.offsetTop;
-	
-		if(!isErasing && !painting) {	
-			painting = true;
-			pushToSocket("draw", { x: touchX, y: touchY, drag: false, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
-		}
-		else {
-			circleDiv.style.top = (touchY - 50) + "px";
-			circleDiv.style.left = (touchX - 50) + "px";
-			$("#circle").stop(true, true).fadeIn();
-			eraseLite(touchX, touchY, false);
-		}
-	};
-	
-	function doMouseDown(e) {
-		var mouseX = e.pageX - this.offsetLeft;
-		var mouseY = e.pageY - this.offsetTop;
-		
-		if(!isErasing) {
-			painting = true;
-			pushToSocket("draw", { x: mouseX, y: mouseY, drag: false, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
-		}
-		else {
-			isMouseDown = true;
-			circleDiv.style.top = (mouseY - 50) + "px";
-			circleDiv.style.left = (mouseX - 50) + "px";
-			eraseLite(mouseX, mouseY, false);
-			$("#circle").stop(true, true).fadeIn();
-		}
-	};
-	
-	function doTouchMove(e) {
-		event.preventDefault();
-		var touchX = e.targetTouches[0].pageX - this.offsetLeft;
-		var touchY = e.targetTouches[0].pageY - this.offsetTop;
-		
-		if(!isErasing) {
-			if(!painting) {
-				addClickSimple(touchX, touchY, false, radius,  myColour, accessID);	
-				painting = true;
-			}
-			else pushToSocket("draw", { x: (e.targetTouches[0].pageX - this.offsetLeft), y: (e.targetTouches[0].pageY - this.offsetTop), drag: true, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
-		}
-		else eraseLite(touchX, touchY, true);
-	};
-	
-	function doMouseMove(e) {
-		if(painting){		
-			isMouseDown = true;
-			pushToSocket("draw", { x: (e.pageX - this.offsetLeft), y: (e.pageY - this.offsetTop), drag: true, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
-		}
-		else if(isMouseDown) eraseLite(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true); 
-	};
-	
-	function doTouchEnd() {
-		painting = false;
-		$("#circle").fadeOut();
-	};
-	
-	function doMouseUp(e) {
-		painting = false;
-		isMouseDown = false;
-		if(isErasing) $("#circle").fadeOut();
-	};
-	
-	function doMouseLeave(e) {
-		if(isMouseDown) painting = true;
-		else painting = false;
-	};
-	
-	function doMouseOver(e) {
-		if(isMouseDown == true && isErasing == false) painting = true;
-		else { 
-			painting = false; 
-			if(isMouseDown == true) isErasing = false;
-		}
-	};
+	//stateSession();	
 }
 
 function addClickSimple(x, y, dragging, strokeradius, colour, owner) {
@@ -552,6 +547,8 @@ function disableElements(elements) {
 			element.disabled = true;
 		}
 	}
+	if (canvasSimple != undefined)
+		disableCanvas();
 }
 
 function enableElements(elements) {
@@ -625,4 +622,26 @@ function sendPrevScreenMsg() {
 function blink(id) {
     var elm = document.getElementById(id);
     elm.style.color = elm.style.color == 'white'? 'black': 'white';
+}
+
+function enableCanvas() {
+	canvasSimple.addEventListener("touchstart", doTouchStart, false);
+    canvasSimple.addEventListener("touchmove", doTouchMove, true);
+    canvasSimple.addEventListener("touchend", doTouchEnd, false);
+	canvasSimple.addEventListener("mousedown", doMouseDown, false);
+	canvasSimple.addEventListener("mousemove", doMouseMove, false);
+	canvasSimple.addEventListener("mouseup", doMouseUp, false);
+	canvasSimple.addEventListener("mouseleave", doMouseLeave, false);	
+	canvasSimple.addEventListener("mouseover", doMouseOver, false);	
+}
+
+function disableCanvas() {
+	canvasSimple.removeEventListener("touchstart", doTouchStart, false);
+    canvasSimple.removeEventListener("touchmove", doTouchMove, true);
+    canvasSimple.removeEventListener("touchend", doTouchEnd, false);
+	canvasSimple.removeEventListener("mousedown", doMouseDown, false);
+	canvasSimple.removeEventListener("mousemove", doMouseMove, false);
+	canvasSimple.removeEventListener("mouseup", doMouseUp, false);
+	canvasSimple.removeEventListener("mouseleave", doMouseLeave, false);	
+	canvasSimple.removeEventListener("mouseover", doMouseOver, false);
 }
