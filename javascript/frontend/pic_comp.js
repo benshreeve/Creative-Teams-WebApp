@@ -2,7 +2,7 @@ var bgImagePath = "../images/picturecompletion/TTCT_Fig_Parts_Figure_";
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
-var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demo-Button"];
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demo-button"];
 var testComplete = false;
 
 function getBGImageName() {

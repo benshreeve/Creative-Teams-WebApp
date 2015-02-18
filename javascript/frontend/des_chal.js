@@ -1,7 +1,7 @@
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
-var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demo-Button"];
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demo-button"];
 var testComplete = false;
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
