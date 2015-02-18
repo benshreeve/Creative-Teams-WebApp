@@ -2,7 +2,7 @@ var bgImage;
 var shape;
 var paper;
 var bgShape;
-var buttons=["top-left-button", "place-shape-button", "enterTitle"];
+var buttons=["top-left-button", "place-shape-button", "enterTitle", "demoButton"];
 var changed = false;
 
 function getBGImageName(bgImageName) {
@@ -24,8 +24,11 @@ socket.on(GET_RESULTS_REQ, function(rsp) {
 });
 
 function sendGetResultsRsp() {
-	if (bgImage != undefined)
+	if (bgImage != undefined) {
+		Popup.show('WaitDialog');
+		sendWaitMsg();		
 		prepareCanvasForSnapshot(getBGImageName(bgImage), sendResults);
+	}
 	else
 		sendResults();	
 }

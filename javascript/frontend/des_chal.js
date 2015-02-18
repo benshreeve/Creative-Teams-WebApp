@@ -1,7 +1,7 @@
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
-var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle"];
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demoButton"];
 var testComplete = false;
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
@@ -21,7 +21,8 @@ function sendGetResultsRsp() {
 		if (isTitleEmpty() && changed) 
 			askForTitle("sendGetResultsRsp()");
 		else {
-			Popup.show('waitDialog');
+			Popup.show('WaitDialog');
+			sendWaitMsg();
 			sendResults();
 		}
 	else {

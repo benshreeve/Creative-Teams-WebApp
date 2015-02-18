@@ -2,7 +2,7 @@ var bgImagePath = "../images/parallellines/Parallel_Lines.svg";
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
-var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle"];
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demoButton"];
 var testComplete = false;
 
 function getBGImageName() {
@@ -26,7 +26,7 @@ function sendGetResultsRsp() {
 		if (isTitleEmpty() && changed) 
 			askForTitle("sendGetResultsRsp()");
 		else {
-			Popup.show('waitDialog');
+			Popup.show('WaitDialog');
 			sendWaitMsg();
 			prepareCanvasForSnapshot(getBGImageName(), sendResults);
 		}
