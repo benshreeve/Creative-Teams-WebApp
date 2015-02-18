@@ -558,6 +558,8 @@ function enableElements(elements) {
 			element.disabled = false;
 		}
 	}
+	if (canvasSimple != undefined) 
+		enableCanvas();	
 }
 
 function demoSetupButton() {

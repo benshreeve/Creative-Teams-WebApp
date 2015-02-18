@@ -2,7 +2,7 @@ var bgImagePath = "../images/parallellines/Parallel_Lines.svg";
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
-var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demoButton"];
+var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "demo-Button"];
 var testComplete = false;
 
 function getBGImageName() {

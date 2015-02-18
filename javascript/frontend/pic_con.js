@@ -2,7 +2,7 @@ var bgImage;
 var shape;
 var paper;
 var bgShape;
-var buttons=["top-left-button", "place-shape-button", "enterTitle", "demoButton"];
+var buttons=["top-left-button", "place-shape-button", "enterTitle", "demo-Button"];
 var changed = false;
 
 function getBGImageName(bgImageName) {
