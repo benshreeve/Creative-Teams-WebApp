@@ -333,9 +333,9 @@ function redraw() {
 				context.lineCap = "round";
 				context.lineWidth = pointsArray[i].radius;
 
-				if ( i > 0 && (pointsArray[i].colour != pointsArray[i-1].colour) && (pointsArray[i].drag === true || pointsArray[i].drag === "true") ) {
+				if ( i > 0 && (pointsArray[i].owner != pointsArray[i-1].owner) && (pointsArray[i].drag === true || pointsArray[i].drag === "true") ) {
 					for(var x=i-2; x>=0; x--) {
-						if(pointsArray[x].colour == pointsArray[i].colour) {
+						if(pointsArray[x].owner == pointsArray[i].owner) {
 							context.moveTo( (pointsArray[i].x), (pointsArray[i].y) );
 							context.lineTo(pointsArray[x].x, pointsArray[x].y);
 							break;
