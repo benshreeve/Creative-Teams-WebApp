@@ -122,6 +122,8 @@ function handleUpdateTitle(info) {
 		document.getElementById('enterTitle').value = "Add Title";
 		document.getElementById('enterTitle').style.color="grey";
 	}
+	if (document.getElementById('drawing-title'))
+		document.getElementById('drawing-title').innerHTML = "Title: "+info.OperationData.title
 	checkAddEditTitle();	
 }
 
@@ -271,7 +273,7 @@ function doMouseOver(e) {
 function prepareCanvas(bgImageUrl) {
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth / 2);
-	canvas.setAttribute('height', (canvasHeight - 400) / 2);
+	canvas.setAttribute('height', (canvasHeight - 460) / 2);
 	canvas.setAttribute('id', 'canvasSimple');
 	canvas.style.display = 'block';
 	canvasDiv.appendChild(canvas);
@@ -292,7 +294,7 @@ function prepareCanvas(bgImageUrl) {
 	// Fix for HD Displays:
 	if(window.devicePixelRatio == 2) {
 		canvas.setAttribute('width', canvasWidth / 2);
-		canvas.setAttribute('height', (canvasHeight /2) - 200);
+		canvas.setAttribute('height', (canvasHeight /2) - 230);
 		document.getElementById('deadzone-top').style.width = "100%";
 		document.getElementById('deadzone-bottom').style.width = "100%";
 	}	
@@ -517,6 +519,7 @@ function changeScreen(bgImagePath) {
     if (bgImagePath != undefined)
     	switchBackground(bgImagePath);
     document.getElementById('titleArea').value = "";
+    document.getElementById('drawing-title').innerHTML = "Title:";
     socket.emit(GET_TRANSACTIONS_REQ);
 }
 
