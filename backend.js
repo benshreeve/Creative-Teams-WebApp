@@ -43,11 +43,12 @@ function startBackend() {
     app.use(cookieParser("gZB8fSdS"));
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
-    io.set('heartbeat timeout', 9999);
+    io.set('heartbeat timeout', 9999999);
+    io.set('heartbeat interval', 9999999);
    
     
     sessionSockets.on('connection', function(err, socket, session){
-    	if (!err) {
+    	if (!err && session.TeamID != undefined) {
 	    	if (session.refCount > 0) {
 				rdb.delReadyParticipant(session.TeamID, session.AccessCode);
 				session.refCount = 0;
