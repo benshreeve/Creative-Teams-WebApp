@@ -378,8 +378,8 @@ function resetCache() {
 
 function eraseLite(x, y, dragging) {
 	if(isErasing) {
-		circleDiv.style.top = (y - eraserRadius + 100) + "px";
-		circleDiv.style.left = (x - eraserRadius) + "px";			
+		circleDiv.style.top = (y + 100) + "px";
+		circleDiv.style.left = (x - parseInt(eraserRadius)) + "px";
 		pushToSocket("erase", { x: x, y: y, drag: dragging, rad: eraserRadius, colour: "rgba(0,0,0,1)", owner: accessID, group: groupNumber, screen: screenNumber });
 	}
 }
@@ -407,8 +407,8 @@ function switchStroke(size, id) {
 	if(id=='paintCircle') radius = size;
 	else {
 		eraserRadius = size;
-		circleDiv.style.width = (eraserRadius * 2) + "px";
-		circleDiv.style.height = (eraserRadius * 2) + "px";		
+		circleDiv.style.width = (eraserRadius) + "px";
+		circleDiv.style.height = (eraserRadius) + "px";		
 	}
 	
 	var startPos = 256;
