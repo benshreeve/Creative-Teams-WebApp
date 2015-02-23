@@ -199,10 +199,12 @@ function doTouchStart(e) {
 		pushToSocket("draw", { x: touchX, y: touchY, drag: false, rad: radius, colour: myColour, owner: accessID, group: groupNumber, screen: screenNumber });
 	}
 	else {
-		circleDiv.style.top = (touchY - 50) + "px";
-		circleDiv.style.left = (touchX - 50) + "px";
-		$("#circle").stop(true, true).fadeIn();
-		eraseLite(touchX, touchY, false);
+		if (!painting) {
+			circleDiv.style.top = (touchY - 50) + "px";
+			circleDiv.style.left = (touchX - 50) + "px";
+			$("#circle").stop(true, true).fadeIn();
+			eraseLite(touchX, touchY, false);
+		}
 	}
 };
 
