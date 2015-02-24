@@ -61,7 +61,7 @@ module.exports =
 	        context.socket.on(BG_CREATED_MSG, function(bgImage) {
 	        	var fileName = utils.randomFileName(context.session.TeamID, "svg");	        
 	        	context.rdb.setPicConBGImage(context.session.TeamID, fileName);
-	        	require('fs').writeFileSync(PIC_CON_BGIMAGE_PATH+fileName, bgImage);
+	        	require('fs').writeFileSync(BACKEND_PIC_CON_BGIMAGE_PATH+fileName, bgImage);
 	        	context.channel.sendToTeam(context.session.TeamID, BG_CREATED_MSG, fileName)
 	        });
 	        

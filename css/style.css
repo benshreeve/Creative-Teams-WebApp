@@ -83,28 +83,28 @@ body:hover {
 
 #paintbutton {
 	background-color: #ffc907;
-	background-image: url('../images/Pen.png');
+	background-image: url('/assets/images/Pen.png');
 	width: 1300px;
 	z-index: 1;
 }
 
 #erasebutton {
 	background-color: #01b3ef;
-	background-image: url('../images/Rubber.png');
+	background-image: url('/assets/images/Rubber.png');
 	z-index: 2;
 	width: 850px;
 }
 
 #undobutton {
 	background-color: #d6e30f;
-	background-image: url('../images/Undo.png');
+	background-image: url('/assets/images/Undo.png');
 	z-index: 3;
 	width: 400px;
 }
 
 #redobutton {
 	background-color: #6edc45;
-	background-image: url('../images/Redo.png');
+	background-image: url('/assets/images/Redo.png');
 	z-index: 4;
 	width: 50px;
 }

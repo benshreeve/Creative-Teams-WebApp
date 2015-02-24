@@ -1,4 +1,4 @@
-var bgImagePath = "../images/picturecompletion/TTCT_Fig_Parts_Figure_";
+var bgImagePath = "/assets/images/picturecompletion/TTCT_Fig_Parts_Figure_";
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;

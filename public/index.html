@@ -3,15 +3,15 @@
 
 <head>
 	<title>Creative Teams : Login</title>
-	<link rel="stylesheet" type="text/css" href="/css/formstyle.css?v=1">
-    <link rel="stylesheet" type="text/css" href="style.css">	
+	<link rel="stylesheet" type="text/css" href="/assets/css/formstyle.css?v=1">
+    <link rel="stylesheet" type="text/css" href="/assets/public/style.css">	
 	<meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, target-densitydpi=device-dpi">
 	<!--<meta content='width=device-width, height=device-height, initial-scale=1, minimal-ui, user-scalable=0' name='viewport'> -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/images/CreativeTeams-Icon.png">
-	<script src="/javascript/jquery.js" type="text/javascript"></script>
-    <script src="../javascript/PopupWindow.js"></script>
+	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/assets/images/CreativeTeams-Icon.png">
+	<script src="/assets/javascript/jquery.js" type="text/javascript"></script>
+    <script src="/assets/javascript/PopupWindow.js"></script>
 </head>
 
 <body>
@@ -36,30 +36,13 @@
         <p>
         <input name="closeButton" type="button" value="Close" id="closeButton" onClick="Popup.hideAll();">
         </p>
-        </div>
-
-	<script src='/javascript/jquery.js'></script>
-  
+        </div>  
 	<script>
 	$(function() {
-		$("#ethics-agreement").load('../instructions/Ethics.html');
+		$("#ethics-agreement").load('/assets/instructions/Ethics.html');
 	});
-        /*
-	var a=document.getElementsByTagName("a");
-	for(var i=0;i<a.length;i++) {
-		a[i].onclick=function() {
-			window.location=this.getAttribute("href");
-			return false
-		}
-	}
-	
-	var randombgs=["http://www.orangewallpapers.com/albums/userpics/Bass_Harbor_Marsh2C_Acadia_National_Park2C_Maine.jpg", "http://ginva.com/wp-content/uploads/2012/07/city-skyline-wallpapers-008.jpg"];
-
-	$('#thing').css({'background-image': 'url(' + randombgs[Math.floor(Math.random() *      randombgs.length)] + ')'});
-	*/
-
   </script>
   
 </body>
-	<script src="/javascript/prefixfree.min.js"></script>
+	<script src="/assets/javascript/prefixfree.min.js"></script>
 </html>

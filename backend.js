@@ -196,7 +196,7 @@ function processNewUser(userRow, args) {
 			args.req.session.refCount = 0;
 			rdb.getCurrentTest(userRow.TeamID, setLate, {userSession: args.req.session});
 			db.getResultsPath(createTeamFolder, {teamID: userRow.TeamID});			
-			args.res.redirect("/tests/introductions.html");
+			args.res.redirect("/assets/tests/introductions.html");
 		} else {
 			serveError(args.res, "User has already logged in ...");
 		}
@@ -222,4 +222,4 @@ function createTeamFolder(path, args) {
 /*								Listening Port								 */
 /* ------------------------------------------------------------------------- */
 
-http.listen(process.env.PORT || 80, function(){ logger.log('listening on *:80'); });
+http.listen(process.env.PORT || 4000, function(){ logger.log('listening on *:4000'); });

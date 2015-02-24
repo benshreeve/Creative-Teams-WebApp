@@ -6,7 +6,7 @@ var buttons=["top-left-button", "place-shape-button", "enterTitle", "demo-button
 var changed = false;
 
 function getBGImageName(bgImageName) {
-	return "../" + PIC_CON_BGIMAGE_PATH +  bgImageName;
+	return PIC_CON_BGIMAGE_PATH +  bgImageName;
 }
 	
 socket.on(TEST_COMPLETE_MSG, function(rsp) {

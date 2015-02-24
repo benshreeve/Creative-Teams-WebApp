@@ -5,13 +5,13 @@
 module.exports = function(context) {
 	runScript("./javascript/backend/constants.js");
 	var logger = require('./logger.js')();
-	var tests = [{id: PRAC_AREA, longName: "PracticeArea", name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/tests/introduction.html', testURL:'/tests/practice_area.html'},
-	             {id: PIC_CON, longName: "PictureConstruction", name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/tests/pic_con_inst.html', testURL:'/tests/pic_con.html'},
-	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/tests/pic_comp_inst.html', testURL:'/tests/pic_comp.html'},
-	             {id: PAR_LINES, longName: "ParallelLines", name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/tests/par_lines_inst.html', testURL:'/tests/par_lines.html'},
-	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/tests/idea_gen_inst.html', testURL:'/tests/idea_gen.html'},
-	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/tests/des_chal_inst.html', testURL:'/tests/des_chal.html'},
-	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/tests/alt_uses_inst.html', testURL:'/tests/alt_uses.html'},
+	var tests = [{id: PRAC_AREA, longName: "PracticeArea", name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/assets/tests/introduction.html', testURL:'/assets/tests/practice_area.html'},
+	             {id: PIC_CON, longName: "PictureConstruction", name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/assets/tests/pic_con_inst.html', testURL:'/assets/tests/pic_con.html'},
+	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/assets/tests/pic_comp_inst.html', testURL:'/assets/tests/pic_comp.html'},
+	             {id: PAR_LINES, longName: "ParallelLines", name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/assets/tests/par_lines_inst.html', testURL:'/assets/tests/par_lines.html'},
+	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/assets/tests/idea_gen_inst.html', testURL:'/assets/tests/idea_gen.html'},
+	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/assets/tests/des_chal_inst.html', testURL:'/assets/tests/des_chal.html'},
+	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/assets/tests/alt_uses_inst.html', testURL:'/assets/tests/alt_uses.html'},
 	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: '/tests/end.html', testURL:'/tests/end.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
