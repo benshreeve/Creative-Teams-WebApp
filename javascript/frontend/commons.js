@@ -495,6 +495,7 @@ function prepareCanvasForSnapshot(bgImagePath, callback, args) {
     var w = canvasSimple.width;
     var h = canvasSimple.height;
     
+    context.globalCompositeOperation = "source-over";
     var data = canvasSimple.toDataURL();
   
 	var bgImage = new Image();
