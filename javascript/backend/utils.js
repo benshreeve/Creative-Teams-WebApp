@@ -12,7 +12,7 @@ module.exports = function(context) {
 	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/assets/tests/idea_gen_inst.html', testURL:'/assets/tests/idea_gen.html'},
 	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/assets/tests/des_chal_inst.html', testURL:'/assets/tests/des_chal.html'},
 	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/assets/tests/alt_uses_inst.html', testURL:'/assets/tests/alt_uses.html'},
-	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: '/tests/end.html', testURL:'/tests/end.html'}];
+	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: '/assets/tests/end.html', testURL:'/assets/tests/end.html'}];
 	
 	var colours = ["", "purple", "red", "blue", "orange", "green"];
 	var testsOrder = [PRAC_AREA, PIC_CON, PIC_COMP, PAR_LINES, IDEA_GEN, DES_CHAL, ALT_USES, END_TEST];

@@ -36,6 +36,7 @@ module.exports = function (context) {
 		saveDesChalResults: function(results) {
 			saveImage(DES_CHAL, results.screenNumber, results.image);
 			saveDesChalTitle(results.screenNumber, results.title);
+			saveDesChalTitle(0, results.description);
 		},
 		
 		removeResults: function() {

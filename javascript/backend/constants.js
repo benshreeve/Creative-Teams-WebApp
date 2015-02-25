@@ -90,6 +90,7 @@ var CREATE_BACKGROUND = "CreateBackGround";
 // NOTIFY_TEAM message
 
 var WAIT_FOR_TITLE = "WaitForTitle";
+var WAIT_FOR_DESCRIPTION = "WaitForDescription";
 
 // objects and operations
 

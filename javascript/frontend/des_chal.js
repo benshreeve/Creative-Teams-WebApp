@@ -20,18 +20,34 @@ function sendGetResultsRsp() {
 	if (!changeScreenInProgress)
 		if (isTitleEmpty() && changed) 
 			askForTitle("sendGetResultsRsp()");
-		else {
-			Popup.show('WaitDialog');
+		else {			
 			sendWaitMsg();
-			sendResults();
+			getDescription();
 		}
 	else {
 		getResultsReqReceived = true;
 	}	
 }
 
+function saveDescriptionAndSendResults() {
+	description = document.getElementById('descriptionArea').value;
+	if (description != '') {
+		Popup.hideAll();
+		changed = true;
+		sendResults();
+	}
+
+}
+
+function getDescription() {
+	Popup.hideAll();
+	Popup.show('askForDescription');
+	socket.emit(NOTIFY_TEAM_MSG, {message: WAIT_FOR_DESCRIPTION, data:{accessCode: AccessCode, name: Name}});				
+}
+
 function sendResults() {
-	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
+	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), 
+		"title": document.getElementById('titleArea').value, "description": document.getElementById('descriptionArea').value});
 }
 
 socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
@@ -147,6 +163,14 @@ socket.on(NOTIFY_TEAM_MSG, function(msg){
 			Popup.show('WaitDialog');
 		}
 		break;
+	case WAIT_FOR_DESCRIPTION:
+		Popup.hide('addTitle');
+		if (msg.userID != userID) {
+			Popup.hide('askForTitle');			
+			document.getElementById("WaitMessage").innerHTML = "Help " + msg.data.name + "(" + msg.data.accessCode + ") by suggesting a description for your design";
+			Popup.show('WaitDialog');
+		}
+		break;		
 	}	
 });
 
