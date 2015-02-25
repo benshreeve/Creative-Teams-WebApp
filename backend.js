@@ -222,4 +222,5 @@ function createTeamFolder(path, args) {
 /*								Listening Port								 */
 /* ------------------------------------------------------------------------- */
 
+logger.log("Backend started on ", Date());
 http.listen(process.env.PORT || 4000, function(){ logger.log('listening on *:4000'); });
