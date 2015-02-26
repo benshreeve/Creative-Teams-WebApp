@@ -75,7 +75,7 @@ function startBackend() {
 		        
 			db.getActiveUsersCount("connect: ");
     	} else {
-    		logger.log("session got expired. user needs to login again", err);
+    		console.log("session got expired. user needs to login again", err);
     	}
     }); 
 }
