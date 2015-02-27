@@ -32,6 +32,6 @@ module.exports =
 	        	commons.sendIsBackendReadyRsp(END_TEST);
 	        });
 	        
-	        logger.debug("Hanlders were installed for end page.");	        
+	        logger.debug("Handlers were installed for end page.");	        
 		}		
 };
