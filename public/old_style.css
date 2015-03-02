@@ -1,0 +1,142 @@
+/* CSS Document */
+.agreement{
+	left: calc(50% - 255px);
+	margin-top: -27px;
+	position: absolute;
+	top: calc(50% + 60px);
+	z-index: 2;			
+}
+.white{
+	color:#FFF;
+}
+
+#simplediv, #simplediv2{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:90%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:20px;
+}
+#simplediv2{			
+	font-size:30px;
+}
+
+
+#closeButton{
+	font-size:25px;
+}
+
+#practiceIntro{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:90%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+	overflow-y:scroll;
+}
+#addTitle{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:50%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+}
+
+#askForTitle{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:50%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+}
+
+#askForDescription{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:50%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+}
+
+#closeButton, .topButton{
+border:1px solid #393b3e;-webkit-box-shadow: #737373 0px 1px 5px ;-moz-box-shadow: #737373 0px 1px 5px ; box-shadow: #737373 0px 1px 5px ; -webkit-border-radius: 23px; -moz-border-radius: 23px;border-radius: 23px;font-size:14px;font-family:arial, helvetica, sans-serif; padding: 10px 20px 10px 20px; text-decoration:none; display:inline-block;text-shadow: 0px 1px 0 rgba(10,10,10,0.5);font-weight:bold; color: #8C8C8C;
+ background-color: #515459; background-image: -webkit-gradient(linear, left top, left bottom, from(#515459), to(#3B3C40));
+ background-image: -webkit-linear-gradient(top, #515459, #3B3C40);
+ background-image: -moz-linear-gradient(top, #515459, #3B3C40);
+ background-image: -ms-linear-gradient(top, #515459, #3B3C40);
+ background-image: -o-linear-gradient(top, #515459, #3B3C40);
+ background-image: linear-gradient(to bottom, #515459, #3B3C40);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#515459, endColorstr=#3B3C40);
+}
+
+#closeButton, .topButton:hover{
+ border:1px solid #393b3e;
+ background-color: #3B3C40; background-image: -webkit-gradient(linear, left top, left bottom, from(#3B3C40), to(#202124));
+ background-image: -webkit-linear-gradient(top, #3B3C40, #202124);
+ background-image: -moz-linear-gradient(top, #3B3C40, #202124);
+ background-image: -ms-linear-gradient(top, #3B3C40, #202124);
+ background-image: -o-linear-gradient(top, #3B3C40, #202124);
+ background-image: linear-gradient(to bottom, #3B3C40, #202124);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#3B3C40, endColorstr=#202124);
+}
+
+.deleteButton{
+	width: 150px;
+	color:red;
+	float:right;
+}
+
+#practiceIntro{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:90%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+}
+#addTitle{
+	background-color:white;
+	border: 4px solid #365872;
+	border-radius: 15px 15px 15px 15px;
+	box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.4);
+	display:none;
+	width:50%;
+	height:50%;
+	color:black;
+	padding:20px;	
+	text-align: justify;	
+	font-size:30px;
+}
