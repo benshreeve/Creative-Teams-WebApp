@@ -1,3 +1,9 @@
+var bgImagePath = "/assets/images/practicearea/Practice_Area_Background.svg";
+
+function getBGImageName() {
+	return bgImagePath;
+}
+
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	console.log("TestCompleteMsg received ...");
 	document.getElementById('top-right-button').style.display = "";
@@ -13,7 +19,7 @@ socket.on(GET_TEST_STATE_RSP, function(rsp) {
 socket.on(GET_SESSION_STATE_RSP, function(rsp) {
 	console.log("GetSessionStateRsp: ", rsp);
 	storeSessionState(rsp);
-	prepareCanvas();
+	prepareCanvas(getBGImageName());
 	
 	//set the header title	
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
@@ -33,7 +39,7 @@ socket.on(GET_STATE_RSP, function(rsp) {
 	console.log("GetStateRsp: ", rsp.testState, rsp.sessionState);
 	storeTestState(rsp.testState);	
 	storeSessionState(rsp.sessionState);
-	prepareCanvas();
+	prepareCanvas(getBGImageName());
 	
 	//set the header title	
 	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
