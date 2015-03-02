@@ -15,6 +15,8 @@ var canvasWidth = (body.innerWidth() * 2);
 var canvasHeight = (body.innerHeight() * 2);
 var circleDiv = document.getElementById('circle');
 var canvasDiv = document.getElementById('canvasDiv');
+var eraseMarginY = 0;
+var eraseMarginX = 0;
 
 // Default Instance Information:
 var screenNumber = 1;
@@ -380,8 +382,8 @@ function resetCache() {
 
 function eraseLite(x, y, dragging) {
 	if(isErasing) {
-		circleDiv.style.top = (y + 100) + "px";
-		circleDiv.style.left = (x - parseInt(eraserRadius)) + "px";
+		circleDiv.style.top = (y + eraseMarginY) + "px";
+		circleDiv.style.left = (x + eraseMarginX) + "px";
 		pushToSocket("erase", { x: x, y: y, drag: dragging, rad: eraserRadius, colour: "rgba(0,0,0,1)", owner: accessID, group: groupNumber, screen: screenNumber });
 	}
 }
@@ -422,26 +424,36 @@ function switchStroke(size, id) {
 		$("#" + id).animate({
 			left: (startPos - (buttonWidth * 2) - (rightMargin * 2))
 		}, { duration: speed, queue: false });
+		eraseMarginY = 165;
+		eraseMarginX = 10;
 	}
 	else if(size==4 || size== 30) { 
 		$("#" + id).animate({
 			left: (startPos - buttonWidth - rightMargin)
 		}, { duration: speed, queue: false });
+		eraseMarginY = 155;
+		eraseMarginX = 0;
 	}
 	else if(size==6 || size== 50) { 
 		$("#" + id).animate({
 			left: startPos
 		}, { duration: speed, queue: false });
+		eraseMarginY = 145;
+		eraseMarginX = -10;		
 	}
 	else if(size==9 || size==75) { 
 		$("#" + id).animate({
 			left: (startPos + (buttonWidth) + (rightMargin))
-		}, { duration: speed, queue: false });	
+		}, { duration: speed, queue: false });
+		eraseMarginY = 135;
+		eraseMarginX = -20;		
 	}
 	else if(size==12 || size==100) { 
 		$("#" + id).animate({
 			left: (startPos + (buttonWidth *2) + (rightMargin * 2))
-		}, { duration: speed, queue: false });		
+		}, { duration: speed, queue: false });
+		eraseMarginY = 120;
+		eraseMarginX = -30;		
 	}
 }
 
