@@ -1,5 +1,7 @@
 /**
- * New node file
+ * Author: H. Naderi
+ * 
+ * This module contains a set of utility functions which are used in other modules.
  */
 
 module.exports = function(context) {
@@ -140,7 +142,35 @@ module.exports = function(context) {
 		randomFileName: function(prefix, extension) {
 			return  prefix + "-" + new Date().getTime() + "." + extension;
 		},
-			
+		
+		getTestsOrder: function() {
+			return testsOrder;
+		},
+		
+		factorial: function(n) {
+			if(n<=1) 
+				return 1;
+
+			var ret = 1;
+			for(var i = 2; i <= n; i++)
+				ret *= i;
+
+			return ret;			 			
+		},
+		
+		getNthPermutation: function(items, n) {
+		    var src = items.slice(), 
+		    dest = [], 
+		    item;
+		    
+		    for (var i = 0; i < items.length; i++) {
+		        item = n % src.length;
+		        n = Math.floor(n / src.length);
+		        dest.push(src[item]);
+		        src.splice(item, 1);
+		    }
+		    return dest;
+		}						
 	};
 	
 	function isDuplicate(list, item, len) {
@@ -149,7 +179,8 @@ module.exports = function(context) {
 				return true;
 		return false;
 	}
-	function getTestInfo(testID) {		
+	
+	function getTestInfo(testID) {
 		for (var i = 0; i < tests.length; i++) {
 			if (tests[i].id == testID) {
 				return tests[i];
@@ -174,7 +205,7 @@ module.exports = function(context) {
 		}
 		return info.id; 
 	}
-	
+		
 	function runScript(path) {
 		var fs = require('fs');
 		var vm = require('vm');
@@ -207,12 +238,16 @@ module.exports = function(context) {
 		messageMap[USE][UPDATE] = UPDATE_USE_MSG;		
 	}
 	
-	function loadTestsOrder() {
-		if (context != undefined)
-			context.db.getTestsOrder(setTestsOrder);
+	function loadTestsOrder() {		
+		if (context != undefined) {
+			if (context.session == undefined)
+				context.db.getTestsOrder(dbSetTestsOrder);
+			else
+				context.rdb.getTestsOrder(context.session.TeamID, rdbSetTestsOrder);			
+		}			
 	}
 
-	function setTestsOrder(order) {		
+	function dbSetTestsOrder(order) {		
 		testsOrder[0] = PRAC_AREA;
 		for (var i = 0; i < order.length; i++) {
 			testsOrder[i+1] = getTestIdByName(order[i]);
@@ -220,8 +255,13 @@ module.exports = function(context) {
 				throw Error('Duplicate items in tests order: '+order[i]);
 		}
 		testsOrder[i+1] = END_TEST;
+		if (testsOrder.length > order.length)
+			testsOrder = testsOrder.splice(0, i+2);
 	}
 	
+	function rdbSetTestsOrder(order) {
+		testsOrder = order;
+	}
 	
-	
+		
 };

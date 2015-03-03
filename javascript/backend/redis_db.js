@@ -1,8 +1,11 @@
 /**
- * New node file
+ * Author: H. Naderi
+ * 
+ * This module contains methods for accessing/manipulating team records in REDIS database. 
  */
-module.exports = function (conn) {
-	var utils = require("./utils.js")();
+
+module.exports = function (conn, db) {
+	var utils = require("./utils.js")({rdb:conn, db:db});
 	var lock = require('redis-lock')(conn);
 	var logger = require('./logger')();
 	utils.includeConstants('./javascript/backend/constants.js');	
@@ -24,6 +27,11 @@ module.exports = function (conn) {
 					}
 					else {
 						logger.debug("no record for team " + teamID + ". create one ...");
+						order = utils.getTestsOrder();
+						if (RANDOMIZED_TEST_ORDER && teamID >= STARTING_ID_FOR_RANDOMIZATION) {
+							order = [0].concat(utils.getNthPermutation(order.slice(1, order.length-1), teamID % utils.factorial(order.length-2))).concat([7]);
+						}
+						logger.debug("order: ", order);
 						conn.hmset(teamID, "CurrentTest", PRAC_AREA, 
 									   "CurrentScreen", INSTRUCTION_SCREEN,
 									   "TextEditingUser", '',
@@ -35,6 +43,7 @@ module.exports = function (conn) {
 									   "PicConBGCreator", '',
 									   "PicConBGImage", '', 
 									   "DemoStopTimer", DEMO_TIMER_ACTIVE,
+									   "TestsOrder", order,
 									   function(err, result) {
 											done();
 						});
@@ -327,7 +336,7 @@ module.exports = function (conn) {
 					}
 				
 					done();
-					
+
 					if (reply) {
 						callback(reply.CurrentTest, args);
 					} else {
@@ -593,7 +602,23 @@ module.exports = function (conn) {
 					done();
 				});
 			});			
-		},		
+		},	
+		
+		getTestsOrder: function(teamID, callback, args) {
+			lock(teamID, function(done) {
+				conn.hgetall(teamID, function(err, reply) {
+					if (err) {
+						done();
+						throw err;
+					}
+				
+					done();
+					
+					if (reply)
+						callback(reply.TestsOrder.split(','), args);					
+				});
+			});												
+		}
 		
 	};
 

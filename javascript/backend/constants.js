@@ -1,5 +1,7 @@
 /**
- * New node file
+ * Author: H. Naderi
+ * 
+ * This module contains a set of constants which are used in both frontend and backend.
  */
 
 // test IDs.
@@ -135,8 +137,8 @@ var PAR_LINES_MAX_SCREEN = 30;
 var DES_CHAL_MAX_SCREEN = 100;
 var BACKEND_PIC_CON_BGIMAGE_PATH = "images/pictureconstruction/";
 var PIC_CON_BGIMAGE_PATH = "/assets/"+BACKEND_PIC_CON_BGIMAGE_PATH;
-var DEMO_TIMER_ACTIVE = 1;
-var DEMO_TIMER_INACTIVE = 0;
+var RANDOMIZED_TEST_ORDER = true;
+var STARTING_ID_FOR_RANDOMIZATION = 11;
 
 var MYSQL_HOST = 'localhost';
 var MYSQL_USER = 'b935b086008866';
@@ -151,3 +153,5 @@ var REDIS_TTL = 30*24*60*60;
 
 var DEMO = true;
 var DEMO_TEST_TIME = 60;
+var DEMO_TIMER_ACTIVE = 1;
+var DEMO_TIMER_INACTIVE = 0;

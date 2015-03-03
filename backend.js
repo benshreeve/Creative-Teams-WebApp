@@ -103,7 +103,7 @@ function setupDBs() {
     });
 
     var teamStore = redis.createClient(REDIS_PORT, REDIS_HOST, {auth_pass:REDIS_PASSWORD});
-    rdb = require('./javascript/backend/redis_db.js')(teamStore);
+    rdb = require('./javascript/backend/redis_db.js')(teamStore, db);
 //    rdb.delTeam(1);
 //    rdb.delTeam(2);
 }
