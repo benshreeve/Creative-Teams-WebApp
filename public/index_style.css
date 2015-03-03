@@ -1,0 +1,98 @@
+
+body {
+	font-family: Lucida Grande, Arial, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height: 2em;
+	color: #666;
+	background-color: #FFFFFF;
+	margin-top: 4em;
+	margin-left: 2em;
+	margin-bottom: 10em;
+}
+
+img {
+margin-bottom: 2em;
+}
+
+h1 {
+font-family: Lucida Grande, Arial, Verdana, Helvetica, sans-serif;
+font-size:16px;
+line-height: 1em;
+font-weight: 900;
+}
+
+#header {
+height: 60px;
+width: 900px;
+}
+
+#header h1 {
+padding-top: 20px;
+font-size: 30px;
+font-weight: normal;
+color:#CC6600;
+}
+
+#container {
+background: url(dot-top.gif) top repeat-x; 
+width: 1000px;
+margin-bottom: 0em;
+}
+
+h2 {
+color: #CCC;
+margin-bottom:2em;
+}
+
+.text {
+width: 300px;
+padding-top: 20px;
+background: url(dot.gif) right top repeat-y; 
+padding-right: 20px;
+margin-right: 20px;
+}
+
+#righthandcolumn {
+float: right;
+width: 300px;
+padding-top: 20px;
+padding-left: 20px;
+}
+
+#middlecolumn {
+padding-top: 20px;
+float: right;
+width: 300px;
+background: url(dot.gif) right top repeat-y; 
+padding-right: 20px;
+}
+
+#footer {
+height: 150px;
+width: 1000px;
+background: url(Footer.png)
+}
+
+a {
+color: #CC6600;
+}
+
+a:hover {
+color: #999;
+}
+
+li {
+margin-bottom: 2em;
+}
+
+form {
+height: 15px;
+}
+
+input {
+border: 1px solid #CCC;
+background-color:#FFFFFF;
+font-size: 11px;
+padding: 1.5px;
+color: #666;
+}
