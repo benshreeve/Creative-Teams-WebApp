@@ -3,7 +3,7 @@
 		<title>Creative Teams</title>
 		<script src="/assets/javascript/jquery.js" type="text/javascript"></script>
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="/assets/css/style.css?v=1">
+		<link rel="stylesheet" type="text/css" href="/assets/css/style.css?v=0.0.1">
 		<meta name="viewport" content="user-scalable=no, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, width=device-width, target-densitydpi=device-dpi">		
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">		
@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="/assets/css/jquery.nouislider.css">		
 		<script type='application/javascript' src='/assets/javascript/jquery.nouislider.min.js'></script>		
 		<script src="/socket.io/socket.io.js"></script>        
-		<script src="/assets/javascript/backend/constants.js"></script>
+		<script src="/assets/javascript/backend/constants.js?v=0.0.1"></script>
 		<script> 
 		var socket = io.connect(); 
 		var backendReady = false;
@@ -19,7 +19,7 @@
 		
         socket.on(PERM_RSP, function(object) {				
 			if(object.decision==GRANTED && object.operation==LOAD_TEST_PAGE)		{
-				document.location='/assets/tests/pic_comp.html';
+				document.location='/assets/tests/pic_comp.html'+VERSION;
 			}
 		});
 		

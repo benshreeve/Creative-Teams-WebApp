@@ -34,7 +34,7 @@ color:#CC6600;
 }
 
 #container {
-background: url(dot-top.gif) top repeat-x; 
+background: url(/assets/public/dot-top.gif?v=0.0.1) top repeat-x; 
 width: 1000px;
 margin-bottom: 0em;
 }
@@ -47,7 +47,7 @@ margin-bottom:2em;
 .text {
 width: 300px;
 padding-top: 20px;
-background: url(dot.gif) right top repeat-y; 
+background: url(/assets/public/dot.gif?v=0.0.1) right top repeat-y; 
 padding-right: 20px;
 margin-right: 20px;
 }
@@ -63,14 +63,14 @@ padding-left: 20px;
 padding-top: 20px;
 float: right;
 width: 300px;
-background: url(dot.gif) right top repeat-y; 
+background: url(/assets/public/dot.gif?v=0.0.1) right top repeat-y; 
 padding-right: 20px;
 }
 
 #footer {
 height: 150px;
 width: 1000px;
-background: url(Footer.png)
+background: url(/assets/public/Footer.png?v=0.0.1)
 }
 
 a {

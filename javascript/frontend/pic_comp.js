@@ -6,7 +6,7 @@ var buttons = ["top-left-button", "next-button", "prev-button", "enterTitle", "d
 var testComplete = false;
 
 function getBGImageName() {
-	return bgImagePath + screenNumber + ".svg";
+	return bgImagePath + screenNumber + ".svg" + VERSION;
 }
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {

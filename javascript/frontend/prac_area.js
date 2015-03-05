@@ -1,7 +1,7 @@
 var bgImagePath = "/assets/images/practicearea/Practice_Area_Background.svg";
 
 function getBGImageName() {
-	return bgImagePath;
+	return bgImagePath+VERSION;
 }
 
 socket.on(TEST_COMPLETE_MSG, function(rsp) {
