@@ -7,13 +7,13 @@
 module.exports = function(context) {
 	runScript("./javascript/backend/constants.js");
 	var logger = require('./logger.js')();
-	var tests = [{id: PRAC_AREA, longName: "PracticeArea", name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/assets/tests/introduction.html', testURL:'/assets/tests/practice_area.html'},
-	             {id: PIC_CON, longName: "PictureConstruction", name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/assets/tests/pic_con_inst.html', testURL:'/assets/tests/pic_con.html'},
-	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/assets/tests/pic_comp_inst.html', testURL:'/assets/tests/pic_comp.html'},
-	             {id: PAR_LINES, longName: "ParallelLines", name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/assets/tests/par_lines_inst.html', testURL:'/assets/tests/par_lines.html'},
-	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/assets/tests/idea_gen_inst.html', testURL:'/assets/tests/idea_gen.html'},
-	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/assets/tests/des_chal_inst.html', testURL:'/assets/tests/des_chal.html'},
-	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/assets/tests/alt_uses_inst.html', testURL:'/assets/tests/alt_uses.html'},
+	var tests = [{id: PRAC_AREA, longName: "PracticeArea", name:"PracArea", screenLimit: 1, handler: './javascript/backend/prac_area.js', instructionURL: '/assets/tests/introduction.html'+VERSION, testURL:'/assets/tests/practice_area.html'},
+	             {id: PIC_CON, longName: "PictureConstruction", name:"PicCon",   screenLimit: 1, handler: './javascript/backend/pic_con.js', instructionURL: '/assets/tests/pic_con_inst.html'+VERSION, testURL:'/assets/tests/pic_con.html'},
+	             {id: PIC_COMP, longName: "PictureCompletion", name:"PicComp",  screenLimit: 10, handler: './javascript/backend/pic_comp.js', instructionURL: '/assets/tests/pic_comp_inst.html'+VERSION, testURL:'/assets/tests/pic_comp.html'},
+	             {id: PAR_LINES, longName: "ParallelLines", name:"ParLines", screenLimit: 18, handler: './javascript/backend/par_lines.js', instructionURL: '/assets/tests/par_lines_inst.html'+VERSION, testURL:'/assets/tests/par_lines.html'},
+	             {id: IDEA_GEN, longName: "IdeaGeneration", name:"IdeaGen",  screenLimit: 1, handler: './javascript/backend/idea_gen.js', instructionURL: '/assets/tests/idea_gen_inst.html'+VERSION, testURL:'/assets/tests/idea_gen.html'},
+	             {id: DES_CHAL, longName: "DesignChallenge", name:"DesChal",  screenLimit: 99, handler: './javascript/backend/des_chal.js', instructionURL: '/assets/tests/des_chal_inst.html'+VERSION, testURL:'/assets/tests/des_chal.html'},
+	             {id: ALT_USES, longName: "AlternativeUses", name:"AltUses",  screenLimit: 1, handler: './javascript/backend/alt_uses.js', instructionURL: '/assets/tests/alt_uses_inst.html'+VERSION, testURL:'/assets/tests/alt_uses.html'},
 //	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: '/assets/tests/end.html', testURL:'/assets/tests/end.html'},
 	             {id: END_TEST, longName: "EndTest", name:"End",  screenLimit: 1, handler: './javascript/backend/end.js', instructionURL: 'https://lancasteruni.qualtrics.com/SE/?SID=SV_726kfpD37MGLzq5', testURL:'https://lancasteruni.qualtrics.com/SE/?SID=SV_726kfpD37MGLzq5'}];
 	

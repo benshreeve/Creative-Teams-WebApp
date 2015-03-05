@@ -4,6 +4,8 @@
  * This module contains a set of constants which are used in both frontend and backend.
  */
 
+var VERSION="?v=0.0.1";
+
 // test IDs.
 
 var PRAC_AREA = 0;
