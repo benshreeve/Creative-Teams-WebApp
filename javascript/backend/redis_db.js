@@ -1,7 +1,9 @@
 /**
- * Author: H. Naderi
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
  * 
- * This module contains methods for accessing/manipulating team records in REDIS database. 
+ * This module contains a set of methods for accessing/manipulating team records in REDIS database. For more detailed
+ * information about the structure of this DB, refer to 'database design' document. 
  */
 
 module.exports = function (conn, db) {

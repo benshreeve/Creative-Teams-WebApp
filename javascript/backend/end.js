@@ -1,5 +1,9 @@
 /**
- * New node file
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required handlers for the messages which can be received from frontend(s) when the test is finished and
+ * user arrives at the last page. installHanlders is called by backend.js to attach handlers to the client's socket.
  */
 
 module.exports = 
@@ -28,6 +32,7 @@ module.exports =
 	        	results.removeResults();
 	        });
 	        
+	        // should be the last one to ensure frontend that the backend is completely ready.	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(END_TEST);
 	        });

@@ -1,5 +1,9 @@
 /**
- * New node file
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required handlers for the messages which can be received from frontend(s) during Parallel Lines Test.
+ * installHanlders is called by backend.js to attach handlers to the client's socket.
  */
 
 module.exports = 
@@ -9,15 +13,7 @@ module.exports =
 			var utils = require('./utils')(context);
 			var logger = require('./logger')(context);
 			var results = require('./results')(context);
-					
-	        context.socket.on(GET_TEST_STATE_REQ, function() {
-	        	commons.sendTestStateRsp();
-	        });
-	               
-	        context.socket.on(GET_SESSION_STATE_REQ, function() {
-	        	commons.sendSessionStateRsp();
-	        });
-	        
+					       
 	        context.socket.on(GET_STATE_REQ, function() {
 	        	commons.sendStateRsp();
 	        });	        
@@ -74,7 +70,6 @@ module.exports =
 	        	
 	        	logger.debug("Redirect team " + context.session.TeamID + " to ", utils.getInstructionURL(utils.getNextTestID(PAR_LINES)));
 	        	results.saveParticipants(PAR_LINES, commons.moveToNextTest, PAR_LINES);
-	     //   	commons.moveToNextTest(PAR_LINES);
 	        });
 	        
 	        context.socket.on(NEXT_SCREEN_MSG, function(res) {
@@ -138,6 +133,7 @@ module.exports =
         		commons.sendGetResultsReq();	        		
 	        });
 	        
+	        // should be the last one to ensure frontend that the backend is completely ready.	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(PAR_LINES);
 	        });
