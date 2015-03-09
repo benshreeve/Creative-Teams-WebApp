@@ -1,3 +1,10 @@
+/**
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required functions and message handlers for Alternative Uses test.
+ */
+
 var currentSelection = 0;
 var buttons = ["submit-button", "cancel-button", "delete-button", "top-left-button", "demo-button"];
 
@@ -15,20 +22,6 @@ socket.on(GET_RESULTS_REQ, function(rsp) {
 		res.push({use: rows[i].cells[0].innerHTML, userID: rows[i].name, useNo: i});
 	}
 	socket.emit(GET_RESULTS_RSP, res);
-});
-
-socket.on(GET_TEST_STATE_RSP, function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
-	storeTestState(rsp);	
-	socket.emit(GET_TRANSACTIONS_REQ);
-});
-
-socket.on(GET_SESSION_STATE_RSP, function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);
-	storeSessionState(rsp);
-	
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
 });
 
 socket.on(GET_STATE_RSP, function(rsp) {

@@ -1,3 +1,10 @@
+/**
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required functions and message handlers for Picture Completion test.
+ */
+
 var bgImagePath = "/assets/images/picturecompletion/TTCT_Fig_Parts_Figure_";
 var changed = false;
 var changeScreenInProgress = false;
@@ -47,22 +54,6 @@ socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	changeScreen(getBGImageName());
 	showScreenNumber(PIC_COMP_MAX_SCREEN);	
 	changed = false;
-});
-
-socket.on(GET_TEST_STATE_RSP, function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
-	storeTestState(rsp);	
-	prepareCanvas(getBGImageName());
-	socket.emit(GET_TRANSACTIONS_REQ);
-});
-
-socket.on(GET_SESSION_STATE_RSP, function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);
-	storeSessionState(rsp);
-	
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
-	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
 });
 
 socket.on(GET_STATE_RSP, function(rsp) {

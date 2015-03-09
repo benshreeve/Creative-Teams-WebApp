@@ -1,8 +1,13 @@
+/**
+ * Author: Habib Naderi (Department of Computer Science, University of Auckland)
+ *         Adam (University of Lancaster)
+ * 
+ * 
+ * This is the main module for the backend. It setup databases, timer for time synchronization and an http server
+ * to listen on port 4000. 
+ */
 
-/* ------------------------------------------------------------------------- */
-/*								Server Configuration						 */
-/* ------------------------------------------------------------------------- */
-// Requirements:
+
 var app = require('express')(),
 express = require('express'),
 connect = require('connect'),
@@ -31,6 +36,7 @@ var connection;
 
 async.parallel([startBackend(), setupDBs(), setupTimer()]);
 
+// starts backend and waits for connection from frontends.
 function startBackend() {
     // Connect to Redis:
     var RedisStore = require("connect-redis")(session);
@@ -43,10 +49,13 @@ function startBackend() {
     app.use(cookieParser("gZB8fSdS"));
     var sessionSockets = new SessionSockets(io, sessionStore, cookieParser("gZB8fSdS"));
     app.use(session({ store: sessionStore, secret: "gZB8fSdS", resave: true, saveUninitialized: true, }));
+    
+    //disable hearbeat. This feature is buggy in socket.io. 
     io.set('heartbeat timeout', 9999999);
     io.set('heartbeat interval', 9999999);
    
-    
+
+    // wait for new connections
     sessionSockets.on('connection', function(err, socket, session){
     	if (!err && session.TeamID != undefined) {
 	    	if (session.refCount > 0) {
@@ -58,11 +67,11 @@ function startBackend() {
 		    	    	
 	    	channel = require('./javascript/backend/channel.js')(io);
 		    	
-	        // Store identification:
 	        logger.log('User: ' + session.AccessCode + ' connected under the nickname ' + session.Name);
 				
 			channel.setup(socket, session.AccessCode);
 					
+			// if this is a late participant, do not join it to the team at this stage.
 			if (session.Late)
 				installHandlers(PRAC_AREA, {session:session, socket:socket, db:db, rdb:rdb, channel:channel});
 			else {
@@ -80,10 +89,12 @@ function startBackend() {
     }); 
 }
 
+// attach handlers for the current test to the client's socket.
 function installHandlers(currentTest, context) {
 	require(utils.getTestHandler(currentTest)).installHandlers(context);
 }
 
+// setup mysql and redis databases.
 function setupDBs() {
     connection =  database.createConnection({ host : MYSQL_HOST, user : MYSQL_USER, password: MYSQL_PASSWORD, database: MYSQL_DB});
     db = require('./javascript/backend/mysql_db.js')(connection);
@@ -104,10 +115,11 @@ function setupDBs() {
 
     var teamStore = redis.createClient(REDIS_PORT, REDIS_HOST, {auth_pass:REDIS_PASSWORD});
     rdb = require('./javascript/backend/redis_db.js')(teamStore, db);
-//    rdb.delTeam(1);
-//    rdb.delTeam(2);
 }
 
+// creates a timer which expires every UPDATE_TIME_INTERVAL seconds and broadcasts
+// server's time to all connected frontends. It helps frontends to adjust their time
+// and minimize the drift. 
 function setupTimer() {	
     setInterval(function() {
     	require('./javascript/backend/channel.js')(io).sendToAll("UpdateTimeMsg", new Date().getTime());
@@ -141,16 +153,8 @@ app.get('/', function(req, res) {
 	
 });
 
-app.get('/admin/', checkLogin, function(req, res) { res.redirect("/admin/index.html"); });
-
-// Route to clear a session (for testing purposes):
-app.get('/clearsession/', checkLogin, function(req, res) { if(req.session.destroy()) res.send("Session cleared."); });
-
 // Serve the Login Page:
 app.get('/public/', function(req, res) {	res.redirect("index.html"); 	});
-
-// Serve the Practice Canvas:
-app.get('/test1/', checkLogin, function(req, res) {		res.redirect("index.html")/*protectPage(req, res, "/test1/index.html");*/		});
 
 // Static File Serving:
 app.use(express.static(__dirname, '/public'));
@@ -181,6 +185,7 @@ app.post("/public/*", function(req, res) {
 	}
 });
 
+// processes a new login operation. A user should not be able to login from more than one device at the same time.
 function processNewUser(userRow, args) {
 	if (userRow) {
 		if (args.req.session && args.req.session.refCount > 0) {
@@ -206,11 +211,13 @@ function processNewUser(userRow, args) {
 	
 }
 
+// sets 'Late' field in the user's session if its team has already started the test. 
 function setLate(teamCurrentTest, args) {
 	args.userSession.Late = teamCurrentTest > PRAC_AREA ? true : false;
 	args.userSession.save();		
 }
 
+// creates a folder for team's results.
 function createTeamFolder(path, args) {
 	var fs = require('fs');
 	if (!fs.existsSync(path+"/"+args.teamID))

@@ -1,3 +1,10 @@
+/**
+ * Author: Minh Nguyen, Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required functions and message handlers for practice area.
+ */
+
 var bgImagePath = "/assets/images/practicearea/Practice_Area_Background.svg";
 
 function getBGImageName() {
@@ -10,30 +17,6 @@ socket.on(TEST_COMPLETE_MSG, function(rsp) {
 	setInterval(function() {blink('top-right-button');}, 500);	
 });
 
-
-socket.on(GET_TEST_STATE_RSP, function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
-	storeTestState(rsp);
-});
-
-socket.on(GET_SESSION_STATE_RSP, function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);
-	storeSessionState(rsp);
-	prepareCanvas(getBGImageName());
-	
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
-	
-	if(!rsp.Late){		
-		document.getElementById('top-right-button').style.display = "none";
-	}
-	else
-	{		
-		document.getElementById('top-right-button').style.display = "";
-		document.getElementById('top-right-button').value = 'Take me to the test';
-		setInterval(function() {blink('top-right-button');}, 500);
-	}
-});
 
 socket.on(GET_STATE_RSP, function(rsp) {
 	console.log("GetStateRsp: ", rsp.testState, rsp.sessionState);
@@ -60,7 +43,6 @@ socket.on(GET_STATE_RSP, function(rsp) {
 		setInterval(function() {blink('top-right-button');}, 500);
 	}
 });
-
 
 socket.on(TITLE_BEING_EDITED_MSG, function(rsp) {
 	handleTitleBeingEdited(rsp);	
