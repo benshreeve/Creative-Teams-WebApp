@@ -32,6 +32,7 @@ def usage():
     print '\tenable [-t <team-ID>] [-u <user-ID>]: Enables a user or a set of users. Team-ID and User-ID can be specified.'
     print '\tdisable [-t <team-ID>] [-u <user-ID>]: Disables a user  or a set of users. Team-ID and User-ID can be specified.'
     print '\tdeactivate [-t <team-ID>] [-u <user-ID>]: Deactivates a user or a set of users so that user(s) can log in to the system again. Team-ID and User-ID can be specified.'
+    print '\ttime -t <team-ID> -e <test-ID>: prints how much time the team has spent on the test. '
     print '-m/-r:'
     print '\tmysql-host: IP/name of the MYSQL server. default is localhost.'
     print '\tredis-host: IP/name of the REDIS server. default is localhost.'
@@ -211,6 +212,16 @@ def delete_session(teamID, userID):
 
         except:
                 v= None
+                
+def calculate_test_time(teamID, testID):
+    cur.execute("select time from transactions where TeamID="+teamID+" and TestID="+testID+" order by time asc limit 1")
+    if cur.rowcount > 0:
+        first = cur.fetchall()[0][0]
+        cur.execute("select time from transactions where TeamID="+teamID+" and TestID="+testID+" order by time desc limit 1")
+        last = cur.fetchall()[0][0]
+        print "time spent in this test:", float(last-first)/1000, "seconds"
+    else:
+        print "no record for this team and test."                
 
 def check_options(options):
     global mysql_host, redis_host
@@ -231,6 +242,7 @@ parser = OptionParser()
 parser.add_option("-t", "--team", dest="teamID")
 parser.add_option("-c", "--command", dest="cmd")
 parser.add_option("-u", "--user", dest="userID")
+parser.add_option("-e", "--test", dest="testID")
 parser.add_option("-m", "--mysql-host", dest="mysql_host")
 parser.add_option("-r", "--redis-host", dest="redis_host")
 
@@ -268,6 +280,8 @@ elif options.cmd == 'create':
     create_team(options.teamID)
 elif options.cmd == 'zapredis':
     zap_redis_db()
+elif options.cmd == 'time':
+    calculate_test_time(options.teamID, options.testID)    
 else:
     print 'invalid command: ', options.cmd
 
