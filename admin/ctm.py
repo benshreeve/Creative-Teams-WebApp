@@ -1,3 +1,13 @@
+
+# Author: Habib Naderi
+# Department of Computer Science, University of Auckland
+# 
+# This Python program facilitates administrative operations for creative teams application. Using this program,
+# an administrator can create new teams, delete/reset existing teams, zap mysql and redis db and view redis db 
+# information via a command-line interface. 
+ 
+
+
 import redis
 import MySQLdb
 import shutil
