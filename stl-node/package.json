@@ -1,8 +1,0 @@
-{
-  "name": "supertestlite",
-  "version": "0.0.1",
-  "description": "collaborative drawing app test",
-  "dependencies": {
-    "express": "^4.7.2"
-  }
-}
