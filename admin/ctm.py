@@ -83,6 +83,11 @@ def delete_results_from_fs(teamID):
         shutil.rmtree(folder)
     else:
         print "\t"+folder+" does not exist!"
+        
+def delete_piccon_bg(teamID):
+    info = rdb.hgetall(options.teamID)
+    if info.has_key('PicConBgImage') and info['PicConBGImage'] != None and info['PicConBGImage'] != '':
+        os.remove(os.path.join('../images/pictureconstruction', info['PicConBGImage']))            
 
 def zap_mysql_db():
     cur.execute('TRUNCATE altusesres')
@@ -165,11 +170,13 @@ def delete_team(teamID):
     delete_results_from_DB(teamID)
     delete_results_from_fs(teamID)
     delete_user(teamID, None)
+    delete_piccon_bg(teamID)
 
 def reset_team(teamID):
     rdb.delete(teamID)
     delete_results_from_DB(teamID)
     delete_results_from_fs(teamID)
+    delete_piccon_bg(teamID)    
 
 def zap_redis_db():
     rdb.flushdb()
