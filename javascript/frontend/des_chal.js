@@ -1,3 +1,10 @@
+/**
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required functions and message handlers for Design Challenge test.
+ */
+
 var changed = false;
 var changeScreenInProgress = false;
 var getResultsReqReceived = false;
@@ -59,21 +66,6 @@ socket.on(CHANGE_SCREEN_MSG, function(newScreen) {
 	changed = false;
 });
 
-socket.on(GET_TEST_STATE_RSP, function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
-	storeTestState(rsp);	
-	prepareCanvas();
-	socket.emit(GET_TRANSACTIONS_REQ);
-});
-
-socket.on(GET_SESSION_STATE_RSP, function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);
-	storeSessionState(rsp);
-	
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;		
-	document.getElementById('supertitle').style.color = COLOURS[rsp.UserID];
-});
 
 socket.on(GET_STATE_RSP, function(rsp) {
 	console.log("GetStateRsp: ", rsp.testState, rsp.sessionState);

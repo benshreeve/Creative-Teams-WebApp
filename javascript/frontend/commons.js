@@ -1,3 +1,11 @@
+/**
+ * Author: Habib Naderi, Minh Nguyen (Department of Computer Science, University of Auckland) 
+ *         Adam Smith (Lancaster University)
+ * 
+ * 
+ * This module implements a set of functions which are useful and used by other frontend modules.
+ */
+
 var pointsArray = [];
 var painting;
 var canvas;

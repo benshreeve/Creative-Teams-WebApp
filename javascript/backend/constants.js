@@ -1,7 +1,10 @@
 /**
- * Author: H. Naderi
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
  * 
  * This module contains a set of constants which are used in both frontend and backend.
+ * Refer to 'database design' and 'communication protocol design' documents for more detailed
+ * information.
  */
 
 var VERSION="?v=0.0.1";
@@ -142,6 +145,7 @@ var PIC_CON_BGIMAGE_PATH = "/assets/"+BACKEND_PIC_CON_BGIMAGE_PATH;
 var RANDOMIZED_TEST_ORDER = true;
 var STARTING_ID_FOR_RANDOMIZATION = 11;
 
+// configuration parameters
 var MYSQL_HOST = 'localhost';
 var MYSQL_USER = 'b935b086008866';
 var MYSQL_PASSWORD = '1b01c493';
@@ -152,8 +156,13 @@ var REDIS_PORT = '13163';
 var REDIS_TTL = 30*24*60*60;
 	
 
+<<<<<<< HEAD
 
 var DEMO = false;
+=======
+// DEMO mode related values
+var DEMO = true;
+>>>>>>> 0699c0896e29bf06e50c7dd6e0c53dbd42fa0acc
 var DEMO_TEST_TIME = 60;
 var DEMO_TIMER_ACTIVE = 1;
 var DEMO_TIMER_INACTIVE = 0;

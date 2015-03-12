@@ -1,5 +1,9 @@
 /**
- * New node file
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements a simple logger module by providing two wrappers for console.log. They add some extra
+ * information when printing a message in standard output.
  */
 
 module.exports = function(context) {

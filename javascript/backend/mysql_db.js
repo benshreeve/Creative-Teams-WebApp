@@ -1,3 +1,11 @@
+/**
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements a set of methods for accessing and manipulating data in mysql DB. Refer to
+ * 'database design' document for more detailed information about the structure of the DB.
+ */
+
 module.exports = function (conn) {
 	var utils = require('./utils.js')();
 	var logger = require('./logger.js')()

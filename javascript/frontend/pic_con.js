@@ -37,20 +37,6 @@ function sendResults() {
 	socket.emit(GET_RESULTS_RSP, {"screenNumber": screenNumber, "image":canvasSimple.toDataURL('image/png'), "title": document.getElementById('titleArea').value});
 }
 
-socket.on(GET_TEST_STATE_RSP, function(rsp) {
-	console.log("GetTestStateRsp: ", rsp);
-	storeTestState(rsp);
-});
-
-socket.on(GET_SESSION_STATE_RSP, function(rsp) {
-	console.log("GetSessionStateRsp: ", rsp);
-	storeSessionState(rsp);
-	
-	//set the header title	
-	document.getElementById('supertitle').innerHTML = Name  + " / " + AccessCode;	
-	document.getElementById('supertitle').style.color = COLOURS[rsp.sessionState.UserID];	
-});
-
 socket.on(GET_STATE_RSP, function(rsp) {
 	console.log("GetStateRsp: ", rsp);
 	storeTestState(rsp.testState);

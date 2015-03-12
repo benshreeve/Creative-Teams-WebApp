@@ -1,6 +1,11 @@
 /**
- * New node file
+ * Author: Habib Naderi
+ * Department of Computer Science, University of Auckland
+ * 
+ * This module implements required handlers for the messages which can be received from frontend(s) When user is in practice area.
+ * installHanlders is called by backend.js to attach handlers to the client's socket.
  */
+ 
 
 module.exports = 
 {
@@ -10,14 +15,6 @@ module.exports =
 			var logger = require('./logger')(context);
 			utils.includeConstants('./javascript/backend/constants.js');
 			
-	        context.socket.on(GET_TEST_STATE_REQ, function() {
-	        	commons.sendTestStateRsp();
-	        });
-	        	        
-	        context.socket.on(GET_SESSION_STATE_REQ, function() {
-	        	commons.sendSessionStateRsp();
-	        });
-
 	        context.socket.on(GET_STATE_REQ, function() {
 	        	commons.sendStateRsp();
 	        });
@@ -54,15 +51,8 @@ module.exports =
 	        function pracAreaJoinLateParticipant(currentTest) {
 	        	context.session.Late = false;
 	        	context.session.save();
-//	        	context.rdb.getCurrentScreen(context.session.TeamID, pracAreaSendTestURL, {currentTest: currentTest});
 	        	context.rdb.getTeam(context.session.TeamID, pracAreaSendTestURL);
 	        }
-	        /*
-	        function pracAreaSendTestURL(currentScreen, args) {
-	        	context.channel.sendToUser(context.session.AccessCode, GOTO_MSG, 
-	        			currentScreen == INSTRUCTION_SCREEN ? utils.getInstructionURL(args.currentTest) : utils.getTestURL(args.currentTest));
-	        }
-	        */
 	        
 	        function pracAreaSendTestURL(teamInfo) {	        	
 	        	if (teamInfo.CurrentScreen == INSTRUCTION_SCREEN)
@@ -129,6 +119,7 @@ module.exports =
 	        	commons.sendTestComplete();
 	        }
 	        
+	        // should be the last one to ensure frontend that the backend is completely ready.	        
 	        context.socket.on(IS_BACKEND_READY_REQ, function() {
 	        	commons.sendIsBackendReadyRsp(PRAC_AREA);
 	        });
