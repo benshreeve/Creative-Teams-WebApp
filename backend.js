@@ -1,6 +1,6 @@
 /**
  * Author: Habib Naderi (Department of Computer Science, University of Auckland)
- *         Adam Smith (Lancaster University)
+ *         Adam (University of Lancaster)
  * 
  * 
  * This is the main module for the backend. It setup databases, timer for time synchronization and an http server

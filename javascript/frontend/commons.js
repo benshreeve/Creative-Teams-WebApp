@@ -1,6 +1,6 @@
 /**
  * Author: Habib Naderi, Minh Nguyen (Department of Computer Science, University of Auckland) 
- *         Adam Smith (Lancaster University)
+ *         Adam (University of Lancaster)
  * 
  * 
  * This module implements a set of functions which are useful and used by other frontend modules.
