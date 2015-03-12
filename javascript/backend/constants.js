@@ -156,13 +156,9 @@ var REDIS_PORT = '13163';
 var REDIS_TTL = 30*24*60*60;
 	
 
-<<<<<<< HEAD
+// DEMO mode related values
 
 var DEMO = false;
-=======
-// DEMO mode related values
-var DEMO = true;
->>>>>>> 0699c0896e29bf06e50c7dd6e0c53dbd42fa0acc
 var DEMO_TEST_TIME = 60;
 var DEMO_TIMER_ACTIVE = 1;
 var DEMO_TIMER_INACTIVE = 0;
