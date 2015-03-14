@@ -159,6 +159,7 @@ var REDIS_TTL = 30*24*60*60;
 // DEMO mode related values
 
 var DEMO = false;
+
 var DEMO_TEST_TIME = 60;
 var DEMO_TIMER_ACTIVE = 1;
 var DEMO_TIMER_INACTIVE = 0;
